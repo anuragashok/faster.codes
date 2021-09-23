@@ -23,11 +23,6 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
 
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: true
-
     - name: Terraform Init
       id: init
       run: terraform init
