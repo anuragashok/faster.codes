@@ -12,13 +12,12 @@ terraform {
 }
 
 variable "PROVIDER_DIGITALOCEAN_TOKEN" {}
-variable "PROVIDER_CLOUDFLARE_EMAIL" {}
-variable "PROVIDER_CLOUDFLARE_API_KEY" {}
-
 provider "digitalocean" {
   token = var.PROVIDER_DIGITALOCEAN_TOKEN
 }
 
+variable "PROVIDER_CLOUDFLARE_EMAIL" {}
+variable "PROVIDER_CLOUDFLARE_API_KEY" {}
 provider "cloudflare" {
   email   = var.PROVIDER_CLOUDFLARE_EMAIL
   api_key = var.PROVIDER_CLOUDFLARE_API_KEY
