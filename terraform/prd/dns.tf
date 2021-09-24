@@ -8,6 +8,7 @@ resource "cloudflare_record" "faster_codes_web" {
   value   = "faster-codes.pages.dev"
   type    = "CNAME"
   ttl     = 1
+  proxied = true
 }
 
 
@@ -17,4 +18,5 @@ resource "cloudflare_record" "faster_codes_web_www" {
   value   = "faster-codes.pages.dev"
   type    = "CNAME"
   ttl     = 1
+  proxied = true
 }
