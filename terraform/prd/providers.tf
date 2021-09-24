@@ -8,10 +8,6 @@ terraform {
       source = "cloudflare/cloudflare"
       version = "3.1.0"
     }
-    namecheap = {
-      source = "Namecheap-Ecosystem/namecheap"
-      version = "0.1.7"
-    }
   }
 }
 
