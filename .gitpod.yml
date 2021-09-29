@@ -1,6 +1,12 @@
+
+image:
+  file: .gitpod.Dockerfile
 tasks:
   - name: git
     before: |
       git config pull.rebase true
-      alias rebase=git pull origin main:main && git rebase main
+      alias rebase="git pull origin main:main && git rebase main"
       
+vscode:
+  extensions:
+    - hashicorp.terraform
