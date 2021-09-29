@@ -1,5 +1,5 @@
 resource "cloudflare_zone" "faster_codes" {
-    zone = "faster.codes"
+  zone = "faster.codes"
 }
 
 resource "cloudflare_record" "faster_codes_web" {
