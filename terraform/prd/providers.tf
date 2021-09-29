@@ -8,6 +8,9 @@ terraform {
       source = "cloudflare/cloudflare"
       version = "3.1.0"
     }
+    scaleway = {
+      source = "scaleway/scaleway"
+    }
   }
 }
 
@@ -22,3 +25,6 @@ provider "cloudflare" {
   email   = var.PROVIDER_CLOUDFLARE_EMAIL
   api_key = var.PROVIDER_CLOUDFLARE_API_KEY
 }
+
+#configured using env vars SCW_ACCESS_KEY, SCW_SECRET_KEY, SCW_DEFAULT_PROJECT_ID
+provider "scaleway" {}
