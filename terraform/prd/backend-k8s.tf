@@ -34,3 +34,15 @@ provider "kubernetes" {
     null_resource.kubeconfig.triggers.cluster_ca_certificate
   )
 }
+
+resource "kubernetes_namespace" "api" {
+  metadata {
+    name = "api"
+  }
+}
+
+resource "kubernetes_namespace" "runner" {
+  metadata {
+    name = "runner"
+  }
+}
