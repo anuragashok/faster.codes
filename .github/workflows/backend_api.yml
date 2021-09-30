@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: 'backend/api'
+        working-directory: ./backend/api
     steps:
       -
         name: Set up QEMU
@@ -24,5 +24,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          repository: 
           tags: ${{ github.repository }}/backend-api:${{ github.sha }}
