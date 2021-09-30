@@ -37,3 +37,9 @@ jobs:
           context: ./backend/api
           push: true
           tags: ghcr.io/${{ github.repository }}/backend-api:${{ github.sha }}
+      #store latest image details for later use
+      - run: echo ghcr.io/${{ github.repository }}/backend-api:${{ github.sha }} > backend-api.tag
+      - uses: actions/upload-artifact@v2
+        with:
+          name: backend-api.tag
+          path: backend-api.tag
