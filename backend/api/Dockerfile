@@ -1,8 +1,8 @@
 # BUILD
 FROM node:14-alpine as builder
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-WORKDIR /home/node/app
+WORKDIR /app
 COPY package*.json yarn.lock ./
+RUN chown -R node:node /app
 USER node
 RUN yarn install
 COPY --chown=node:node . .
@@ -10,11 +10,12 @@ RUN yarn build
 
 # RUN
 FROM node:14-alpine
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-WORKDIR /home/node/app
+WORKDIR /app
 COPY package*.json yarn.lock ./
+RUN chown -R node:node /app
 USER node
 RUN yarn install --production
-COPY --from=builder /home/node/app/build ./build
+COPY --from=builder /app/build ./build
 
 CMD [ "node", "build/src/main.js" ]
+EXPOSE 3000

@@ -7,6 +7,8 @@
   },
   "devDependencies": {
     "@types/jest": "~27.0.1",
+    "@types/koa": "^2.13.4",
+    "@types/koa__router": "^8.0.8",
     "@types/node": "~14.14.45",
     "@typescript-eslint/eslint-plugin": "~4.31.1",
     "@typescript-eslint/parser": "~4.31.1",
@@ -23,18 +25,16 @@
     "typescript": "~4.4.3"
   },
   "scripts": {
-    "start:dev" : "nodemon src/main.ts",
+    "dev": "nodemon src/main.ts",
+    "build": "tsc -p tsconfig.release.json",
     "start": "node build/src/main.js",
     "clean": "rimraf coverage build tmp",
-    "prebuild": "npm run lint",
-    "build": "tsc -p tsconfig.release.json",
-    "build:watch": "tsc -w -p tsconfig.release.json",
-    "lint": "eslint . --ext .ts,.tsx",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "lint": "eslint . --ext .ts,.tsx && prettier --write"
   },
   "author": "Anurag Ashok",
   "dependencies": {
+    "@koa/router": "^10.1.1",
+    "koa": "^2.13.3",
     "tslib": "~2.3.1"
   }
 }

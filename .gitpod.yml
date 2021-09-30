@@ -10,3 +10,4 @@ vscode:
   extensions:
     - hashicorp.terraform
     - github.vscode-pull-request-github
+    - esbenp.prettier-vscode
