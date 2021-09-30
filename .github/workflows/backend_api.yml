@@ -36,4 +36,4 @@ jobs:
         with:
           context: ./backend/api
           push: true
-          tags: ${{ github.repository }}/backend-api:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}/backend-api:${{ github.sha }}
