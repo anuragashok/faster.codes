@@ -144,7 +144,6 @@ resource "kubernetes_manifest" "ingress_backend_api" {
     "spec" = {
       "rules" = [
         {
-          "host" = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns, "*.", "backend-api.")
           "http" = {
             "paths" = [
               {
