@@ -121,6 +121,9 @@ resource "kubernetes_manifest" "ingress_backend_api" {
     "metadata" = {
       "name"      = "backend-api"
       "namespace" = kubernetes_namespace.api.metadata[0].name
+      "annotations" = {
+        "kubernetes.io/ingress.class": "haproxy"
+      }
     }
     "spec" = {
       "rules" = [
