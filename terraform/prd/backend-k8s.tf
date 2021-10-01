@@ -3,6 +3,7 @@ resource "scaleway_k8s_cluster" "faster_codes_be" {
   description = "faster-codes-be"
   version     = "1.22.2"
   cni         = "cilium"
+  ingress     = "nginx"
 }
 
 resource "scaleway_k8s_pool" "faster_codes_be_pool" {
@@ -48,7 +49,7 @@ resource "kubernetes_namespace" "runner" {
 resource "kubernetes_deployment" "backend_api" {
   metadata {
     namespace = kubernetes_namespace.api.metadata[0].name
-    name = "backend-api"
+    name      = "backend-api"
     labels = {
       name = "backend-api"
     }
@@ -73,7 +74,7 @@ resource "kubernetes_deployment" "backend_api" {
       spec {
         container {
           image = var.backend-api-tag
-          name = "backend-api"
+          name  = "backend-api"
 
           resources {
             limits = {
@@ -114,14 +115,14 @@ resource "kubernetes_deployment" "backend_api" {
 resource "kubernetes_ingress" "backend_api" {
   metadata {
     namespace = kubernetes_namespace.api.metadata[0].name
-    name = "backend-api"
+    name      = "backend-api"
     annotations = {
       "kubernetes.io/ingress.class" = "nginx"
     }
   }
   spec {
     rule {
-      host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns,"*.","backend-api.")
+      host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns, "*.", "backend-api.")
       http {
         path {
           path = "/*"
