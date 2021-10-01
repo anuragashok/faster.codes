@@ -121,9 +121,9 @@ resource "kubernetes_ingress" "backend_api" {
   }
   spec {
     rule {
+      host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns,"*.","backend-api.")
       http {
         path {
-          host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns,"*.","backend-api.")
           path = "/*"
           backend {
             service_name = "backend-api"
