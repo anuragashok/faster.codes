@@ -11,7 +11,9 @@ on:
       - 'terraform/prd/**'
   workflow_dispatch:
   registry_package:
-    types: [published]
+    types: 
+      - published
+      - updated
 
 jobs:
   build:
@@ -78,5 +80,5 @@ jobs:
       if: steps.plan.outcome == 'failure'
       run: exit 1
     - name: Terraform Apply
-      if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'registry_package' || github.event_name == 'workflow_dispatch
+      if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'registry_package' || github.event_name == 'workflow_dispatch'
       run: terraform apply
