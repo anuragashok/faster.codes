@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: backend-api-ingress
+  namespace: backend-api
+spec:
+  rules:
+    - host: test-rails-app.com
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: backend-api
+              servicePort: 80
