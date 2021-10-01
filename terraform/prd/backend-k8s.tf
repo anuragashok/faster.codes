@@ -47,6 +47,7 @@ resource "kubernetes_namespace" "runner" {
 
 resource "kubernetes_deployment" "backend_api" {
   metadata {
+    kubernetes_namespace = kubernetes_namespace.api.name
     name = "backend-api"
     labels = {
       name = "backend-api"
@@ -110,33 +111,26 @@ resource "kubernetes_deployment" "backend_api" {
   }
 }
 
-resource "kubernetes_ingress" "backend_api_ingress" {
+resource "kubernetes_ingress" "backend_api" {
   metadata {
-    name = "backend-api-ingress"
-  }
-
-  spec {
-    backend {
-      service_name = "backend-api"
-      service_port = 8080
+    kubernetes_namespace = kubernetes_namespace.api.name
+    name = "backend-api"
+    annotations = {
+      "kubernetes.io/ingress.class" = "nginx"
     }
-
+  }
+  spec {
     rule {
-      host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns,"*.","backend-api")
       http {
         path {
+          host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns,"*.","backend-api.")
+          path = "/*"
           backend {
-            service_name = "backend-api"
-            service_port = 8080
+            service_name = backend-api
+            service_port = 3000
           }
-
-          path = "/"
         }
       }
-    }
-
-    tls {
-      secret_name = "tls-secret"
     }
   }
 }
