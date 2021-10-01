@@ -1,14 +1,15 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: backend-api-ingress
-  namespace: backend-api
+  name: backend-api
 spec:
   rules:
-    - host: test-rails-app.com
+    - host: test.49087273-8296-46cc-a82c-f08cb9623ce2.nodes.k8s.fr-par.scw.cloud
       http:
         paths:
           - path: /*
             backend:
-              serviceName: backend-api
-              servicePort: 80
+              service:
+                name: backend-api
+                port:
+                  number: 80

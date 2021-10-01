@@ -114,23 +114,34 @@ resource "kubernetes_deployment" "backend_api" {
   }
 }
 
-resource "kubernetes_ingress" "backend_api" {
-  metadata {
-    namespace = kubernetes_namespace.api.metadata[0].name
-    name      = "backend-api"
-  }
-  spec {
-    rule {
-      host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns, "*.", "backend-api.")
-      http {
-        path {
-          path = "/*"
-          backend {
-            service_name = "backend-api"
-            service_port = 3000
+resource "kubernetes_manifest" "ingress_backend_api" {
+  manifest = {
+    "apiVersion" = "networking.k8s.io/v1"
+    "kind" = "Ingress"
+    "metadata" = {
+      "name" = "backend-api"
+    }
+    "spec" = {
+      "rules" = [
+        {
+          "host" = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns, "*.", "backend-api.")
+          "http" = {
+            "paths" = [
+              {
+                "backend" = {
+                  "service" = {
+                    "name" = "backend-api"
+                    "port" = {
+                      "number" = 3000
+                    }
+                  }
+                }
+                "path" = "/*"
+              },
+            ]
           }
-        }
-      }
+        },
+      ]
     }
   }
 }
