@@ -87,7 +87,17 @@ resource "kubernetes_deployment" "backend_api" {
 
           liveness_probe {
             http_get {
-              path = "/live"
+              path = "/health"
+              port = 3000
+            }
+
+            initial_delay_seconds = 10
+            period_seconds        = 10
+          }
+
+          readiness_probe {
+            http_get {
+              path = "/health"
               port = 3000
             }
 
@@ -96,6 +106,37 @@ resource "kubernetes_deployment" "backend_api" {
           }
         }
       }
+    }
+  }
+}
+
+resource "kubernetes_ingress" "backend_api_ingress" {
+  metadata {
+    name = "backend-api-ingress"
+  }
+
+  spec {
+    backend {
+      service_name = "backend-api"
+      service_port = 8080
+    }
+
+    rule {
+      host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns,"*.","backend-api")
+      http {
+        path {
+          backend {
+            service_name = "backend-api"
+            service_port = 8080
+          }
+
+          path = "/"
+        }
+      }
+    }
+
+    tls {
+      secret_name = "tls-secret"
     }
   }
 }

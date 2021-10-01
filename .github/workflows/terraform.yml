@@ -10,6 +10,8 @@ on:
     paths:
       - 'terraform/prd/**'
   workflow_dispatch:
+  registry_package:
+    types: [published]
 
 jobs:
   build:
