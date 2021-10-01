@@ -101,7 +101,6 @@ resource "kubernetes_manifest" "clusterrolebinding_haproxy_controller_haproxy_in
     "kind" = "ClusterRoleBinding"
     "metadata" = {
       "name" = "haproxy-ingress-cluster-role-binding"
-      "namespace" = "haproxy-controller"
     }
     "roleRef" = {
       "apiGroup" = "rbac.authorization.k8s.io"
