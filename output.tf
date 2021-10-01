@@ -1,9 +1,9 @@
 resource "kubernetes_manifest" "ingress_backend_api_backend_api_ingress" {
   manifest = {
     "apiVersion" = "extensions/v1beta1"
-    "kind" = "Ingress"
+    "kind"       = "Ingress"
     "metadata" = {
-      "name" = "backend-api-ingress"
+      "name"      = "backend-api-ingress"
       "namespace" = "backend-api"
     }
     "spec" = {

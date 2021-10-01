@@ -1,15 +1,12 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: v1
+kind: Service
 metadata:
   name: backend-api
+  labels:
+    run: my-nginx
 spec:
-  rules:
-    - host: test.49087273-8296-46cc-a82c-f08cb9623ce2.nodes.k8s.fr-par.scw.cloud
-      http:
-        paths:
-          - path: /*
-            backend:
-              service:
-                name: backend-api
-                port:
-                  number: 80
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    run: my-nginx
