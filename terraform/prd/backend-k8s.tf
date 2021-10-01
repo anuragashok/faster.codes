@@ -47,7 +47,7 @@ resource "kubernetes_namespace" "runner" {
 
 resource "kubernetes_deployment" "backend_api" {
   metadata {
-    namespace = kubernetes_namespace.api.name
+    namespace = kubernetes_namespace.api.metadata.name
     name = "backend-api"
     labels = {
       name = "backend-api"
@@ -113,7 +113,7 @@ resource "kubernetes_deployment" "backend_api" {
 
 resource "kubernetes_ingress" "backend_api" {
   metadata {
-    namespace = kubernetes_namespace.api.name
+    namespace = kubernetes_namespace.api.metadata.name
     name = "backend-api"
     annotations = {
       "kubernetes.io/ingress.class" = "nginx"
