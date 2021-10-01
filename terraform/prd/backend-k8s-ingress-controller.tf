@@ -1,7 +1,7 @@
 resource "kubernetes_manifest" "namespace_haproxy_controller" {
   manifest = {
     "apiVersion" = "v1"
-    "kind" = "Namespace"
+    "kind"       = "Namespace"
     "metadata" = {
       "name" = "haproxy-controller"
     }
@@ -12,9 +12,9 @@ resource "kubernetes_manifest" "serviceaccount_haproxy_controller_haproxy_ingres
   depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "v1"
-    "kind" = "ServiceAccount"
+    "kind"       = "ServiceAccount"
     "metadata" = {
-      "name" = "haproxy-ingress-service-account"
+      "name"      = "haproxy-ingress-service-account"
       "namespace" = "haproxy-controller"
     }
   }
@@ -24,7 +24,7 @@ resource "kubernetes_manifest" "clusterrole_haproxy_ingress_cluster_role" {
   depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "rbac.authorization.k8s.io/v1"
-    "kind" = "ClusterRole"
+    "kind"       = "ClusterRole"
     "metadata" = {
       "name" = "haproxy-ingress-cluster-role"
     }
@@ -101,19 +101,19 @@ resource "kubernetes_manifest" "clusterrolebinding_haproxy_controller_haproxy_in
   depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "rbac.authorization.k8s.io/v1"
-    "kind" = "ClusterRoleBinding"
+    "kind"       = "ClusterRoleBinding"
     "metadata" = {
       "name" = "haproxy-ingress-cluster-role-binding"
     }
     "roleRef" = {
       "apiGroup" = "rbac.authorization.k8s.io"
-      "kind" = "ClusterRole"
-      "name" = "haproxy-ingress-cluster-role"
+      "kind"     = "ClusterRole"
+      "name"     = "haproxy-ingress-cluster-role"
     }
     "subjects" = [
       {
-        "kind" = "ServiceAccount"
-        "name" = "haproxy-ingress-service-account"
+        "kind"      = "ServiceAccount"
+        "name"      = "haproxy-ingress-service-account"
         "namespace" = "haproxy-controller"
       },
     ]
@@ -124,10 +124,10 @@ resource "kubernetes_manifest" "configmap_haproxy_controller_haproxy" {
   depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "v1"
-    "data" = null
-    "kind" = "ConfigMap"
+    "data"       = null
+    "kind"       = "ConfigMap"
     "metadata" = {
-      "name" = "haproxy"
+      "name"      = "haproxy"
       "namespace" = "haproxy-controller"
     }
   }
@@ -137,12 +137,12 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_ingress_default_ba
   depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "apps/v1"
-    "kind" = "Deployment"
+    "kind"       = "Deployment"
     "metadata" = {
       "labels" = {
         "run" = "ingress-default-backend"
       }
-      "name" = "ingress-default-backend"
+      "name"      = "ingress-default-backend"
       "namespace" = "haproxy-controller"
     }
     "spec" = {
@@ -162,7 +162,7 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_ingress_default_ba
           "containers" = [
             {
               "image" = "gcr.io/google_containers/defaultbackend:1.0"
-              "name" = "ingress-default-backend"
+              "name"  = "ingress-default-backend"
               "ports" = [
                 {
                   "containerPort" = 8080
@@ -180,20 +180,20 @@ resource "kubernetes_manifest" "service_haproxy_controller_ingress_default_backe
   depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "v1"
-    "kind" = "Service"
+    "kind"       = "Service"
     "metadata" = {
       "labels" = {
         "run" = "ingress-default-backend"
       }
-      "name" = "ingress-default-backend"
+      "name"      = "ingress-default-backend"
       "namespace" = "haproxy-controller"
     }
     "spec" = {
       "ports" = [
         {
-          "name" = "port-1"
-          "port" = 8080
-          "protocol" = "TCP"
+          "name"       = "port-1"
+          "port"       = 8080
+          "protocol"   = "TCP"
           "targetPort" = 8080
         },
       ]
@@ -208,12 +208,12 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_haproxy_ingress" {
   depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "apps/v1"
-    "kind" = "Deployment"
+    "kind"       = "Deployment"
     "metadata" = {
       "labels" = {
         "run" = "haproxy-ingress"
       }
-      "name" = "haproxy-ingress"
+      "name"      = "haproxy-ingress"
       "namespace" = "haproxy-controller"
     }
     "spec" = {
@@ -238,7 +238,7 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_haproxy_ingress" {
               ]
               "env" = [
                 {
-                  "name" = "TZ"
+                  "name"  = "TZ"
                   "value" = "Etc/UTC"
                 },
                 {
@@ -269,20 +269,20 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_haproxy_ingress" {
               "ports" = [
                 {
                   "containerPort" = 80
-                  "name" = "http"
+                  "name"          = "http"
                 },
                 {
                   "containerPort" = 443
-                  "name" = "https"
+                  "name"          = "https"
                 },
                 {
                   "containerPort" = 1024
-                  "name" = "stat"
+                  "name"          = "stat"
                 },
               ]
               "resources" = {
                 "requests" = {
-                  "cpu" = "500m"
+                  "cpu"    = "500m"
                   "memory" = "50Mi"
                 }
               }
@@ -296,7 +296,7 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_haproxy_ingress" {
                   ]
                 }
                 "runAsGroup" = 1000
-                "runAsUser" = 1000
+                "runAsUser"  = 1000
               }
             },
           ]
@@ -308,7 +308,7 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_haproxy_ingress" {
                 "sysctl -w net.ipv4.ip_unprivileged_port_start=0",
               ]
               "image" = "busybox:musl"
-              "name" = "sysctl"
+              "name"  = "sysctl"
               "securityContext" = {
                 "privileged" = true
               }
@@ -325,32 +325,32 @@ resource "kubernetes_manifest" "service_haproxy_controller_haproxy_ingress" {
   depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "v1"
-    "kind" = "Service"
+    "kind"       = "Service"
     "metadata" = {
       "labels" = {
         "run" = "haproxy-ingress"
       }
-      "name" = "haproxy-ingress"
+      "name"      = "haproxy-ingress"
       "namespace" = "haproxy-controller"
     }
     "spec" = {
       "ports" = [
         {
-          "name" = "http"
-          "port" = 80
-          "protocol" = "TCP"
+          "name"       = "http"
+          "port"       = 80
+          "protocol"   = "TCP"
           "targetPort" = 80
         },
         {
-          "name" = "https"
-          "port" = 443
-          "protocol" = "TCP"
+          "name"       = "https"
+          "port"       = 443
+          "protocol"   = "TCP"
           "targetPort" = 443
         },
         {
-          "name" = "stat"
-          "port" = 1024
-          "protocol" = "TCP"
+          "name"       = "stat"
+          "port"       = 1024
+          "protocol"   = "TCP"
           "targetPort" = 1024
         },
       ]

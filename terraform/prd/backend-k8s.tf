@@ -32,7 +32,7 @@ provider "kubernetes" {
     null_resource.kubeconfig.triggers.cluster_ca_certificate
   )
   experiments {
-        manifest_resource = true
+    manifest_resource = true
   }
 }
 
@@ -117,9 +117,10 @@ resource "kubernetes_deployment" "backend_api" {
 resource "kubernetes_manifest" "ingress_backend_api" {
   manifest = {
     "apiVersion" = "networking.k8s.io/v1"
-    "kind" = "Ingress"
+    "kind"       = "Ingress"
     "metadata" = {
-      "name" = "backend-api"
+      "name"      = "backend-api"
+      "namespace" = kubernetes_namespace.api.metadata[0].name
     }
     "spec" = {
       "rules" = [
