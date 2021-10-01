@@ -9,6 +9,7 @@ resource "kubernetes_manifest" "namespace_haproxy_controller" {
 }
 
 resource "kubernetes_manifest" "serviceaccount_haproxy_controller_haproxy_ingress_service_account" {
+  depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "v1"
     "kind" = "ServiceAccount"
@@ -20,6 +21,7 @@ resource "kubernetes_manifest" "serviceaccount_haproxy_controller_haproxy_ingres
 }
 
 resource "kubernetes_manifest" "clusterrole_haproxy_ingress_cluster_role" {
+  depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "rbac.authorization.k8s.io/v1"
     "kind" = "ClusterRole"
@@ -96,6 +98,7 @@ resource "kubernetes_manifest" "clusterrole_haproxy_ingress_cluster_role" {
 }
 
 resource "kubernetes_manifest" "clusterrolebinding_haproxy_controller_haproxy_ingress_cluster_role_binding" {
+  depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "rbac.authorization.k8s.io/v1"
     "kind" = "ClusterRoleBinding"
@@ -118,6 +121,7 @@ resource "kubernetes_manifest" "clusterrolebinding_haproxy_controller_haproxy_in
 }
 
 resource "kubernetes_manifest" "configmap_haproxy_controller_haproxy" {
+  depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "v1"
     "data" = null
@@ -130,6 +134,7 @@ resource "kubernetes_manifest" "configmap_haproxy_controller_haproxy" {
 }
 
 resource "kubernetes_manifest" "deployment_haproxy_controller_ingress_default_backend" {
+  depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "apps/v1"
     "kind" = "Deployment"
@@ -172,6 +177,7 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_ingress_default_ba
 }
 
 resource "kubernetes_manifest" "service_haproxy_controller_ingress_default_backend" {
+  depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "v1"
     "kind" = "Service"
@@ -199,6 +205,7 @@ resource "kubernetes_manifest" "service_haproxy_controller_ingress_default_backe
 }
 
 resource "kubernetes_manifest" "deployment_haproxy_controller_haproxy_ingress" {
+  depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "apps/v1"
     "kind" = "Deployment"
@@ -315,6 +322,7 @@ resource "kubernetes_manifest" "deployment_haproxy_controller_haproxy_ingress" {
 }
 
 resource "kubernetes_manifest" "service_haproxy_controller_haproxy_ingress" {
+  depends_on = ["kubernetes_manifest.namespace_haproxy_controller"]
   manifest = {
     "apiVersion" = "v1"
     "kind" = "Service"
