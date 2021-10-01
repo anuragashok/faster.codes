@@ -31,6 +31,9 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(
     null_resource.kubeconfig.triggers.cluster_ca_certificate
   )
+  experiments {
+    manifest_resource = true
+  }
 }
 
 resource "kubernetes_namespace" "api" {
