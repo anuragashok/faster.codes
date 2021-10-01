@@ -137,7 +137,8 @@ resource "kubernetes_manifest" "ingress_backend_api" {
                     }
                   }
                 }
-                "path" = "/*"
+                "path" = "/"
+                "pathType": Prefix
               },
             ]
           }
