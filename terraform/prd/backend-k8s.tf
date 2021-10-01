@@ -114,6 +114,24 @@ resource "kubernetes_deployment" "backend_api" {
   }
 }
 
+resource "kubernetes_service" "backend_api" {
+  metadata {
+    namespace = kubernetes_namespace.api.metadata[0].name
+    name      = "backend-api"
+  }
+  spec {
+    selector = {
+      name = "backend-api"
+    }
+    port {
+      port        = 80
+      target_port = 3000
+    }
+
+    type = "LoadBalancer"
+  }
+}
+
 resource "kubernetes_manifest" "ingress_backend_api" {
   manifest = {
     "apiVersion" = "networking.k8s.io/v1"
@@ -136,7 +154,7 @@ resource "kubernetes_manifest" "ingress_backend_api" {
                   "service" = {
                     "name" = "backend-api"
                     "port" = {
-                      "number" = 3000
+                      "number" = 80
                     }
                   }
                 }
