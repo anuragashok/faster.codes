@@ -3,7 +3,6 @@ resource "scaleway_k8s_cluster" "faster_codes_be" {
   description = "faster-codes-be"
   version     = "1.22.2"
   cni         = "cilium"
-  ingress     = "nginx"
 }
 
 resource "scaleway_k8s_pool" "faster_codes_be_pool" {
