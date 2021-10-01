@@ -111,10 +111,9 @@ resource "kubernetes_deployment" "backend_api" {
   }
 }
 
-resource "kubernetes_ingress" "backend_api" {
+resource "kubernetes_ingress" "ingress" {
   metadata {
-    kubernetes_namespace = kubernetes_namespace.api.name
-    name = "backend-api"
+    name = "ingress"
     annotations = {
       "kubernetes.io/ingress.class" = "nginx"
     }
@@ -126,7 +125,7 @@ resource "kubernetes_ingress" "backend_api" {
           host = replace(scaleway_k8s_cluster.faster_codes_be.wildcard_dns,"*.","backend-api.")
           path = "/*"
           backend {
-            service_name = backend-api
+            service_name = "backend-api"
             service_port = 3000
           }
         }
