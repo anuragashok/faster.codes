@@ -116,7 +116,7 @@ resource "kubernetes_deployment" "backend_api" {
 
 resource "kubernetes_manifest" "ingress_backend_api_backend_api_ingress" {
   manifest = {
-    "apiVersion" = "extensions/v1beta1"
+    "apiVersion" = "networking.k8s.io/v1"
     "kind" = "Ingress"
     "metadata" = {
       "name" = "backend-api-ingress"
