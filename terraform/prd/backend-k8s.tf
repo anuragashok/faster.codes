@@ -32,7 +32,7 @@ provider "kubernetes" {
     null_resource.kubeconfig.triggers.cluster_ca_certificate
   )
   experiments {
-    manifest_resource = true
+        manifest_resource = true
   }
 }
 
@@ -130,8 +130,8 @@ resource "kubernetes_manifest" "ingress_backend_api_backend_api_ingress" {
             "paths" = [
               {
                 "backend" = {
-                  "serviceName" = "backend-api"
-                  "servicePort" = 80
+                  "service-name" = "backend-api"
+                  "service-port" = 80
                 }
                 "path" = "/*"
               },
