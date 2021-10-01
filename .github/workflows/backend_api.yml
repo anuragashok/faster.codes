@@ -49,7 +49,7 @@ jobs:
                       "type":"vars",
                       "attributes": {
                         "key":"backend-api-tag",
-                        "value":"ghcr.io/${{ github.repository }}/backend-api:${{ github.sha }} > backend-api.tag",
+                        "value":"ghcr.io/${{ github.repository }}/backend-api:${{ github.sha }}",
                         "category":"terraform",
                         "hcl":false,
                         "sensitive":false
@@ -57,3 +57,4 @@ jobs:
                     }
                   }
           bearerToken: ${{ secrets.TERRAFORM_API_TOKEN }}
+          contentType: application/vnd.api+json
