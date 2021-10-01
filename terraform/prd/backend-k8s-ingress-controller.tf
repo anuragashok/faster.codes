@@ -339,19 +339,19 @@ resource "kubernetes_manifest" "service_haproxy_controller_haproxy_ingress" {
           "name"       = "http"
           "port"       = 80
           "protocol"   = "TCP"
-          "nodePort" = 80
+          "targetPort" = 80
         },
         {
           "name"       = "https"
           "port"       = 443
           "protocol"   = "TCP"
-          "nodePort" = 443
+          "targetPort" = 443
         },
         {
           "name"       = "stat"
           "port"       = 1024
           "protocol"   = "TCP"
-          "nodePort" = 1024
+          "targetPort" = 1024
         },
       ]
       "selector" = {
