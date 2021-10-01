@@ -117,7 +117,7 @@ resource "kubernetes_ingress" "backend_api" {
     namespace = kubernetes_namespace.api.metadata[0].name
     name      = "backend-api"
     annotations = {
-      "kubernetes.io/ingress.class" = "nginx"
+      "kubernetes.io/ingress.class" = "haproxy"
     }
   }
   spec {
