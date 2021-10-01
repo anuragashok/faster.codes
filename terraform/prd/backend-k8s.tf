@@ -44,3 +44,58 @@ resource "kubernetes_namespace" "runner" {
     name = "runner"
   }
 }
+
+resource "kubernetes_deployment" "backend_api" {
+  metadata {
+    name = "backend-api"
+    labels = {
+      name = "backend-api"
+    }
+  }
+
+  spec {
+    replicas = 3
+
+    selector {
+      match_labels = {
+        name = "backend-api"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          name = "backend-api"
+        }
+      }
+
+      spec {
+        container {
+          image = var.backend-api-tag
+          name = "backend-api"
+
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "256Mi"
+            }
+            requests = {
+              cpu    = "0.1"
+              memory = "50Mi"
+            }
+          }
+
+          liveness_probe {
+            http_get {
+              path = "/live"
+              port = 3000
+            }
+
+            initial_delay_seconds = 10
+            period_seconds        = 10
+          }
+        }
+      }
+    }
+  }
+}
