@@ -11,3 +11,4 @@ vscode:
     - hashicorp.terraform
     - github.vscode-pull-request-github
     - esbenp.prettier-vscode
+    - humao.rest-client

@@ -37,9 +37,23 @@ jobs:
           context: ./backend/api
           push: true
           tags: ghcr.io/${{ github.repository }}/backend-api:${{ github.sha }}
-      #store latest image details for later use
-      - run: echo ghcr.io/${{ github.repository }}/backend-api:${{ github.sha }} > backend-api.tag
-      - uses: actions/upload-artifact@v2
+      #update terraform cloud variable
+      - name: Update latest tag in terraform
+        uses: fjogeleit/http-request-action@master
         with:
-          name: backend-api.tag
-          path: ./backend/api/backend-api.tag
+          url: 'https://app.terraform.io/api/v2/workspaces/ws-yXoXRjPNNYVvpWYm/vars/var-6MXNkbBNMoD8TYBd'
+          method: 'PATCH'
+          data: |
+                  {
+                    "data": {
+                      "type":"vars",
+                      "attributes": {
+                        "key":"backend-api-tag",
+                        "value":"ghcr.io/${{ github.repository }}/backend-api:${{ github.sha }} > backend-api.tag",
+                        "category":"terraform",
+                        "hcl":false,
+                        "sensitive":false
+                      }
+                    }
+                  }
+          bearerToken: ${{ secrets.TERRAFORM_API_TOKEN }}
