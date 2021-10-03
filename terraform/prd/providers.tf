@@ -15,6 +15,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "2.5.0"
     }
+    google = {
+      source = "hashicorp/google"
+      version = "3.86.0"
+    }
   }
 }
 
@@ -34,3 +38,8 @@ provider "cloudflare" {
 
 #configured using env vars SCW_ACCESS_KEY, SCW_SECRET_KEY, SCW_DEFAULT_PROJECT_ID
 provider "scaleway" {}
+
+provider "google" {
+  region = "us-west1"
+}
+
