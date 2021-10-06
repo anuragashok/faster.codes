@@ -43,5 +43,5 @@ output "subnet_secondary_ranges" {
 
 output "neg_ip" {
   description = "The secondary ranges associated with the subnet"
-  value       = kubernetes_ingress.backend_api.status[0].load_balancer.ingress.ip
+  value       = kubernetes_ingress.backend_api.status[0].load_balancer[0].ingress[0].ip
 }
