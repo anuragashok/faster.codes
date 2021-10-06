@@ -117,7 +117,7 @@ resource "kubernetes_ingress" "backend_api" {
   spec {
     backend {
       service_name = "backend-api"
-      service_port = 80
+      service_port = 3000
     }
   }
 }
