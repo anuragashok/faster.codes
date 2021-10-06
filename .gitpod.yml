@@ -1,8 +1,8 @@
 image:
   file: .gitpod.Dockerfile
 tasks:
-  - command: chmod +x before.sh && source ${GITPOD_REPO_ROOT}/before.sh
-  - command: printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc 
+  - before: chmod +x before.sh && source ${GITPOD_REPO_ROOT}/before.sh
+  - before: printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc 
 
 vscode:
   extensions:
