@@ -2,9 +2,7 @@ image:
   file: .gitpod.Dockerfile
 tasks:
   - name: git
-    before: |
-      git config pull.rebase true
-      alias rebase="git pull origin main:main && git rebase main"
+    before: chmod +x before.sh && source before.sh
   - command: printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc 
 
 vscode:
