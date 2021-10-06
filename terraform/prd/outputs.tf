@@ -40,3 +40,8 @@ output "subnet_secondary_ranges" {
   description = "The secondary ranges associated with the subnet"
   value       = module.gcp-network.subnets_secondary_ranges
 }
+
+output "neg_ip" {
+  description = "The secondary ranges associated with the subnet"
+  value       = kubernetes_ingress.backend_api.status.ingress.ip
+}

@@ -20,3 +20,12 @@ resource "cloudflare_record" "faster_codes_web_www" {
   ttl     = 1
   proxied = true
 }
+
+resource "cloudflare_record" "faster_codes_backend_api" {
+  zone_id = cloudflare_zone.faster_codes.id
+  name    = "api"
+  value   = var.neg_ip
+  type    = "A"
+  ttl     = 1
+  proxied = true
+}
