@@ -5,6 +5,7 @@ tasks:
     before: |
       git config pull.rebase true
       alias rebase="git pull origin main:main && git rebase main"
+  - command: printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc 
 
 vscode:
   extensions:

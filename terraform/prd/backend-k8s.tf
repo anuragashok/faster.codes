@@ -42,11 +42,11 @@ resource "kubernetes_deployment" "backend_api" {
 
           resources {
             limits = {
-              cpu    = "0.5"
+              cpu    = "0.2"
               memory = "256Mi"
             }
             requests = {
-              cpu    = "0.1"
+              cpu    = "0.05"
               memory = "50Mi"
             }
           }
@@ -70,6 +70,12 @@ resource "kubernetes_deployment" "backend_api" {
             initial_delay_seconds = 10
             period_seconds        = 10
           }
+
+          port {
+            container_port = 3000
+            protocol = "TCP"
+          }
+          
         }
       }
     }
@@ -79,51 +85,39 @@ resource "kubernetes_deployment" "backend_api" {
 resource "kubernetes_service" "backend_api" {
   metadata {
     namespace = kubernetes_namespace.api.metadata[0].name
-    name      = "backend-api"
+    name = "backend-api"
+    annotations = {
+      "cloud.google.com/neg" = "{\"ingress\": true}"
+    }
+    labels = {
+      name = "backend-api"
+    }
   }
   spec {
     selector = {
       name = "backend-api"
     }
     port {
-      port        = 80
+      port        = 3000
       target_port = 3000
+      protocol    = "TCP"
     }
+    type = "NodePort"
   }
 }
 
-resource "kubernetes_manifest" "ingress_backend_api" {
-  manifest = {
-    "apiVersion" = "networking.k8s.io/v1"
-    "kind"       = "Ingress"
-    "metadata" = {
-      "name"      = "backend-api"
-      "namespace" = kubernetes_namespace.api.metadata[0].name
-      "annotations" = {
-        "kubernetes.io/ingress.class": "haproxy"
-      }
+resource "kubernetes_ingress" "backend_api" {
+  metadata {
+    namespace = kubernetes_namespace.api.metadata[0].name
+    name = "backend-api"
+    labels = {
+      name = "backend-api"
     }
-    "spec" = {
-      "rules" = [
-        {
-          "http" = {
-            "paths" = [
-              {
-                "backend" = {
-                  "service" = {
-                    "name" = "backend-api"
-                    "port" = {
-                      "number" = 80
-                    }
-                  }
-                }
-                "path" = "/"
-                "pathType": "Prefix"
-              },
-            ]
-          }
-        },
-      ]
+  }
+  spec {
+    backend {
+      service_name = "backend-api"
+      service_port = 80
     }
   }
 }

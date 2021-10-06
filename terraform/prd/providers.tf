@@ -1,30 +1,18 @@
 terraform {
   required_providers {
-    digitalocean = {
-      source  = "digitalocean/digitalocean"
-      version = "~> 2.0"
-    }
     cloudflare = {
       source  = "cloudflare/cloudflare"
       version = "3.1.0"
-    }
-    scaleway = {
-      source = "scaleway/scaleway"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "2.5.0"
     }
     google = {
-      source = "hashicorp/google"
-      version = "3.86.0"
+      source  = "hashicorp/google"
+      version = "3.86.0",
     }
   }
-}
-
-variable "PROVIDER_DIGITALOCEAN_TOKEN" {}
-provider "digitalocean" {
-  token = var.PROVIDER_DIGITALOCEAN_TOKEN
 }
 
 variable "PROVIDER_CLOUDFLARE_EMAIL" {}
@@ -36,10 +24,15 @@ provider "cloudflare" {
   account_id = var.PROVIDER_CLOUDFLARE_ACCOUNT_ID
 }
 
-#configured using env vars SCW_ACCESS_KEY, SCW_SECRET_KEY, SCW_DEFAULT_PROJECT_ID
-provider "scaleway" {}
+provider "google-beta" {
+  project = "faster-codes-backend"
+  region  = "us-central1"
+  zone    = "us-central1-c"
+}
 
-provider "google" {
-  region = "us-west1"
+provider "kubernetes" {
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
 }
 
