@@ -1,21 +1,17 @@
-# BUILD
+#BUILD
 FROM node:14-alpine as builder
-WORKDIR /app
-COPY package*.json yarn.lock ./
-RUN chown -R node:node /app
-USER node
+WORKDIR /usr/src/app
+COPY package*.json ./
 RUN yarn install
-COPY --chown=node:node . .
+COPY . .
 RUN yarn build
 
-# RUN
-FROM node:14-alpine
-WORKDIR /app
-COPY package*.json yarn.lock ./
-RUN chown -R node:node /app
-USER node
+#RUN
+FROM node:12.13-alpine as production
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+WORKDIR /usr/src/app
+COPY package*.json ./
 RUN yarn install --production
-COPY --from=builder /app/build ./build
-
-CMD [ "node", "build/src/main.js" ]
-EXPOSE 3000
+COPY --from=development /usr/src/app/dist ./dist
+CMD ["node", "dist/main"]

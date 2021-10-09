@@ -1,8 +1,7 @@
 image:
   file: .gitpod.Dockerfile
 tasks:
-  - init: cat ${GITPOD_REPO_ROOT}/before.sh >> ~/.zshrc
-  - init: printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc 
+  - before: printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc 
 
 vscode:
   extensions:
@@ -10,3 +9,5 @@ vscode:
     - github.vscode-pull-request-github
     - esbenp.prettier-vscode
     - humao.rest-client
+    - ipedrazas.kubernetes-snippets
+    - ms-kubernetes-tools.vscode-kubernetes-tools

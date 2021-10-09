@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+spec:
+  template:
+    spec:
+      containers:
+        - name: pi
+          image: '{{lang}}'
+          resources:
+            limits:
+              cpu: '0.2'
+              memory: '256Mi'
+            requests:
+              cpu: '0.1'
+              memory: '256Mi'
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              subPath: '{{runID}}/{{codeId}}'
+      restartPolicy: Never
+      imagePullPolicy: Always
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: backend-nfs
+  backoffLimit: 4

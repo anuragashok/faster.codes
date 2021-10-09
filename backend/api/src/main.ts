@@ -1,17 +1,8 @@
-import Koa from 'koa';
-import * as Router from '@koa/router';
-import { initHealthChecks } from './health';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
 
-const app = new Koa();
-const router = new Router();
-
-initHealthChecks(router);
-
-router.get('/', (ctx) => {
-  ctx.body = 'Hello World Again!!';
-});
-
-
-
-app.use(router.routes()).use(router.allowedMethods());
-app.listen(3000);
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+}
+bootstrap();
