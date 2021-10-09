@@ -41,7 +41,7 @@ module "gke" {
   create_service_account            = true
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = false
-  
+
 
   node_pools = [
     {
@@ -56,3 +56,27 @@ module "gke" {
     }
   ]
 }
+
+resource "google_compute_disk" "faster_codes_runner_fs" {
+  name    = "faster-codes-runner-fs"
+  project = var.project_id
+  type    = "pd-ssd"
+  zone    = "${var.region}-a"
+  size    = 10
+
+  lifecycle {
+    ignore_changes = [
+      labels
+    ]
+  }
+}
+
+module "gke_auth" {
+  source = "terraform-google-modules/kubernetes-engine/google//modules/auth"
+
+  project_id   = var.project_id
+  location     = module.gke.location
+  cluster_name = module.gke.name
+}
+
+

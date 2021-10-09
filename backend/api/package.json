@@ -34,6 +34,7 @@
   "author": "Anurag Ashok",
   "dependencies": {
     "@koa/router": "^10.1.1",
+    "@kubernetes/client-node": "^0.15.1",
     "koa": "^2.13.3",
     "tslib": "~2.3.1"
   }

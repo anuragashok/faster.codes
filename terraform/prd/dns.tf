@@ -23,7 +23,7 @@ resource "cloudflare_record" "faster_codes_web_www" {
 
 resource "cloudflare_record" "faster_codes_backend_api" {
   zone_id = cloudflare_zone.faster_codes.id
-  name    = "api.backend"
+  name    = "backend-api"
   value   = kubernetes_ingress.backend_api.status[0].load_balancer[0].ingress[0].ip
   type    = "A"
   ttl     = 1
