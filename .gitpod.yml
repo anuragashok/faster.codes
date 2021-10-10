@@ -8,6 +8,3 @@ vscode:
     - hashicorp.terraform
     - github.vscode-pull-request-github
     - esbenp.prettier-vscode
-    - humao.rest-client
-    - ipedrazas.kubernetes-snippets
-    - ms-kubernetes-tools.vscode-kubernetes-tools
