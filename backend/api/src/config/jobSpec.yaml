@@ -18,7 +18,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
-              subPath: '{{runID}}/{{codeId}}'
+              subPath: '{{runId}}/{{codeId}}'
       restartPolicy: Never
       imagePullPolicy: Always
       volumes:

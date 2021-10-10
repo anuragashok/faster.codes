@@ -6,6 +6,7 @@ import * as handlebars from 'handlebars';
 
 const fsReadFileP = promisify(fs.readFile);
 const fsWriteFileP = promisify(fs.writeFile);
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 import { Injectable, Logger } from '@nestjs/common';
 import Run from './dto/Run';
@@ -28,26 +29,42 @@ export class K8sService {
   }
 
   async startJob(runId: string, code: Code) {
+    this.logger.log(`starting job for run #${runId}`);
     const contents = this.jobSpecTemplate({
       lang: `hello-world`,
-      runId: `${runId}/${code.codeId}`,
-      codeId: `${code.codeId}`,
+      runId: runId,
+      codeId: code.codeId,
     });
-    const specPath = `/data/${runId}/${code.codeId}`;
+    const specPath = `/data/${runId}/${code.codeId}/spec.yaml`;
     await fsWriteFileP(specPath, contents);
-    await this.apply(specPath);
+    const created = await this.apply(specPath);
+    const client = k8s.KubernetesObjectApi.makeApiClient(this.kc);
+
+    for (var i = 0; i <= 100; i++) {
+      await delay(2000)
+      const res = await client.read(created[0]);
+      this.logger.log(res.body);
+    }
   }
 
   private async apply(specPath: string) {
-    const client = k8s.KubernetesObjectApi.makeApiClient(this.kc);
-    const specString = await fsReadFileP(specPath, 'utf8');
-    const specs: k8s.KubernetesObject[] = yaml.loadAll(specString);
-    const validSpecs = specs.filter((s) => s && s.kind && s.metadata);
     const created: k8s.KubernetesObject[] = [];
-    for (const spec of validSpecs) {
-      const response = await client.create(spec);
-      created.push(response.body);
+    try {
+      const client = k8s.KubernetesObjectApi.makeApiClient(this.kc);
+      const specString = await fsReadFileP(specPath, 'utf8');
+      const specs: k8s.KubernetesObject[] = yaml.loadAll(specString);
+      const validSpecs = specs.filter((s) => s && s.kind && s.metadata);
+      for (const spec of validSpecs) {
+        this.logger.log(spec);
+        const response = await client.create(spec);
+        created.push(response.body);
+      }
+    } catch (e) {
+      this.logger.error(e.body);
     }
+
     return created;
   }
+
+  private async pollForJobCompletion() {}
 }
