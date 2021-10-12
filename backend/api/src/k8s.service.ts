@@ -17,10 +17,12 @@ export class K8sService {
   private kc: k8s.KubeConfig;
   private readonly logger = new Logger(K8sService.name);
   jobSpecTemplate: HandlebarsTemplateDelegate<any>;
+  watch: k8s.Watch;
 
   constructor() {
     this.kc = new k8s.KubeConfig();
     this.kc.loadFromFile('/kubeconfig/config');
+    this.watch = new k8s.Watch(this.kc);
 
     const source = fs
       .readFileSync(`${__dirname}/config/jobSpec.yaml`)
@@ -38,13 +40,9 @@ export class K8sService {
     const specPath = `/data/${runId}/${code.codeId}/spec.yaml`;
     await fsWriteFileP(specPath, contents);
     const created = await this.apply(specPath);
-    const client = k8s.KubernetesObjectApi.makeApiClient(this.kc);
-
-    for (var i = 0; i <= 100; i++) {
-      await delay(2000)
-      const res = await client.read(created[0]);
-      this.logger.log(res.body);
-    }
+    const result = await this.waitForJob(created[0].metadata.name);
+    this.logger.log(`done waiting for job completion ${result}`);
+    return this.delete(specPath);
   }
 
   private async apply(specPath: string) {
@@ -64,6 +62,64 @@ export class K8sService {
     }
 
     return created;
+  }
+  private async delete(specPath: string) {
+    const client = k8s.KubernetesObjectApi.makeApiClient(this.kc);
+    const specString = await fsReadFileP(specPath, 'utf8');
+    const spec: k8s.KubernetesObject = yaml.load(specString);
+    return client.delete(spec,undefined,undefined,undefined,undefined, "Foreground");
+  }
+
+  private waitForK8sObject(path, query, checkFn, timeout, timeoutMsg) {
+    this.logger.debug('waiting for', path);
+    let res;
+    let timer;
+    const result = new Promise((resolve, reject) => {
+      this.watch
+        .watch(
+          path,
+          query,
+          (type, apiObj, watchObj) => {
+            if (checkFn(type, apiObj, watchObj)) {
+              if (res) {
+                res.abort();
+              }
+              clearTimeout(timer);
+              this.logger.debug('finished waiting for ', path);
+              resolve(watchObj.object);
+            }
+          },
+          () => {},
+        )
+        .then((r) => {
+          res = r;
+          timer = setTimeout(() => {
+            res.abort();
+            reject(new Error(timeoutMsg));
+          }, timeout);
+        });
+    });
+    return result;
+  }
+  private waitForJob(name, namespace = 'default', timeout = 90000) {
+    return this.waitForK8sObject(
+      `/apis/batch/v1/namespaces/${namespace}/jobs`,
+      {},
+      (_type, _apiObj, watchObj) => {
+        this.logger.log(watchObj);
+        return (
+          watchObj.object.metadata.name === name &&
+          watchObj.object.status.conditions &&
+          watchObj.object.status.conditions.some(
+            (c) =>
+              (c.type === 'Complete' || c.type === 'Failed') &&
+              c.status === 'True',
+          )
+        );
+      },
+      timeout,
+      `Waiting for job ${name} timeout (${timeout} ms)`,
+    );
   }
 
   private async pollForJobCompletion() {}
