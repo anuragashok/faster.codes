@@ -20,7 +20,12 @@ RUN sudo chown gitpod: /opt \
     && /opt/google-cloud-sdk/install.sh --quiet --usage-reporting=false --bash-completion=true
     
 #custom setup 
-RUN sudo mkdir /data && sudo mkdir /kubeconfig && sudo chmod -R 777 /data && sudo chmod -R 777 /kubeconfig
+RUN sudo mkdir /data \
+    && sudo mkdir /kubeconfig \
+    && sudo chmod -R 777 /data \
+    && sudo chmod -R 777 /kubeconfig \
+    && mkdir ~/.kube
+    
 #----- local user
 USER gitpod
 
