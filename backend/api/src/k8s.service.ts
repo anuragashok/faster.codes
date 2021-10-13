@@ -3,10 +3,13 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import { promisify } from 'util';
 import * as handlebars from 'handlebars';
+import * as stream from 'stream';
+import * as request from 'request'
 
 const fsReadFileP = promisify(fs.readFile);
 const fsWriteFileP = promisify(fs.writeFile);
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
 
 import { Injectable, Logger } from '@nestjs/common';
 import Run from './dto/Run';
@@ -41,8 +44,10 @@ export class K8sService {
     await fsWriteFileP(specPath, contents);
     const created = await this.apply(specPath);
     const result = await this.waitForJob(created[0].metadata.name);
-    this.logger.log(`done waiting for job completion ${result}`);
-    return this.delete(specPath);
+    this.logger.log(
+      `run:${runId} code:${code.codeId} done waiting for job completion ${result}`,
+    );
+    this.delete(specPath);
   }
 
   private async apply(specPath: string) {
@@ -58,7 +63,7 @@ export class K8sService {
         created.push(response.body);
       }
     } catch (e) {
-      this.logger.error('error' + e.message);
+      this.logger.error('error :' + e.message + ' : ' + e.body);
     }
 
     return created;
@@ -67,14 +72,31 @@ export class K8sService {
     const client = k8s.KubernetesObjectApi.makeApiClient(this.kc);
     const specString = await fsReadFileP(specPath, 'utf8');
     const spec: k8s.KubernetesObject = yaml.load(specString);
-    return client.delete(
-      spec,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      'Foreground',
-    );
+    const log = new k8s.Log(this.kc);
+
+    const logStream = new stream.PassThrough();
+    logStream.on('data', (chunk) => {
+      // use write rather than console.log to prevent double line feed
+      process.stdout.write(chunk);
+    });
+    const k8sApi = this.kc.makeApiClient(k8s.CoreV1Api);
+    k8sApi.
+    try {
+      await log.log('default', '456', '456', logStream, {
+        pretty: true,
+        timestamps: false,
+      });
+      // return client.delete(
+      //   spec,
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   undefined,
+      //   'Foreground',
+      // );
+    } catch (e) {
+      this.logger.error('error :' + e.message + ' : ' + JSON.stringify(e.body));
+    }
   }
 
   private waitForK8sObject(path, query, checkFn, timeout, timeoutMsg) {

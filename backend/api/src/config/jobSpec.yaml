@@ -4,6 +4,8 @@ metadata:
   name: '{{codeId}}'
 spec:
   template:
+    metadata:
+      name: '{{codeId}}'
     spec:
       containers:
         - name: '{{codeId}}'
