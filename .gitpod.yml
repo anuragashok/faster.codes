@@ -2,6 +2,8 @@ image:
   file: .gitpod.Dockerfile
 tasks:
   - name: init
+    init: |
+      yarn --cwd backend/api install
     before: |
       printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc
       echo ${KUBECONFIG_BASE64} | base64 -d > /kubeconfig/config
