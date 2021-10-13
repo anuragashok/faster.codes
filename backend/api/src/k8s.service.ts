@@ -58,7 +58,7 @@ export class K8sService {
         created.push(response.body);
       }
     } catch (e) {
-      this.logger.error(e.body);
+      this.logger.error('error' + e.message);
     }
 
     return created;
@@ -67,7 +67,14 @@ export class K8sService {
     const client = k8s.KubernetesObjectApi.makeApiClient(this.kc);
     const specString = await fsReadFileP(specPath, 'utf8');
     const spec: k8s.KubernetesObject = yaml.load(specString);
-    return client.delete(spec,undefined,undefined,undefined,undefined, 'Foreground');
+    return client.delete(
+      spec,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      'Foreground',
+    );
   }
 
   private waitForK8sObject(path, query, checkFn, timeout, timeoutMsg) {
