@@ -67,7 +67,7 @@ export class K8sService {
     const client = k8s.KubernetesObjectApi.makeApiClient(this.kc);
     const specString = await fsReadFileP(specPath, 'utf8');
     const spec: k8s.KubernetesObject = yaml.load(specString);
-    return client.delete(spec,undefined,undefined,undefined,undefined, "Foreground");
+    return client.delete(spec,undefined,undefined,undefined,undefined, 'Foreground');
   }
 
   private waitForK8sObject(path, query, checkFn, timeout, timeoutMsg) {

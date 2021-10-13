@@ -8,9 +8,19 @@ RUN sudo apt-get update && \
     sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
     sudo apt-get update && sudo apt-get install terraform 
 
-### Google Cloud ###
-RUN curl -sSL https://sdk.cloud.google.com > /tmp/gcl && bash /tmp/gcl --install-dir=~/gcloud --disable-prompts
 
+
+### Google Cloud ###
+ARG GCS_DIR=/opt/google-cloud-sdk
+ENV PATH=$GCS_DIR/bin:$PATH
+RUN sudo chown gitpod: /opt \
+    && mkdir $GCS_DIR \
+    && curl -fsSL https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-344.0.0-linux-x86_64.tar.gz \
+    | tar -xzvC /opt \
+    && /opt/google-cloud-sdk/install.sh --quiet --usage-reporting=false --bash-completion=true
+    
+#custom setup 
+RUN mkdir /data && mkdir /kubeconfig && chmod -R 777 /data && chmod -R 777 /kubeconfig
 #----- local user
 USER gitpod
 
