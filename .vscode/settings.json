@@ -4,5 +4,8 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "terminal.integrated.defaultProfile.osx": "zsh",
-    "editor.fontSize": 14
+    "editor.fontSize": 14,
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.python"
+    }
   }

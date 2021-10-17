@@ -73,6 +73,8 @@ export class K8sService {
       pretty: true,
       timestamps: false,
     });
+    await new Promise((fulfill) => logStream.on('finish', fulfill));
+    console.log('logs read');
   }
 
   private async create(jobName: string, spec: k8s.KubernetesObject) {
@@ -156,7 +158,7 @@ export class K8sService {
     });
     return result;
   }
-  private waitForJob(name, namespace = 'default', timeout = 90000) {
+  private waitForJob(name, namespace = 'default', timeout = 300000) {
     return this.waitForK8sObject(
       `/apis/batch/v1/namespaces/${namespace}/jobs`,
       {},
