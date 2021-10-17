@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: runners
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     paths:
       - 'backend/runner/**'
 jobs:
-  docker:
+  build-runners:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -29,9 +29,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: Build and push
-        id: docker_build
-        uses: sudo-bot/action-docker-compose@latest
-        with:
-          cli-args: "build"
+        name: Build
+        run: docker-compose build
       
