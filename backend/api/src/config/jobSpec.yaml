@@ -10,6 +10,7 @@ spec:
       containers:
         - name: '{{jobName}}'
           image: '{{lang}}'
+          imagePullPolicy: 'Always'
           resources:
             limits:
               cpu: '0.2'
