@@ -4,4 +4,4 @@ services:
     build:
       context: .
       dockerfile: java11/Dockerfile
-    image: java11:latest
+    image: ${REPO}runner-java11:latest

@@ -32,4 +32,11 @@ jobs:
       -
         name: Build
         run: docker-compose build
+        env:
+          REPO: ghcr.io/${{ github.repository }}/
+      -
+        name: Push
+        run: docker-compose push
+        env:
+          REPO: ghcr.io/${{ github.repository }}/
       
