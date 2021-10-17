@@ -13,11 +13,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import Run from './dto/Run';
 import Code from './dto/Code';
 import { CoreV1Api } from '@kubernetes/client-node';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class K8sService {
   private kc: k8s.KubeConfig;
-  private readonly logger = new Logger(K8sService.name);
+
+  @InjectPinoLogger(K8sService.name)
+  private readonly logger: PinoLogger;
   jobSpecTemplate: HandlebarsTemplateDelegate<any>;
   watch: k8s.Watch;
   coreClient: k8s.CoreV1Api;
@@ -37,23 +40,28 @@ export class K8sService {
   }
 
   async startJob(runId: string, code: Code) {
-    this.logger.log(`starting job for run #${runId}`);
+    this.logger.info(`starting job for run #${runId}`);
+    const sharePath = `${runId}/${code.codeId}/`;
+    const jobName = code.codeId;
+
     const contents = this.jobSpecTemplate({
-      lang: `hello-world`,
-      runId: runId,
-      codeId: code.codeId,
+      lang: `openjdk:11`,
+      sharePath: sharePath,
+      jobName: jobName,
     });
 
-    const jobName = code.codeId;
-    const sharePath = `/data/${runId}/${code.codeId}/`;
     const spec: k8s.KubernetesObject = yaml.load(contents);
-    const created = await this.create(spec);
+    await this.create(jobName, spec);
     const result = await this.waitForJob(jobName);
-    this.logger.log(`job:${jobName} done waiting for job completion ${result}`);
+    this.logger.info(
+      `job:${jobName} done waiting for job completion ${result}`,
+    );
     await this.getLogs(jobName, await this.getPodName(code.codeId));
-    this.delete(spec);
+    this.delete(jobName, spec);
   }
+
   async getLogs(jobName: string, podName: string) {
+    this.log(jobName, 'getting logs for pod ' + podName);
     const log = new k8s.Log(this.kc);
 
     const logStream = new stream.PassThrough();
@@ -67,16 +75,22 @@ export class K8sService {
     });
   }
 
-  private async create(spec: k8s.KubernetesObject) {
+  private async create(jobName: string, spec: k8s.KubernetesObject) {
     try {
+      this.log(jobName, `creating ${spec}`);
       return (await this.objectClient.create(spec)).body;
     } catch (e) {
       this.logger.error(
-        'error in deleting:' + e.message + ' : ' + JSON.stringify(e.body),
+        jobName +
+          'error in deleting:' +
+          e.message +
+          ' : ' +
+          JSON.stringify(e.body),
       );
     }
   }
-  private async delete(spec: k8s.KubernetesObject) {
+  private async delete(jobName: string, spec: k8s.KubernetesObject) {
+    this.log(jobName, `deleting ${spec}`);
     try {
       return this.objectClient.delete(
         spec,
@@ -88,11 +102,17 @@ export class K8sService {
       );
     } catch (e) {
       this.logger.error(
-        'error in deleting:' + e.message + ' : ' + JSON.stringify(e.body),
+        jobName +
+          'error in deleting:' +
+          e.message +
+          ' : ' +
+          JSON.stringify(e.body),
       );
     }
   }
   private async getPodName(jobName: string) {
+    this.log(jobName, `get pod name`);
+
     const podList = await this.coreClient.listNamespacedPod(
       'default',
       'false',
@@ -101,7 +121,7 @@ export class K8sService {
       undefined,
       `job-name=${jobName}`,
     );
-    this.logger.log(`pod name ${podList.body.items[0].metadata.name}`);
+    this.log(jobName, `got pod name as ${podList.body.items[0].metadata.name}`);
     return podList.body.items[0].metadata.name;
   }
 
@@ -141,13 +161,6 @@ export class K8sService {
       `/apis/batch/v1/namespaces/${namespace}/jobs`,
       {},
       (_type, _apiObj, watchObj) => {
-        this.logger.log(
-          watchObj.object.metadata.name +
-            ':' +
-            (watchObj.object.metadata.name == name) +
-            ':' +
-            name,
-        );
         return (
           watchObj.object.metadata.name == name &&
           watchObj.object.status.conditions &&
@@ -161,5 +174,9 @@ export class K8sService {
       timeout,
       `Waiting for job ${name} timeout (${timeout} ms)`,
     );
+  }
+
+  private log(context: string, message: string) {
+    this.logger.info(`[${context}] ${message}`);
   }
 }

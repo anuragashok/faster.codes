@@ -1,14 +1,15 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: '{{codeId}}'
+  name: '{{jobName}}'
 spec:
   template:
     metadata:
-      name: '{{codeId}}'
+      name: '{{jobName}}'
     spec:
       containers:
-        - name: '{{codeId}}'
+        - name: '{{jobName}}'
+          command: ['java', '-version']
           image: '{{lang}}'
           resources:
             limits:
@@ -20,7 +21,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
-              subPath: '{{runId}}/{{codeId}}'
+              subPath: '{{sharePath}}'
       restartPolicy: Never
       imagePullPolicy: Always
       volumes:

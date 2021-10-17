@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM adoptopenjdk:11
 WORKDIR /app
-COPY run.sh .
-RUN chmod +x run.sh
+COPY run.py .
+RUN chmod +x run.py

@@ -1,0 +1,5 @@
+# Ignore everything
+**
+
+# include only needed files
+!run.py
