@@ -45,7 +45,7 @@ export class K8sService {
     const jobName = code.codeId;
 
     const contents = this.jobSpecTemplate({
-      lang: `openjdk:11`,
+      lang: `ghcr.io/anuragashok/faster.codes/runner-${code.lang}:latest`,
       sharePath: sharePath,
       jobName: jobName,
     });
