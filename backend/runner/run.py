@@ -40,8 +40,11 @@ for i in range(10):
             break
 
     finish=time.monotonic_ns()
+
     mem_hist.append(str(peak_mem))
+
     cpu_hist.append(str(peak_cpu))
+    
     dur_hist.append(str((finish -  start)/1000000))
 
 print("mem_hist={}".format(";".join(mem_hist)))
