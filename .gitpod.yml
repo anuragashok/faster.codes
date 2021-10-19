@@ -4,6 +4,7 @@ tasks:
   - name: init
     init: |
       yarn --cwd backend/api install
+      yarn --cwd web install
     before: |
       printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc
       echo ${KUBECONFIG_BASE64} | base64 -d > /kubeconfig/config

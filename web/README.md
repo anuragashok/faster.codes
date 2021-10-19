@@ -1,43 +1,33 @@
-# Next.js with TypeScript example
+![Batteries Included Next.js](https://i.imgur.com/EeZzfO0.png)
 
-## How to use
+This is a [Next.js](https://nextjs.org/) project that includes Tailwind CSS in JIT mode, TypeScript and Jest with @testing-library with working TS path aliases.
 
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
+## Getting Started
 
-<!-- #default-branch-switch -->
+First, run the development server:
 
-```sh
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs-with-typescript
-cd nextjs-with-typescript
-```
-
-Install it and run:
-
-```sh
-npm install
+```bash
 npm run dev
+# or
+yarn dev
 ```
 
-or:
+To get JIT Tailwind as you develop, you also need to run:
 
-<!-- #default-branch-switch -->
+```bash
+npm run css:dev
+# or
+yarn css:dev
+```
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui-org/material-ui/tree/master/examples/nextjs-with-typescript)
+For testing, run:
 
-## The idea behind the example
+```bash
+npm run test
+# or
+yarn test
+```
 
-The project uses [Next.js](https://github.com/zeit/next.js), which is a framework for server-rendered React apps.
-It includes `@mui/material` and its peer dependencies, including `emotion`, the default style engine in MUI v5. If you prefer, you can [use styled-components instead](https://mui.com/guides/interoperability/#styled-components).
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## The link component
-
-Next.js has [a custom Link component](https://nextjs.org/docs/api-reference/next/link).
-The example folder provides adapters for usage with MUI.
-More information [in the documentation](https://mui.com/guides/routing/#next-js).
-
-## What's next?
-
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/getting-started/templates/) section.
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
