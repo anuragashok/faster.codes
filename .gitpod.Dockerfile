@@ -25,7 +25,9 @@ RUN sudo mkdir /data \
     && sudo chmod -R 777 /data \
     && sudo chmod -R 777 /kubeconfig \
     && mkdir ~/.kube
-    
+
+RUN sudo npm i @cloudflare/wrangler -g  
+  
 #----- local user
 USER gitpod
 

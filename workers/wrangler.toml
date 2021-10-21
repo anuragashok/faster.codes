@@ -1,0 +1,24 @@
+name = "worker"
+type = "javascript"
+account_id = ""
+workers_dev = true
+route = ""
+zone_id = ""
+
+[build]
+command = "yarn install && yarn build"
+[build.upload]
+# The "modules" upload format is required for all projects that export a Durable Objects class
+format = "modules"
+main = "./index.mjs"
+
+[[kv_namespaces]]
+binding = "RUNKV"
+id = "3d9821db10ec4b2a9426473697c0de46"
+
+[durable_objects]
+bindings = [{name = "RUNDUR", class_name = "Run"}]
+
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["Run"]
