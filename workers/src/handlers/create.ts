@@ -1,7 +1,7 @@
-import { Env } from './env'
-import { ExecuteResponse } from './request'
+import { Env } from '../models'
+import { ExecuteResponse } from '../models'
 
-export async function update(body: ReadableStream, env: Env) {
+export async function create(body: ReadableStream, env: Env) {
   let runId = env.RUNDUR.newUniqueId().toString()
   const res: ExecuteResponse = {
     runId: runId,

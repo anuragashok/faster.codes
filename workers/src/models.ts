@@ -1,3 +1,8 @@
+export interface Env {
+  RUNDUR: DurableObjectNamespace
+  RUNKV: KVNamespace
+}
+
 export interface ExecuteRequest {
   fileA: string
   fileB: string
