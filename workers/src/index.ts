@@ -10,7 +10,7 @@ export default {
 
       switch (request.method) {
         case 'POST':
-          return create(await request.json(), env)
+          return create(request, env)
         case 'GET':
           let runId = url.pathname
           return read(await request.json(), env)
