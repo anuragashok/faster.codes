@@ -17,4 +17,9 @@ export class AppController {
   health() {
     return '';
   }
+
+  @Get('live')
+  live() {
+    return '';
+  }
 }
