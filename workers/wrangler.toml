@@ -21,4 +21,4 @@ bindings = [{name = "RUNDUR", class_name = "Run"}]
 
 [[migrations]]
 tag = "v1" # Should be unique for each entry
-new_classes = ["Run"]
+new_classes = ["Run","Counter"]
