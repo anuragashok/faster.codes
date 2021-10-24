@@ -294,3 +294,38 @@ resource "kubernetes_secret" "backend_kc" {
     config = module.gke_auth.kubeconfig_raw
   }
 }
+
+
+resource "kubernetes_service_account" "api_sa" {
+  metadata {
+    name = "api-sa"
+  }
+}
+
+resource "kubernetes_cluster_role" "api_role" {
+  metadata {
+    name = "api-role"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["jobs", "pods","pods/log"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+}
+
+resource "kubernetes_cluster_role_binding" "api_role_binding" {
+  metadata {
+    name = "api-role-binding"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = kubernetes_cluster_role.api_role.metadata[0].name
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = kubernetes_service_account.api_sa.metadata[0].name
+    namespace = "default"
+  }
+}

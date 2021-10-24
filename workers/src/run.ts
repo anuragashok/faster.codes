@@ -16,7 +16,10 @@ export class Run {
     const url = new URL(request.url)
     switch (url.pathname) {
       case '/create':
-        await this.state.storage?.put<RunData>('data', { runId: 'RUNNNER' })
+        await this.state.storage?.put<RunData>('data', {
+          status: 'RUNNING',
+          startTime: +new Date(),
+        })
         return new Response(url.toString())
       case '/read':
         return new Response(
@@ -27,7 +30,8 @@ export class Run {
 }
 
 interface RunData {
-  runId?: string
+  status?: string
+  startTime?: number
   stats?: RunStats
 }
 
