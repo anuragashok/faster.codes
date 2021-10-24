@@ -57,7 +57,7 @@ export class K8sService {
       `job:${jobName} done waiting for job completion ${result}`,
     );
     await this.getLogs(jobName, await this.getPodName(code.codeId));
-    this.delete(jobName, spec);
+    //this.delete(jobName, spec);
   }
 
   async getLogs(jobName: string, podName: string) {
@@ -84,7 +84,7 @@ export class K8sService {
     } catch (e) {
       this.logger.error(
         jobName +
-          'error in deleting:' +
+          'error in creating:' +
           e.message +
           ' : ' +
           JSON.stringify(e.body),

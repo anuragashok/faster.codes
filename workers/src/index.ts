@@ -2,6 +2,7 @@ import { handleErrors } from './utils'
 import { create, read, update } from './handlers'
 import { Env } from './models'
 export { Run } from './run'
+export { Counter } from './counter'
 
 export default {
   async fetch(request: Request, env: Env) {

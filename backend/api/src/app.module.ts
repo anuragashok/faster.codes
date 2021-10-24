@@ -7,7 +7,11 @@ import { LoggerModule } from 'nestjs-pino';
 @Module({
   imports: [
     LoggerModule.forRoot({
-      pinoHttp: { quietReqLogger: true, genReqId: (req) => req.body.runId },
+      pinoHttp: {
+        quietReqLogger: true,
+        genReqId: (req) => req.body.runId,
+        autoLogging: { ignorePaths: ['/health'] },
+      },
     }),
   ],
   controllers: [AppController],

@@ -1,11 +1,12 @@
 export interface Env {
   RUNDUR: DurableObjectNamespace
   RUNKV: KVNamespace
+  COUNTER: DurableObjectNamespace
 }
 
 export interface ExecuteRequest {
-  fileA: string
-  fileB: string
+  lang: string[]
+  code: string[]
 }
 
 export interface ExecuteResponse {

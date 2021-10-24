@@ -17,8 +17,12 @@ binding = "RUNKV"
 id = "3d9821db10ec4b2a9426473697c0de46"
 
 [durable_objects]
-bindings = [{name = "RUNDUR", class_name = "Run"}]
+bindings = [{name = "RUNDUR", class_name = "Run"},{name = "COUNTER", class_name = "Counter"}]
 
 [[migrations]]
-tag = "v1" # Should be unique for each entry
-new_classes = ["Run","Counter"]
+tag = "v1"
+new_classes = ["Run"]
+
+[[migrations]]
+tag = "v2"
+new_classes = ["Counter"]

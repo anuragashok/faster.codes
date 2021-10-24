@@ -1,45 +1,59 @@
 import { Env, ExecuteRequest } from '../models'
 import { ExecuteResponse } from '../models'
+import * as base32 from 'base32'
 
 export async function create(request: Request, env: Env) {
   const runReq: ExecuteRequest = await request.json()
-  let runId = env.RUNDUR.newUniqueId().toString()
+
+  let id = env.COUNTER.idFromName('A')
+  let obj = env.COUNTER.get(id)
+  let resp = await obj.fetch(request.url)
+  let runId = await resp.text()
+
+  const runInternalId = env.RUNDUR.newUniqueId().toString()
+
   const res: ExecuteResponse = {
     runId: runId,
     ...runReq,
   }
+  await startRunBackend(runId, runReq)
   return new Response(JSON.stringify(res), { status: 201 })
 }
 
-async function createRunBackend() {
-  var myHeaders = new Headers()
-  myHeaders.append('Content-Type', 'application/json')
+async function startRunBackend(runId: string, runReq: ExecuteRequest) {
+  var headers = new Headers()
+  headers.append('Content-Type', 'application/json')
 
   var raw = JSON.stringify({
-    runId: 123,
+    runId: runId,
     codes: [
       {
-        lang: 'java11',
-        codeId: 456,
-        code: 'aW1wb3J0IGphdmEudXRpbC4qOwoKcHVibGljIGNsYXNzIE1haW4gewogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIGFyZ3NbXSkgewogICAgICAgIExpc3Q8SW50ZWdlcj4gaW50cyA9IG5ldyBBcnJheUxpc3Q8PigpOwogICAgICAgIGZvcihpbnQgaT0wOyBpPD1NYXRoLnBvdygyLDIyKTtpKyspewogICAgICAgICAgICBpbnRzLmFkZChpKTsgICAgICAKICAgICAgICB9CiAgICAgICAgLy8gYWN0dWFsIGNvZGUgdG8gdGVzdCBzdGFydHMgaGVyZQogICAgICAgIExpc3Q8SW50ZWdlcj4gZXZlbiA9IG5ldyBBcnJheUxpc3Q8PigpOwogICAgICAgIGZvcihpbnQgaT0wOyBpPGludHMuc2l6ZSgpOyBpKyspewogICAgICAgICAgICBpZihpbnRzLmdldChpKSUyPT0wKXsKICAgICAgICAgICAgICAgIGV2ZW4uYWRkKGludHMuZ2V0KGkpKTsKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQ==',
+        lang: runReq.lang[0],
+        codeId: runId + '-a',
+        code: runReq.code[0],
       },
       {
-        lang: 'java11',
-        codeId: 789,
-        code: 'aW1wb3J0IGphdmEudXRpbC4qOwppbXBvcnQgamF2YS51dGlsLnN0cmVhbS4qOwoKcHVibGljIGNsYXNzIE1haW4gewogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIGFyZ3NbXSkgewogICAgICAgIExpc3Q8SW50ZWdlcj4gaW50cyA9IG5ldyBBcnJheUxpc3Q8PigpOwogICAgICAgIGZvcihpbnQgaT0wOyBpPD1NYXRoLnBvdygyLDIyKTtpKyspewogICAgICAgICAgICBpbnRzLmFkZChpKTsgICAgICAKICAgICAgICB9CiAgICAgICAgLy8gYWN0dWFsIGNvZGUgdG8gdGVzdCBzdGFydHMgaGVyZQogICAgICAgIExpc3Q8SW50ZWdlcj4gZXZlbiA9IGludHMucGFyYWxsZWxTdHJlYW0oKS5maWx0ZXIoaSAtPiBpJTI9PTApLmNvbGxlY3QoQ29sbGVjdG9ycy50b0xpc3QoKSk7CiAgICB9Cn0=',
+        lang: runReq.lang[1],
+        codeId: runId + '-b',
+        code: runReq.code[1],
       },
     ],
   })
 
   var requestOptions = {
     method: 'POST',
-    headers: myHeaders,
+    headers: headers,
     body: raw,
     redirect: 'follow',
   }
 
-  return fetch(
-    'https://3000-harlequin-wildcat-w9nautsx.ws-us17.gitpod.io/',
-    requestOptions,
-  )
+  console.log(raw)
+
+  return fetch('https://backend-api.faster.codes/', requestOptions)
+}
+
+function base16decode(str: any) {
+  return str.replace(/([A-fa-f0-9]{2})/g, function (m: any, g1: any) {
+    return String.fromCharCode(parseInt(g1, 16))
+  })
 }
