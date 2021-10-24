@@ -13,12 +13,21 @@ export class Run {
   }
 
   async fetch(request: Request) {
-    let url = new URL(request.url)
-    return new Response(url.toString())
+    const url = new URL(request.url)
+    switch (url.pathname) {
+      case '/create':
+        await this.state.storage?.put<RunData>('data', { runId: 'RUNNNER' })
+        return new Response(url.toString())
+      case '/read':
+        return new Response(
+          JSON.stringify(await this.state.storage?.get<RunData>('data')),
+        )
+    }
   }
 }
 
 interface RunData {
+  runId?: string
   stats?: RunStats
 }
 

@@ -84,10 +84,12 @@ export class K8sService {
     } catch (e) {
       this.logger.error(
         jobName +
-          'error in creating:' +
+          'error in creating: ' +
           e.message +
           ' : ' +
           JSON.stringify(e.body),
+          ' : ' +
+          JSON.stringify(e.response),
       );
     }
   }

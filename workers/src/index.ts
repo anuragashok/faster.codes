@@ -14,7 +14,7 @@ export default {
           return create(request, env)
         case 'GET':
           let runId = url.pathname
-          return read(await request.json(), env)
+          return read(request, env)
         case 'PUT':
           return update(await request.json(), env)
         default:
