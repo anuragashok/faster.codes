@@ -10,33 +10,36 @@ const fsReadFileP = promisify(fs.readFile);
 const fsWriteFileP = promisify(fs.writeFile);
 
 import { Injectable, Logger } from '@nestjs/common';
-import Run from './dto/Run';
 import Code from './dto/Code';
 import { CoreV1Api } from '@kubernetes/client-node';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class K8sService {
-  private kc: k8s.KubeConfig;
-
   @InjectPinoLogger(K8sService.name)
   private readonly logger: PinoLogger;
   jobSpecTemplate: HandlebarsTemplateDelegate<any>;
-  watch: k8s.Watch;
-  coreClient: k8s.CoreV1Api;
-  objectClient: k8s.KubernetesObjectApi;
 
   constructor() {
-    this.kc = new k8s.KubeConfig();
-    this.kc.loadFromFile('/kubeconfig/config');
-    this.watch = new k8s.Watch(this.kc);
-    this.coreClient = this.kc.makeApiClient(CoreV1Api);
-    this.objectClient = k8s.KubernetesObjectApi.makeApiClient(this.kc);
+    const kc = this.loadConfig();
 
     const source = fs
       .readFileSync(`${__dirname}/config/jobSpec.yaml`)
       .toString();
     this.jobSpecTemplate = handlebars.compile(source);
+  }
+
+  private loadConfig() {
+    const kc = new k8s.KubeConfig();
+    kc.loadFromFile('/kubeconfig/config');
+    return kc;
+  }
+  private getCoreClient() {
+    return this.loadConfig().makeApiClient(CoreV1Api);
+  }
+
+  private getObjectClient() {
+    return k8s.KubernetesObjectApi.makeApiClient(this.loadConfig());
   }
 
   async startJob(runId: string, code: Code) {
@@ -62,7 +65,7 @@ export class K8sService {
 
   async getLogs(jobName: string, podName: string) {
     this.log(jobName, 'getting logs for pod ' + podName);
-    const log = new k8s.Log(this.kc);
+    const log = new k8s.Log(this.loadConfig());
 
     const logStream = new stream.PassThrough();
     logStream.on('data', (chunk) => {
@@ -80,7 +83,7 @@ export class K8sService {
   private async create(jobName: string, spec: k8s.KubernetesObject) {
     try {
       this.log(jobName, `creating ${spec}`);
-      return (await this.objectClient.create(spec)).body;
+      return (await this.getObjectClient().create(spec)).body;
     } catch (e) {
       this.logger.error(
         jobName +
@@ -88,15 +91,14 @@ export class K8sService {
           e.message +
           ' : ' +
           JSON.stringify(e.body),
-          ' : ' +
-          JSON.stringify(e.response),
+        ' : ' + JSON.stringify(e.response),
       );
     }
   }
   private async delete(jobName: string, spec: k8s.KubernetesObject) {
     this.log(jobName, `deleting ${spec}`);
     try {
-      return this.objectClient.delete(
+      return this.getObjectClient().delete(
         spec,
         undefined,
         undefined,
@@ -117,7 +119,7 @@ export class K8sService {
   private async getPodName(jobName: string) {
     this.log(jobName, `get pod name`);
 
-    const podList = await this.coreClient.listNamespacedPod(
+    const podList = await this.getCoreClient().listNamespacedPod(
       'default',
       'false',
       undefined,
@@ -134,7 +136,7 @@ export class K8sService {
     let res;
     let timer;
     const result = new Promise((resolve, reject) => {
-      this.watch
+      new k8s.Watch(this.loadConfig())
         .watch(
           path,
           query,
