@@ -11,6 +11,9 @@ on:
       - "terraform/prd/**"
   workflow_dispatch:
   workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
   registry_package:
     types:
       - published
