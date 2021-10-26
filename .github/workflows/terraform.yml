@@ -14,6 +14,8 @@ on:
     secrets:
       GITHUB_TOKEN:
         required: true
+      TERRAFORM_API_TOKEN:
+        required: true
   registry_package:
     types:
       - published
