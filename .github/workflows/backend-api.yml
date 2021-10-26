@@ -55,5 +55,5 @@ jobs:
           bearerToken: ${{ secrets.TERRAFORM_API_TOKEN }}
           contentType: application/vnd.api+json
   deploy:
-    uses: ./.github/workflows/terraform.yml@main
+    uses: ${{ github.repository }}/.github/workflows/terraform.yml@main
     needs: build
