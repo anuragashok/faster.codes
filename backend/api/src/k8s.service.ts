@@ -31,7 +31,7 @@ export class K8sService {
 
   private loadConfig() {
     const kc = new k8s.KubeConfig();
-    kc.loadFromFile('/kubeconfig/config');
+    //kc.loadFromFile('/kubeconfig/config');
     return kc;
   }
   private getCoreClient() {

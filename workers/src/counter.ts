@@ -18,6 +18,6 @@ export class Counter {
   async fetch(request: Request) {
     let currentValue = ++this.value
     await this.state.storage?.put('value', this.value)
-    return new Response(currentValue.toString())
+    return new Response(currentValue.toString(32))
   }
 }

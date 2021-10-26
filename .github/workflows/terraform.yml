@@ -2,16 +2,17 @@ name: terraform
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'terraform/prd/**'
+      - "terraform/prd/**"
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'terraform/prd/**'
+      - "terraform/prd/**"
   workflow_dispatch:
+  workflow_call:
   registry_package:
-    types: 
+    types:
       - published
       - updated
 
@@ -20,65 +21,65 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: 'terraform/prd'
+        working-directory: "terraform/prd"
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v1 
-      with:
-        registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    
-    - uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
+      - uses: actions/checkout@v2
 
-    - name: Terraform Init
-      id: init
-      run: terraform init
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate -no-color
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
 
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color
-      continue-on-error: true
+      - name: Terraform Init
+        id: init
+        run: terraform init
 
-    - uses: actions/github-script@0.9.0
-      if: github.event_name == 'pull_request'
-      env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
 
-          <details><summary>Show Plan</summary>
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        continue-on-error: true
 
-          \`\`\`\n
-          ${process.env.PLAN}
-          \`\`\`
+      - uses: actions/github-script@0.9.0
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outputs.stdout }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-          </details>
+            <details><summary>Show Plan</summary>
 
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
 
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
-    - name: Terraform Plan Status
-      if: steps.plan.outcome == 'failure'
-      run: exit 1
-    - name: Terraform Apply
-      if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'registry_package' || github.event_name == 'workflow_dispatch'
-      run: terraform apply
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+      - name: Terraform Apply
+        if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'registry_package' || github.event_name == 'workflow_dispatch'
+        run: terraform apply -auto-approve

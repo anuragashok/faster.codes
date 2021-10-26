@@ -1,14 +1,10 @@
 import { Env, ExecuteRequest } from '../models'
 import { ExecuteResponse } from '../models'
-import * as base32 from 'base32'
 
 export async function create(request: Request, env: Env) {
   const runReq: ExecuteRequest = await request.json()
 
-  let id = env.COUNTER.idFromName('A')
-  let obj = env.COUNTER.get(id)
-  let resp = await obj.fetch(request.url)
-  let runId = await resp.text()
+  let runId = await generateNewRunId(env, request)
 
   const res: ExecuteResponse = {
     runId: runId,
@@ -23,6 +19,15 @@ export async function create(request: Request, env: Env) {
   await env.RUNDUR.get(runInternalId).fetch(newUrl.toString())
 
   return new Response(JSON.stringify(res), { status: 201 })
+}
+
+async function generateNewRunId(env: Env, request: Request) {
+  let id = env.COUNTER.idFromName('A')
+  let obj = env.COUNTER.get(id)
+  let resp = await obj.fetch(request.url)
+  let runId = await resp.text()
+  
+  return runId
 }
 
 async function startRunBackend(runId: string, runReq: ExecuteRequest) {
@@ -55,10 +60,4 @@ async function startRunBackend(runId: string, runReq: ExecuteRequest) {
   console.log(raw)
 
   return fetch('https://backend-api.faster.codes/', requestOptions)
-}
-
-function base16decode(str: any) {
-  return str.replace(/([A-fa-f0-9]{2})/g, function (m: any, g1: any) {
-    return String.fromCharCode(parseInt(g1, 16))
-  })
 }

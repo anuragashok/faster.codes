@@ -23,6 +23,7 @@ resource "kubernetes_deployment" "backend_api" {
       }
 
       spec {
+        service_account_name = kubernetes_service_account.api_sa.metadata[0].name
         container {
           image = var.backend-api-tag
           name  = "backend-api"
