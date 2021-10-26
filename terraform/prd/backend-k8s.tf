@@ -309,9 +309,9 @@ resource "kubernetes_cluster_role" "api_role" {
   }
 
   rule {
-    api_groups = [""]
-    resources  = ["jobs", "pods","pods/log"]
-    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+    api_groups = ["*"]
+    resources  = ["*"]
+    verbs      = ["*"]
   }
 }
 
