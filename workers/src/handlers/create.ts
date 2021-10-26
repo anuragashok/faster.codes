@@ -6,15 +6,21 @@ export async function create(request: Request, env: Env) {
 
   let runId = await generateNewRunId(env, request)
   await startRunBackend(runId, runReq)
-  
+
   const runInternalId = env.RUNDUR.idFromName(runId)
   let newUrl = new URL(request.url)
-  newUrl.pathname = '/create'
-  await env.RUNDUR.get(runInternalId).fetch(newUrl.toString())
+  newUrl.pathname = `/create/${runId}`
+  await env.RUNDUR.get(runInternalId).fetch(newUrl.toString(), {
+    method: 'POST',
+    body: JSON.stringify(runReq),
+  })
 
-  return new Response(JSON.stringify({
-    runId: runId,
-  }), { status: 201 })
+  return new Response(
+    JSON.stringify({
+      runId: runId,
+    }),
+    { status: 201 },
+  )
 }
 
 async function generateNewRunId(env: Env, request: Request) {
@@ -22,7 +28,7 @@ async function generateNewRunId(env: Env, request: Request) {
   let obj = env.COUNTER.get(id)
   let resp = await obj.fetch(request.url)
   let runId = await resp.text()
-  
+
   return runId
 }
 

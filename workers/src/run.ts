@@ -1,4 +1,4 @@
-import { Env } from './models'
+import { Env, ExecuteRequest } from './models'
 
 export class Run {
   data: RunData = {}
@@ -14,14 +14,28 @@ export class Run {
 
   async fetch(request: Request) {
     const url = new URL(request.url)
-    switch (url.pathname) {
-      case '/create':
+    let path = url.pathname.slice(1).split('/')
+
+    switch (path[0]) {
+      case 'create':
+        const runId = path[1]
+        const req: ExecuteRequest = await request.json()
         await this.state.storage?.put<RunData>('data', {
           status: 'RUNNING',
           startTime: +new Date(),
+          codeRuns: [
+            {
+              id: runId + '-a',
+              code: req.code[0],
+            },
+            {
+              id: runId + '-b',
+              code: req.code[1],
+            },
+          ],
         })
         return new Response(url.toString())
-      case '/read':
+      case 'read':
         return new Response(
           JSON.stringify(await this.state.storage?.get<RunData>('data')),
         )
@@ -32,6 +46,12 @@ export class Run {
 interface RunData {
   status?: string
   startTime?: number
+  codeRuns?: CodeRunData[]
+}
+
+interface CodeRunData {
+  id: string
+  code: string
   stats?: RunStats
 }
 

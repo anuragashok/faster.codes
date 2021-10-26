@@ -13,7 +13,6 @@ export default {
         case 'POST':
           return create(request, env)
         case 'GET':
-          let runId = url.pathname
           return read(request, env)
         case 'PUT':
           return update(await request.json(), env)
