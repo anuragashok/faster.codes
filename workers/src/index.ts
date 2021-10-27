@@ -15,7 +15,7 @@ export default {
         case 'GET':
           return read(request, env)
         case 'PUT':
-          return update(await request.json(), env)
+          return update(request, env)
         default:
           return new Response('Not found', { status: 404 })
       }

@@ -1,10 +1,9 @@
 import { Env } from '../models'
-import { ExecuteResponse } from '../models'
 
-export async function update(body: ReadableStream, env: Env) {
-  let runId = env.RUNDUR.newUniqueId().toString()
-  const res: ExecuteResponse = {
-    runId: runId,
-  }
-  return new Response(JSON.stringify(res), { status: 201 })
+export async function update(request: Request, env: Env) {
+  let url = new URL(request.url)
+  let path = url.pathname.slice(1).split('/')
+  const runId = path[0]
+  await env.RUNDUR.get(env.RUNDUR.idFromName(runId)).fetch(request)
+  return new Response('', { status: 200 })
 }

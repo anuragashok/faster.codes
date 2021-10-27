@@ -22,11 +22,29 @@ export class AppService {
         fs.writeFileSync(`${dir}/Main.java`, Buffer.from(c.code, 'base64'));
         await this.k8sService.startJob(runInfo.runId, c);
 
-        let codeRunData = {};
+        let codeRunData: CodeRunData = { id: c.codeId, stats: {} };
+
         let buf = await fsReadFileP(`${dir}/stats.json`);
         let stats = JSON.parse(buf.toString());
-        Object.assign(Stats);
+        Object.assign(codeRunData.stats, stats);
+        
       }),
     );
   }
+}
+
+interface CodeRunData {
+  id: string;
+  stats?: RunStats;
+}
+
+interface RunStats {
+  duration?: RunValues;
+  mem?: RunValues;
+  cpu?: RunValues;
+}
+
+interface RunValues {
+  avg: number;
+  values: number[];
 }

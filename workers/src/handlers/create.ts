@@ -9,7 +9,7 @@ export async function create(request: Request, env: Env) {
 
   const runInternalId = env.RUNDUR.idFromName(runId)
   let newUrl = new URL(request.url)
-  newUrl.pathname = `/create/${runId}`
+  newUrl.pathname = `${runId}`
   await env.RUNDUR.get(runInternalId).fetch(newUrl.toString(), {
     method: 'POST',
     body: JSON.stringify(runReq),

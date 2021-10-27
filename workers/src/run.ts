@@ -16,8 +16,8 @@ export class Run {
     const url = new URL(request.url)
     let path = url.pathname.slice(1).split('/')
 
-    switch (path[0]) {
-      case 'create':
+    switch (request.method) {
+      case 'POST': {
         const runId = path[1]
         const req: ExecuteRequest = await request.json()
         await this.state.storage?.put<RunData>('data', {
@@ -35,10 +35,24 @@ export class Run {
           ],
         })
         return new Response(url.toString())
-      case 'read':
+      }
+      case 'GET':
         return new Response(
           JSON.stringify(await this.state.storage?.get<RunData>('data')),
         )
+      case 'PUT': {
+        const req: CodeRunData = await request.json()
+        const runData = await this.state.storage?.get<RunData>('data')
+        if (runData) {
+          Object.assign(
+            runData?.codeRuns?.filter((c) => c.id == req.id)[0],
+            req,
+          )
+          await this.state.storage?.put<RunData>('data', runData)
+        }
+
+        return new Response(url.toString())
+      }
     }
   }
 }

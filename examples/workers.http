@@ -7,3 +7,66 @@ Content-Length: 1197
     "code":["aW1wb3J0IGphdmEudXRpbC4qOwoKcHVibGljIGNsYXNzIE1haW4gewogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIGFyZ3NbXSkgewogICAgICAgIExpc3Q8SW50ZWdlcj4gaW50cyA9IG5ldyBBcnJheUxpc3Q8PigpOwogICAgICAgIGZvcihpbnQgaT0wOyBpPD1NYXRoLnBvdygyLDIyKTtpKyspewogICAgICAgICAgICBpbnRzLmFkZChpKTsgICAgICAKICAgICAgICB9CiAgICAgICAgLy8gYWN0dWFsIGNvZGUgdG8gdGVzdCBzdGFydHMgaGVyZQogICAgICAgIExpc3Q8SW50ZWdlcj4gZXZlbiA9IG5ldyBBcnJheUxpc3Q8PigpOwogICAgICAgIGZvcihpbnQgaT0wOyBpPGludHMuc2l6ZSgpOyBpKyspewogICAgICAgICAgICBpZihpbnRzLmdldChpKSUyPT0wKXsKICAgICAgICAgICAgICAgIGV2ZW4uYWRkKGludHMuZ2V0KGkpKTsKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQ==","aW1wb3J0IGphdmEudXRpbC4qOwppbXBvcnQgamF2YS51dGlsLnN0cmVhbS4qOwoKcHVibGljIGNsYXNzIE1haW4gewogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIGFyZ3NbXSkgewogICAgICAgIExpc3Q8SW50ZWdlcj4gaW50cyA9IG5ldyBBcnJheUxpc3Q8PigpOwogICAgICAgIGZvcihpbnQgaT0wOyBpPD1NYXRoLnBvdygyLDIyKTtpKyspewogICAgICAgICAgICBpbnRzLmFkZChpKTsgICAgICAKICAgICAgICB9CiAgICAgICAgLy8gYWN0dWFsIGNvZGUgdG8gdGVzdCBzdGFydHMgaGVyZQogICAgICAgIExpc3Q8SW50ZWdlcj4gZXZlbiA9IGludHMucGFyYWxsZWxTdHJlYW0oKS5maWx0ZXIoaSAtPiBpJTI9PTApLmNvbGxlY3QoQ29sbGVjdG9ycy50b0xpc3QoKSk7CiAgICB9Cn0="],
     "lang":["java11","java11"]
 }
+
+###
+GET /31ls HTTP/1.1
+Host: fastercodes.anurag16890.workers.dev
+Content-Type: application/json
+Content-Length: 1197
+
+###
+PUT /31ls HTTP/1.1
+Host: fastercodes.anurag16890.workers.dev
+Content-Type: application/json
+Content-Length: 1197
+
+{
+  "id": "31ls-b",
+  "stats": {
+    "cpu": {
+        "avg": 823.55,
+        "values": [
+            1016.5,
+            811.3,
+            1082.1,
+            811.3,
+            801.7,
+            808.3,
+            842.8,
+            942.8,
+            817.3,
+            829.8
+        ]
+    },
+    "duration": {
+        "avg": 9455.233489999999,
+        "values": [
+            9690.860858,
+            9096.029118,
+            9125.623669,
+            8687.904926,
+            9397.272508,
+            9396.306535,
+            9583.836678,
+            9702.035454,
+            9705.779058,
+            9513.194472
+        ]
+    },
+    "mem": {
+        "avg": 153344.0,
+        "values": [
+            153272.0,
+            153324.0,
+            153244.0,
+            153488.0,
+            153368.0,
+            153372.0,
+            153364.0,
+            153292.0,
+            153388.0,
+            153240.0
+        ]
+    }
+    }
+}
