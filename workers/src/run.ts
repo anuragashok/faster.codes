@@ -18,7 +18,7 @@ export class Run {
 
     switch (request.method) {
       case 'POST': {
-        const runId = path[1]
+        const runId = path[0]
         const req: ExecuteRequest = await request.json()
         await this.state.storage?.put<RunData>('data', {
           status: 'RUNNING',

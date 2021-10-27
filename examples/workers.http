@@ -9,7 +9,7 @@ Content-Length: 1197
 }
 
 ###
-GET /31ls HTTP/1.1
+GET /31lu HTTP/1.1
 Host: fastercodes.anurag16890.workers.dev
 Content-Type: application/json
 Content-Length: 1197
