@@ -11,8 +11,10 @@ import { useEffect } from "react";
 
 import useSWR from "swr";
 
-const fetcher = async (url: string) =>
-  fetch(url).then(async (res) => await res.json());
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  await res.json();
+};
 
 const Home: React.FC = () => {
   const router = useRouter();
@@ -27,12 +29,10 @@ const Home: React.FC = () => {
 
   const { data, error } = useSWR(
     "https://fastercodes.anurag16890.workers.dev/" + runId,
-    fetcher,
-    { fallbackData: runData }
+    fetcher
   );
 
-  if(runId){
-    
+  if (runId) {
   }
   setRunData(data);
 
