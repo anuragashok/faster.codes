@@ -1,0 +1,22 @@
+export interface RunData {
+  status?: string
+  startTime?: number
+  codeRuns: CodeRunData[]
+}
+export interface CodeRunData {
+  id: string
+  lang: string
+  code: string
+  stats?: RunStats
+}
+export interface RunStats {
+  duration: RunValues
+  mem: RunValues
+  cpu: RunValues
+}
+export interface RunValues {
+  avg: number
+  values: number[]
+}
+
+export * from './reqres'

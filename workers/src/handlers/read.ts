@@ -1,5 +1,5 @@
-import { Env } from '../models'
-import { ExecuteResponse } from '../models'
+import { Env } from '../types/reqres'
+import { ExecuteResponse } from '../types/reqres'
 
 export async function read(request: Request, env: Env) {
   let url = new URL(request.url)

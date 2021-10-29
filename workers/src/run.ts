@@ -1,14 +1,14 @@
-import { Env, ExecuteRequest } from './models'
+import { Env, ExecuteRequest, RunData, CodeRunData } from './types'
 
 export class Run {
-  data: RunData = {}
+  data?: RunData
   state: DurableObjectState
 
   constructor(state: DurableObjectState, env: Env) {
     this.state = state
     this.state.blockConcurrencyWhile(async () => {
       let stored = await this.state.storage?.get<RunData>('data')
-      this.data = stored || {}
+      this.data = stored
     })
   }
 
@@ -19,18 +19,20 @@ export class Run {
     switch (request.method) {
       case 'POST': {
         const runId = path[0]
-        const req: ExecuteRequest = await request.json()
+        const req: RunData = await request.json()
         await this.state.storage?.put<RunData>('data', {
           status: 'RUNNING',
           startTime: +new Date(),
           codeRuns: [
             {
               id: runId + '-a',
-              code: req.code[0],
+              code: req.codeRuns[0].code,
+              lang: req.codeRuns[0].lang,
             },
             {
               id: runId + '-b',
-              code: req.code[1],
+              code: req.codeRuns[1].code,
+              lang: req.codeRuns[0].lang,
             },
           ],
         })
@@ -55,27 +57,4 @@ export class Run {
       }
     }
   }
-}
-
-interface RunData {
-  status?: string
-  startTime?: number
-  codeRuns?: CodeRunData[]
-}
-
-interface CodeRunData {
-  id: string
-  code: string
-  stats?: RunStats
-}
-
-interface RunStats {
-  duration: RunValues
-  mem: RunValues
-  cpu: RunValues
-}
-
-interface RunValues {
-  avg: number
-  values: number[]
 }

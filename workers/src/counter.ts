@@ -1,4 +1,4 @@
-import { Env } from './models'
+import { Env } from './types/reqres'
 
 export class Counter {
   value: number = 100000

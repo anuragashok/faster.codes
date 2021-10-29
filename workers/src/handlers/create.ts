@@ -1,8 +1,9 @@
-import { Env, ExecuteRequest } from '../models'
-import { ExecuteResponse } from '../models'
+import { CodeRunData, RunData } from '../types'
+import { Env, ExecuteRequest } from '../types/reqres'
+import { ExecuteResponse } from '../types/reqres'
 
 export async function create(request: Request, env: Env) {
-  const runReq: ExecuteRequest = await request.json()
+  const runReq: RunData = await request.json()
 
   let runId = await generateNewRunId(env, request)
   await startRunBackend(runId, runReq)
@@ -32,7 +33,7 @@ async function generateNewRunId(env: Env, request: Request) {
   return runId
 }
 
-async function startRunBackend(runId: string, runReq: ExecuteRequest) {
+async function startRunBackend(runId: string, runReq: RunData) {
   var headers = new Headers()
   headers.append('Content-Type', 'application/json')
 
@@ -40,14 +41,14 @@ async function startRunBackend(runId: string, runReq: ExecuteRequest) {
     runId: runId,
     codes: [
       {
-        lang: runReq.lang[0],
+        lang: runReq.codeRuns[0].lang,
         codeId: runId + '-a',
-        code: runReq.code[0],
+        code: runReq.codeRuns[0].code,
       },
       {
-        lang: runReq.lang[1],
+        lang: runReq.codeRuns[0].lang,
         codeId: runId + '-b',
-        code: runReq.code[1],
+        code: runReq.codeRuns[1].code,
       },
     ],
   })

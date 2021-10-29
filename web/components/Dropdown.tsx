@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-const DropDown: React.FC = () => {
-  const [selected, setSelected] = useState("golang");
+type Props = { lang: string; onChange: (lang: string) => void };
+
+const DropDown: React.FC<Props> = ({ lang, onChange }) => {
   const [open, setOpen] = useState(false);
 
-  const languages = ["Java", "Golang"];
+  const languages = ["java", "golang"];
+
   return (
     <>
       <div className="dropdown">
@@ -13,7 +15,7 @@ const DropDown: React.FC = () => {
           className="btn btn-sm btn-primary "
           onClick={() => setOpen(!open)}
         >
-          {selected}
+          <div className="w-24 font-medium uppercase">{lang}</div>
           {open && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +53,10 @@ const DropDown: React.FC = () => {
             {languages.map((value, index) => {
               return (
                 <li key={index} onClick={() => setOpen(!open)}>
-                  <a onClick={() => setSelected(value)} className="p-0.5">
+                  <a
+                    onClick={() => onChange(value)}
+                    className="p-0.5 capitalize"
+                  >
                     {value}
                   </a>
                 </li>

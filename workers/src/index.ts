@@ -1,6 +1,6 @@
 import { handleErrors } from './utils'
 import { create, read, update } from './handlers'
-import { Env } from './models'
+import { Env } from './types'
 export { Run } from './run'
 export { Counter } from './counter'
 

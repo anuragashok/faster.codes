@@ -4,9 +4,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
-      sans: ["Montserrat", "ui-sans-serif", "system-ui"],
-      serif: ["Montserrat", "ui-serif", "Georgia"],
-      mono: ["Montserrat", "ui-monospace", "SFMono-Regular"],
+      sans: ["Roboto", "ui-sans-serif", "system-ui"],
+      serif: ["Roboto", "ui-serif", "Georgia"],
+      mono: ["ui-monospace", "SFMono-Regular"],
     },
     extend: {},
   },

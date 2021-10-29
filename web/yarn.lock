@@ -4041,6 +4041,11 @@ next@11.0.1:
     vm-browserify "1.1.2"
     watchpack "2.1.1"
 
+nextjs@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/nextjs/-/nextjs-0.0.3.tgz#4f4d1d6a257be920d9b9649d4d9522c724a4e543"
+  integrity sha1-T00daiV76SDZuWSdTZUixySk5UM=
+
 node-emoji@^1.8.1:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.10.0.tgz#8886abd25d9c7bb61802a658523d1f8d2a89b2da"
