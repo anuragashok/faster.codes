@@ -1,4 +1,5 @@
 export interface RunData {
+  runId?: string;
   status?: string;
   startTime?: number;
   codeRuns: CodeRunData[];

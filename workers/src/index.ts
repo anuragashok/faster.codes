@@ -1,6 +1,8 @@
 import { handleErrors } from './utils'
 import { create, read, update } from './handlers'
 import { Env } from './types'
+import { handleOptions, addCorsHeaders } from './cors'
+
 export { Run } from './run'
 export { Counter } from './counter'
 
@@ -11,11 +13,13 @@ export default {
 
       switch (request.method) {
         case 'POST':
-          return create(request, env)
+          return addCorsHeaders(await create(request, env))
         case 'GET':
           return read(request, env)
         case 'PUT':
-          return update(request, env)
+          return addCorsHeaders(await update(request, env))
+        case 'OPTIONS':
+          return handleOptions(request)
         default:
           return new Response('Not found', { status: 404 })
       }

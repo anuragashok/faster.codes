@@ -10,7 +10,5 @@ export async function read(request: Request, env: Env) {
 
   let newUrl = new URL(request.url)
   newUrl.pathname = '/read'
-  const runData = await runObj.fetch(newUrl.toString())
-
-  return runData
+  return await runObj.fetch(newUrl.toString())
 }

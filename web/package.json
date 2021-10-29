@@ -20,7 +20,8 @@
 		"nextjs": "^0.0.3",
 		"react": "17.0.2",
 		"react-ace": "^9.4.4",
-		"react-dom": "17.0.2"
+		"react-dom": "17.0.2",
+		"swr": "^1.0.1"
 	},
 	"devDependencies": {
 		"@testing-library/dom": "^8.1.0",

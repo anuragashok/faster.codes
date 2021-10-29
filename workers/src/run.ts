@@ -1,3 +1,4 @@
+import { addCorsHeaders } from './cors'
 import { Env, ExecuteRequest, RunData, CodeRunData } from './types'
 
 export class Run {
@@ -39,8 +40,10 @@ export class Run {
         return new Response(url.toString())
       }
       case 'GET':
-        return new Response(
-          JSON.stringify(await this.state.storage?.get<RunData>('data')),
+        return addCorsHeaders(
+          new Response(
+            JSON.stringify(await this.state.storage?.get<RunData>('data')),
+          ),
         )
       case 'PUT': {
         const req: CodeRunData = await request.json()
