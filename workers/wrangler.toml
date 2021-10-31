@@ -1,9 +1,9 @@
 name = "fastercodes"
 type = "javascript"
-account_id = ""
+account_id = "3c0524ab68823b9a164aa25eca070800"
 workers_dev = true
-route = ""
-zone_id = ""
+zone_id="ef22809d1d68bddf61833631c2422ce5"
+route = "api.faster.codes/*"
 
 [build]
 command = "yarn install && yarn build"
@@ -15,14 +15,8 @@ main = "./index.mjs"
 [[kv_namespaces]]
 binding = "RUNKV"
 id = "3d9821db10ec4b2a9426473697c0de46"
+preview_id = "3d9821db10ec4b2a9426473697c0de46"
 
 [durable_objects]
 bindings = [{name = "RUNDUR", class_name = "Run"},{name = "COUNTER", class_name = "Counter"}]
 
-[[migrations]]
-tag = "v1"
-new_classes = ["Run"]
-
-[[migrations]]
-tag = "v2"
-new_classes = ["Counter"]

@@ -14,8 +14,8 @@ const CodeEditor: React.FC<Props> = ({ index, codeRunData, onChange }) => {
     onChange(index, { ...codeRunData, lang });
   };
   let handleCodeChange = (code: string | undefined) => {
-    code = code || "";
-    onChange(index, { ...codeRunData, code });
+    const base64Code = code ? Buffer.from(code).toString("base64") : "";
+    onChange(index, { ...codeRunData, code: base64Code });
   };
   return (
     <>
@@ -24,7 +24,7 @@ const CodeEditor: React.FC<Props> = ({ index, codeRunData, onChange }) => {
         <Editor
           height="50vh"
           language={codeRunData.lang}
-          value={codeRunData.code}
+          value={Buffer.from(codeRunData.code, "base64").toString()}
           onChange={handleCodeChange}
           theme="vs-dark"
           options={{ fontSize: 16, fontFamily: "Inconsolata" }}

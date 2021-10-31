@@ -4,8 +4,8 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
-      sans: ["Roboto", "ui-sans-serif", "system-ui"],
-      serif: ["Roboto", "ui-serif", "Georgia"],
+      sans: ["Inconsolata", "ui-sans-serif", "system-ui"],
+      serif: ["Inconsolata", "ui-serif", "Georgia"],
       mono: ["ui-monospace", "SFMono-Regular"],
     },
     extend: {},

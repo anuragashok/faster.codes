@@ -8,33 +8,45 @@ import validate from "@libs/validate";
 import ErrorModal from "@components/ErrorModal";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-
-import useSWR from "swr";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import Stats from "@components/Stats";
+import FullStats from "@components/FullStats";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
-  await res.json();
+  return await res.json();
 };
 
 const Home: React.FC = () => {
   const router = useRouter();
 
-  const { runId } = router.query;
+  //const { runId } = router.query;
 
+  const [socketUrl, setSocketUrl] = useState("");
+  const [messages, setMessages] = useState([] as string[]);
   const [runData, setRunData] = useState({
-    codeRuns: [{}, {}],
+    codeRuns: [{ code: "" }, { code: "" }],
   } as RunData);
   const [showError, setShowError] = useState(true);
-  const [messages, setMessages] = useState([] as string[]);
+  const runId = router.query?.runId ? router.query.runId[0] : "dummy";
+  console.log(runId);
 
-  const { data, error } = useSWR(
-    "https://fastercodes.anurag16890.workers.dev/" + runId,
-    fetcher
+  const { sendMessage, lastMessage, readyState } = useWebSocket(
+    `${process.env.NEXT_PUBLIC_API_WS}/${runId}`
   );
 
-  if (runId) {
-  }
-  setRunData(data);
+  useEffect(() => {
+    if (lastMessage !== null && !lastMessage.data.startsWith("<")) {
+      console.log("got new data " + lastMessage.data);
+      setRunData(JSON.parse(lastMessage.data));
+    }
+  }, [lastMessage]);
+
+  useEffect(() => {
+    if (runData.runId) {
+      setSocketUrl(`${process.env.NEXT_PUBLIC_API_WS}/${runData.runId}`);
+    }
+  }, [runData]);
 
   let handCodeRunDataChange = (index: number, codeRunData: CodeRunData) => {
     setRunData({
@@ -62,7 +74,7 @@ const Home: React.FC = () => {
       runId,
     });
 
-    router.push("/" + runId);
+    router.push("/" + runId, undefined, { shallow: true });
   };
 
   return (
@@ -107,14 +119,17 @@ const Home: React.FC = () => {
           <div className="flex-1 ..."></div>
           <div className="flex-none ...">
             <div className="btn btn-lg" onClick={handleRun}>
-              {runId ? "RUN AGAIN" : "RUN & COMPARE"}
+              {runData.runId ? "RUN AGAIN" : "RUN & COMPARE"}
             </div>
           </div>
           <div className="flex-1 ..."></div>
         </div>
         {JSON.stringify(runData)}
         ---------
-        {runId}
+        {runData.runId}
+        <FullStats
+          stats={[runData.codeRuns[0]?.stats, runData.codeRuns[1]?.stats]}
+        />
       </div>
       <Footer />
     </>

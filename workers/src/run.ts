@@ -48,11 +48,19 @@ export class Run {
       case 'PUT': {
         const req: CodeRunData = await request.json()
         const runData = await this.state.storage?.get<RunData>('data')
+
         if (runData) {
           Object.assign(
             runData?.codeRuns?.filter((c) => c.id == req.id)[0],
             req,
           )
+          // TODO
+          if (
+            runData?.codeRuns?.filter((c) => c.stats == undefined).length == 0
+          ) {
+            runData.status = 'COMPLETED'
+          }
+
           await this.state.storage?.put<RunData>('data', runData)
         }
 
