@@ -1,32 +1,26 @@
 import React from "react";
+import Loader from "./Loader";
 import Stats from "./Stats";
-import { RunStats } from "./types";
+import { CodeRunData, RunStats } from "./types";
 
-type Props = { stats: (RunStats | undefined)[] };
+type Props = { codes: CodeRunData[] };
 
-const FullStats: React.FC<Props> = ({ stats }) => {
-  return (
-    <>
+const FullStats: React.FC<Props> = ({ codes }) => {
+  if (codes[0].status == undefined && codes[0].status == undefined) {
+    return <Loader />;
+  } else {
+    return (
       <div className="flex flex-row w-full">
         <div className="grid flex-grow my-6 bordered border-primary-content  rounded-box place-items-center flex-1 indicator">
-          <Stats stats={stats[0]} />
+          <Stats code={codes[0]} />
         </div>
         <div className="divider divider-vertical text-2xl text-secondary-focus font-bold"></div>
         <div className="grid flex-grow my-6 bordered border-primary-content rounded-box place-items-center flex-1 indicator">
-          <Stats stats={stats[1]} />
+          <Stats code={codes[1]} />
         </div>
       </div>
-      <div className="flex flex-row w-full">
-        <div className="grid flex-grow my-6 bordered border-primary-content  rounded-box place-items-center flex-1 indicator">
-          <Stats stats={stats[0]} />
-        </div>
-        <div className="divider divider-vertical text-2xl text-secondary-focus font-bold"></div>
-        <div className="grid flex-grow my-6 bordered border-primary-content rounded-box place-items-center flex-1 indicator">
-          <Stats stats={stats[1]} />
-        </div>
-      </div>
-    </>
-  );
+    );
+  }
 };
 
 export default FullStats;

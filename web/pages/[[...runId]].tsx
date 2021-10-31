@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Stats from "@components/Stats";
 import FullStats from "@components/FullStats";
+import Head from "next/head";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -20,14 +21,12 @@ const fetcher = async (url: string) => {
 const Home: React.FC = () => {
   const router = useRouter();
 
-  //const { runId } = router.query;
-
   const [socketUrl, setSocketUrl] = useState("");
   const [messages, setMessages] = useState([] as string[]);
   const [runData, setRunData] = useState({
     codeRuns: [{ code: "" }, { code: "" }],
   } as RunData);
-  const [showError, setShowError] = useState(true);
+  const [showError, setShowError] = useState(false);
   const runId = router.query?.runId ? router.query.runId[0] : "dummy";
   console.log(runId);
 
@@ -79,6 +78,9 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title>faster.codes</title>
+      </Head>
       <Header />
       <ErrorModal
         open={showError}
@@ -118,18 +120,15 @@ const Home: React.FC = () => {
         <div className="flex flex-row w-full">
           <div className="flex-1 ..."></div>
           <div className="flex-none ...">
-            <div className="btn btn-lg" onClick={handleRun}>
+            <div className="btn btn-lg btn-primary" onClick={handleRun}>
               {runData.runId ? "RUN AGAIN" : "RUN & COMPARE"}
             </div>
           </div>
           <div className="flex-1 ..."></div>
         </div>
-        {JSON.stringify(runData)}
-        ---------
-        {runData.runId}
-        <FullStats
-          stats={[runData.codeRuns[0]?.stats, runData.codeRuns[1]?.stats]}
-        />
+        {runData.runId && (
+          <FullStats codes={[runData.codeRuns[0], runData.codeRuns[1]]} />
+        )}
       </div>
       <Footer />
     </>

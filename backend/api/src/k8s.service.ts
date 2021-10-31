@@ -165,13 +165,14 @@ export class K8sService {
       {},
       (_type, _apiObj, watchObj) => {
         return (
-          watchObj.object.metadata.name == name &&
-          watchObj.object.status.conditions &&
-          watchObj.object.status.conditions.some(
-            (c) =>
-              (c.type === 'Complete' || c.type === 'Failed') &&
-              c.status === 'True',
-          )
+          (watchObj.object.status && watchObj.object.status.failed >= 2) ||
+          (watchObj.object.metadata.name == name &&
+            watchObj.object.status.conditions &&
+            watchObj.object.status.conditions.some(
+              (c) =>
+                (c.type === 'Complete' || c.type === 'Failed') &&
+                c.status === 'True',
+            ))
         );
       },
       timeout,

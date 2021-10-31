@@ -1,36 +1,49 @@
-import { RunStats } from "./types";
+import React from "react";
+import Loader from "./Loader";
+import { CodeRunData, RunStats } from "./types";
 
-type Props = { stats?: RunStats };
+type Props = { code?: CodeRunData };
 
-const Stats: React.FC<Props> = ({ stats }) => {
-  return (
-    <>
-      {!stats && (
-        <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-      )}
-      {stats && (
-        <div className="grid-flow-row shadow stats text-info">
-          <div className="stat">
-            <div className="stat-title">Execution Time</div>
-            <div className="stat-value">{stats?.duration.avg}</div>
-            <div className="stat-desc">Average execution time over 10 runs</div>
+const Stats: React.FC<Props> = ({ code }) => {
+  let stats = code?.stats;
+  if (code?.status == undefined) {
+    return <Loader />;
+  } else if (code?.status == "FAILED") {
+    return <div>FAIL</div>;
+  } else if (code?.status == "SUCCESS" && !code.stats) {
+    return <div>STATS NOT AVAILABLE</div>;
+  } else {
+    return (
+      <div className="grid-flow-row shadow stats text-info">
+        <div className="stat">
+          <div className="stat-title text-info font-bold">Execution Time</div>
+          <div className="stat-value text-success">
+            {Number(stats?.duration.avg).toFixed(0)}
+            <span className="text-base">MS</span>
           </div>
-          <div className="stat">
-            <div className="stat-title">CPU</div>
-            <div className="stat-value">{stats?.cpu.avg}</div>
-            <div className="stat-desc">Average CPU time over 10 runs</div>
+
+          <div className="stat-desc">Average execution time over 10 runs</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title text-info font-bold">CPU</div>
+          <div className="stat-value text-error">
+            {Number(stats?.cpu.avg).toFixed(0)}
           </div>
-          <div className="stat">
-            <div className="stat-title">Memory</div>
-            <div className="stat-value">{stats?.mem.avg}</div>
-            <div className="stat-desc">
-              Average memory consumption time over 10 runs
-            </div>
+          <div className="stat-desc">Average CPU time over 10 runs</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title text-info font-bold">Memory</div>
+          <div className="stat-value">
+            {stats?.mem.avg}
+            <span className="text-base">KB</span>
+          </div>
+          <div className="stat-desc">
+            Average memory consumption time over 10 runs
           </div>
         </div>
-      )}
-    </>
-  );
+      </div>
+    );
+  }
 };
 
 export default Stats;

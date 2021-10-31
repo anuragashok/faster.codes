@@ -28,4 +28,4 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: backend-nfs
-  backoffLimit: 4
+  backoffLimit: 2

@@ -4,9 +4,11 @@ import { Env, ExecuteRequest, RunData, CodeRunData } from './types'
 export class Run {
   data?: RunData
   state: DurableObjectState
+  env: Env
 
   constructor(state: DurableObjectState, env: Env) {
     this.state = state
+    this.env = env
     this.state.blockConcurrencyWhile(async () => {
       let stored = await this.state.storage?.get<RunData>('data')
       this.data = stored
@@ -55,7 +57,12 @@ export class Run {
             runData?.codeRuns?.filter((c) => c.id == req.id)[0],
             req,
           )
-
+          console.log('move to KV and delete durable object after 70 seconds')
+          this.env.RUNKV.put(runData.runId, JSON.stringify(runData))
+          setTimeout(() => {
+            console.log('deleting from durable object')
+            this.state.storage?.delete('data')
+          }, 70000)
           if (
             runData?.codeRuns?.filter((c) => c.status == 'SUCCESS').length == 2
           ) {

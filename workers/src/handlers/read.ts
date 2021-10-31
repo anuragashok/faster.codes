@@ -21,6 +21,12 @@ export async function read(request: Request, env: Env) {
 }
 
 async function getRunData(env: Env, runId: string, request: Request) {
+  let ret = await env.RUNKV.get(runId)
+  if (ret) {
+    console.log('read from KV' + ret)
+    return new Response(ret, { status: 200 })
+  }
+  console.log('not present in KV' + ret)
   let runInternalId = env.RUNDUR.idFromName(runId)
   const runObj = env.RUNDUR.get(runInternalId)
   let newUrl = new URL(request.url)
@@ -65,7 +71,7 @@ async function pollRunData(
   let runData: RunData = await runDataRes.json()
   ws.send(JSON.stringify(runData))
   if (runData.status == 'RUNNING' && !isExpired(runData.startTime)) {
-    setTimeout(pollRunData, 2000, env, request, runId, ws)
+    setTimeout(pollRunData, 4000, env, request, runId, ws)
   } else {
     ws.send('<DONE>')
     ws.close()

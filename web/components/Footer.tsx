@@ -1,13 +1,15 @@
 const Footer: React.FC = () => {
   return (
     <>
-      <footer className="p-10 footer bg-base-200 text-base-content footer-center">
+      <footer className="p-10 footer bg-base-200 text-base-content footer-center mt-4">
         <div className="grid grid-flow-col gap-4">
           <a className="">Examples: </a>
-          <a className="link link-hover">for-loop vs streams</a>
-          <a className="link link-hover">parallel vs serial streams</a>
-          <a className="link link-hover">Jobs</a>
-          <a className="link link-hover">Press kit</a>
+          <a className="link link-hover" href="/31n1">
+            for-loop vs streams
+          </a>
+          <a className="link link-hover" href="/31n1">
+            parallel vs serial streams
+          </a>
         </div>
         <div className="grid grid-flow-col gap-4 grid-1">
           <div>
