@@ -66,15 +66,15 @@ export class K8sService {
 
   async getLogs(jobName: string, podName: string, sharePath: string) {
     this.log(jobName, 'getting logs for pod ' + podName);
-    const log = new k8s.Log(this.loadConfig());
+    //const log = new k8s.Log(this.loadConfig());
 
-    const logStream = fs.createWriteStream(`/data/${sharePath}/log.log`);
-    await log.log('default', podName, jobName, logStream, {
-      pretty: true,
-      timestamps: false,
-    });
-    await new Promise((fulfill) => logStream.on('finish', fulfill));
-    console.log('logs read');
+    // const logStream = fs.createWriteStream(`/data/${sharePath}/log.log`);
+    // await log.log('default', podName, jobName, logStream, {
+    //   pretty: true,
+    //   timestamps: false,
+    // });
+    // await new Promise((fulfill) => logStream.on('finish', fulfill));
+    // console.log('logs read');
   }
 
   private async create(jobName: string, spec: k8s.KubernetesObject) {
@@ -165,7 +165,7 @@ export class K8sService {
       {},
       (_type, _apiObj, watchObj) => {
         return (
-          (watchObj.object.status && watchObj.object.status.failed >= 2) ||
+          (watchObj.object.status && watchObj.object.status.failed == 2) ||
           (watchObj.object.metadata.name == name &&
             watchObj.object.status.conditions &&
             watchObj.object.status.conditions.some(
