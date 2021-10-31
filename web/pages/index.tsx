@@ -29,7 +29,7 @@ const Home: React.FC = () => {
     codeRuns: [{ code: "" }, { code: "" }],
   } as RunData);
   const [showError, setShowError] = useState(false);
-  const runId = router.query?.runId ? router.query.runId[0] : "dummy";
+  const runId = router.query?.runId ? router.query.runId : "dummy";
   console.log(runId);
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
@@ -62,7 +62,6 @@ const Home: React.FC = () => {
 
   let handleRun = async () => {
     let validationErrors = validate(runData);
-    
 
     if (validationErrors.length > 0) {
       setMessages(validationErrors);
@@ -88,7 +87,7 @@ const Home: React.FC = () => {
       runId,
     });
 
-    router.push("/" + runId, undefined, { shallow: true });
+    router.push("/?runId=" + runId, undefined, { shallow: true });
   };
 
   return (
