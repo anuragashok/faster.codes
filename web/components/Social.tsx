@@ -17,11 +17,11 @@ const Social: React.FC = () => {
   const title = "Checkout this comparision on faster.codes";
   return (
     <>
-      <div className="text-base flex flex-row text-center z-50 ">
-        SHARE RESULTS
+      <div className="text-base text-center z-50 text-center w-100px">
+        <div className="text-info m-auto">TO SHARE RESULTS</div>
+        <div className="m-auto">COPY URL</div>
+        <div className="m-auto">or</div>
       </div>
-      <div className="text-base flex flex-row text-center z-50 ">COPY URL</div>
-      <div className="text-base flex flex-row text-center z-50 ">or</div>
       <div className="flex flex-row text-center z-50">
         <EmailShareButton url={shareUrl} className="mr-2">
           <EmailIcon size={32} round />

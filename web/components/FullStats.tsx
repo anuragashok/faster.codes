@@ -15,7 +15,7 @@ const FullStats: React.FC<Props> = ({ codes }) => {
         <div className="grid flex-grow my-6 bordered border-primary-content  rounded-box place-items-center flex-2 indicator">
           <Stats code={codes[0]} />
         </div>
-        <div className="divider divider-vertical text-2xl text-secondary-focus font-bold flex-1">
+        <div className="divider divider-vertical text-2xl text-secondary-focus font-bold">
           {codes[0].stats && codes[1].stats && <Social />}
         </div>
         <div className="grid flex-grow my-6 bordered border-primary-content rounded-box place-items-center flex-2 indicator">
