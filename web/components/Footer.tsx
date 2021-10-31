@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
           <a className="link link-hover" href="/31n1">
             for-loop vs streams
           </a>
-          <a className="link link-hover" href="/31n1">
+          <a className="link link-hover" href="/31ne">
             parallel vs serial streams
           </a>
         </div>

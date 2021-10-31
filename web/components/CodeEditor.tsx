@@ -20,7 +20,7 @@ const CodeEditor: React.FC<Props> = ({ index, codeRunData, onChange }) => {
   return (
     <>
       <div className="bg-base-300 w-full rounded-t-2xl">
-        <DropDown lang={codeRunData.lang} onChange={handleLanguageChange} />
+        <DropDown lang={codeRunData.lang} onChange={handleLanguageChange} /> <span>support for more languages coming soon</span>
         <Editor
           height="50vh"
           language={codeRunData.lang}
