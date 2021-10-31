@@ -19,6 +19,8 @@ const fetcher = async (url: string) => {
 };
 
 const Home: React.FC = () => {
+  let runBtn = React.createRef<HTMLDivElement>();
+
   const router = useRouter();
 
   const [socketUrl, setSocketUrl] = useState("");
@@ -65,6 +67,13 @@ const Home: React.FC = () => {
       setMessages(validationErrors);
       setShowError(true);
       return;
+    }
+
+    if (runBtn.current) {
+      runBtn.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
 
     let runId = await run(runData);
@@ -117,7 +126,7 @@ const Home: React.FC = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row w-full">
+        <div className="flex flex-row w-full" ref={runBtn}>
           <div className="flex-1 ..."></div>
           <div className="flex-none ...">
             <div className="btn btn-lg btn-primary" onClick={handleRun}>
