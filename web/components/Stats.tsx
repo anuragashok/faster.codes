@@ -9,7 +9,16 @@ const Stats: React.FC<Props> = ({ code }) => {
   if (code?.status == undefined) {
     return <Loader />;
   } else if (code?.status == "FAILED") {
-    return <div>FAIL</div>;
+    return (
+      <div>
+        FAILED. <br />
+        Sorry this run has failed. At this point, we are unable to provide the
+        exact failure reason (support coming soon). <br />
+        Common causes include compilation failure or code runs longer than 4
+        minutes. <br />
+        or maybe a temporary issue on our side, please click RUN AGAIN button
+      </div>
+    );
   } else if (code?.status == "SUCCESS" && !code.stats) {
     return <div>STATS NOT AVAILABLE</div>;
   } else {

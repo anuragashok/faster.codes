@@ -57,12 +57,7 @@ export class Run {
             runData?.codeRuns?.filter((c) => c.id == req.id)[0],
             req,
           )
-          console.log('move to KV and delete durable object after 70 seconds')
-          this.env.RUNKV.put(runData.runId, JSON.stringify(runData))
-          setTimeout(() => {
-            console.log('deleting from durable object')
-            this.state.storage?.delete('data')
-          }, 70000)
+
           if (
             runData?.codeRuns?.filter((c) => c.status == 'SUCCESS').length == 2
           ) {
@@ -71,6 +66,17 @@ export class Run {
             runData?.codeRuns?.filter((c) => c.status == 'FAILED').length > 1
           ) {
             runData.status = 'FAILED'
+          }
+
+          if (
+            runData?.codeRuns?.filter((c) => c.status != undefined).length == 2
+          ) {
+            console.log('move to KV and delete durable object after 70 seconds')
+            this.env.RUNKV.put(runData.runId, JSON.stringify(runData))
+            setTimeout(() => {
+              console.log('deleting from durable object')
+              this.state.storage?.delete('data')
+            }, 70000)
           }
 
           await this.state.storage?.put<RunData>('data', runData)

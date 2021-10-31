@@ -1,15 +1,18 @@
+import React from "react";
+import Link from "next/link";
+
 const Footer: React.FC = () => {
   return (
     <>
       <footer className="p-10 footer bg-base-200 text-base-content footer-center mt-4">
         <div className="grid grid-flow-col gap-4">
           <a className="">Examples: </a>
-          <a className="link link-hover" href="/31n1">
-            for-loop vs streams
-          </a>
-          <a className="link link-hover" href="/31ne">
-            parallel vs serial streams
-          </a>
+          <Link href="/31n1">
+            <a className="link">for-loop vs streams</a>
+          </Link>
+          <Link href="/31ne">
+            <a className="link">parallel vs serial streams</a>
+          </Link>
         </div>
         <div className="grid grid-flow-col gap-4 grid-1">
           <div>

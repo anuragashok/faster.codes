@@ -62,6 +62,7 @@ const Home: React.FC = () => {
 
   let handleRun = async () => {
     let validationErrors = validate(runData);
+    
 
     if (validationErrors.length > 0) {
       setMessages(validationErrors);
@@ -75,6 +76,11 @@ const Home: React.FC = () => {
         block: "start",
       });
     }
+
+    setRunData({
+      ...runData,
+      runId: undefined,
+    });
 
     let runId = await run(runData);
     setRunData({
