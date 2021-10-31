@@ -61,7 +61,7 @@ export class K8sService {
       `job:${jobName} done waiting for job completion ${result}`,
     );
     await this.getLogs(jobName, await this.getPodName(code.codeId), sharePath);
-    //this.delete(jobName, spec);
+    this.delete(jobName, spec);
   }
 
   async getLogs(jobName: string, podName: string, sharePath: string) {

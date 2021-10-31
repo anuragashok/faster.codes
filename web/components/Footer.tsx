@@ -20,13 +20,6 @@ const Footer: React.FC = () => {
                 Cloudflare Developer Summer Challenge.
               </a>
             </p>
-
-            <p>
-              Apart from the excellent and cost-effective edge hosting and
-              computing provided by Cloudflare, this app uses a lot of
-              free/open-source libraries by various awesome programmers around
-              the world. Thank you everyone!
-            </p>
           </div>
         </div>
       </footer>
