@@ -9,6 +9,7 @@ export interface CodeRunData {
   lang: string;
   code: string;
   stats?: RunStats;
+  status?: string;
 }
 export interface RunStats {
   duration: RunValues;

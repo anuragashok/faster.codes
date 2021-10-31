@@ -22,6 +22,7 @@ export class Run {
         const runId = path[0]
         const req: RunData = await request.json()
         await this.state.storage?.put<RunData>('data', {
+          runId: runId,
           status: 'RUNNING',
           startTime: +new Date(),
           codeRuns: [
@@ -54,11 +55,15 @@ export class Run {
             runData?.codeRuns?.filter((c) => c.id == req.id)[0],
             req,
           )
-          // TODO
+
           if (
-            runData?.codeRuns?.filter((c) => c.stats == undefined).length == 0
+            runData?.codeRuns?.filter((c) => c.status == 'SUCCESS').length == 2
           ) {
-            runData.status = 'COMPLETED'
+            runData.status = 'SUCCESS'
+          } else if (
+            runData?.codeRuns?.filter((c) => c.status == 'FAILED').length > 1
+          ) {
+            runData.status = 'FAILED'
           }
 
           await this.state.storage?.put<RunData>('data', runData)

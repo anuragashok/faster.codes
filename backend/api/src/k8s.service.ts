@@ -60,19 +60,15 @@ export class K8sService {
     this.logger.info(
       `job:${jobName} done waiting for job completion ${result}`,
     );
-    await this.getLogs(jobName, await this.getPodName(code.codeId));
+    await this.getLogs(jobName, await this.getPodName(code.codeId), sharePath);
     //this.delete(jobName, spec);
   }
 
-  async getLogs(jobName: string, podName: string) {
+  async getLogs(jobName: string, podName: string, sharePath: string) {
     this.log(jobName, 'getting logs for pod ' + podName);
     const log = new k8s.Log(this.loadConfig());
 
-    const logStream = new stream.PassThrough();
-    logStream.on('data', (chunk) => {
-      // use write rather than console.log to prevent double line feed
-      process.stdout.write(chunk);
-    });
+    const logStream = fs.createWriteStream(`/data/${sharePath}/log.log`);
     await log.log('default', podName, jobName, logStream, {
       pretty: true,
       timestamps: false,

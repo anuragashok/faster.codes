@@ -21,29 +21,48 @@ export class AppService {
 
   async run(runInfo: Run) {
     runInfo.codes.map(async (c) => {
-      const dir = `/data/${runInfo.runId}/${c.codeId}`;
-      fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(`${dir}/Main.java`, Buffer.from(c.code, 'base64'));
-      await this.k8sService.startJob(runInfo.runId, c);
+      try {
+        const dir = `/data/${runInfo.runId}/${c.codeId}`;
+        fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(`${dir}/Main.java`, Buffer.from(c.code, 'base64'));
+        await this.k8sService.startJob(runInfo.runId, c);
 
-      let codeRunData: CodeRunData = { id: c.codeId, stats: {} };
+        let codeRunData: CodeRunData = {
+          id: c.codeId,
+          stats: {},
+          status: 'SUCCESS',
+        };
 
-      let buf = await fsReadFileP(`${dir}/stats.json`);
-      let stats = JSON.parse(buf.toString());
-      Object.assign(codeRunData.stats, stats);
+        let buf = await fsReadFileP(`${dir}/stats.json`);
+        let stats = JSON.parse(buf.toString());
+        Object.assign(codeRunData.stats, stats);
 
-      await lastValueFrom(
-        this.httpService.put(
-          `https://fastercodes.anurag16890.workers.dev/${runInfo.runId}`,
-          codeRunData,
-        ),
-      );
+        await lastValueFrom(
+          this.httpService.put(
+            `https://api.faster.codes/${runInfo.runId}`,
+            codeRunData,
+          ),
+        );
+      } catch (e) {
+        let codeRunData: CodeRunData = {
+          id: c.codeId,
+          stats: {},
+          status: 'FAILED',
+        };
+        await lastValueFrom(
+          this.httpService.put(
+            `https://api.faster.codes/${runInfo.runId}`,
+            codeRunData,
+          ),
+        );
+      }
     });
   }
 }
 
 interface CodeRunData {
   id: string;
+  status?: string;
   stats?: RunStats;
 }
 

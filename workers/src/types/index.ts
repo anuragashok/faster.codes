@@ -1,4 +1,5 @@
 export interface RunData {
+  runId: string
   status?: string
   startTime?: number
   codeRuns: CodeRunData[]
@@ -8,6 +9,7 @@ export interface CodeRunData {
   lang: string
   code: string
   stats?: RunStats
+  status?: string
 }
 export interface RunStats {
   duration: RunValues
