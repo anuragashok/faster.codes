@@ -7,10 +7,10 @@ const Footer: React.FC = () => {
       <footer className="p-10 footer bg-base-200 text-base-content footer-center mt-4">
         <div className="grid grid-flow-col gap-4">
           <a className="">Examples: </a>
-          <Link href="/31n1">
+          <Link href="/?runId=31n1">
             <a className="link">for-loop vs streams</a>
           </Link>
-          <Link href="/31ne">
+          <Link href="/?runId=31np">
             <a className="link">parallel vs serial streams</a>
           </Link>
         </div>
