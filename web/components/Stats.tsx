@@ -25,6 +25,7 @@ const Stats: React.FC<Props> = ({ code }) => {
     return (
       <div className="grid-flow-row shadow stats text-info">
         <div className="stat">
+          
           <div className="stat-title text-info font-bold">Execution Time</div>
           <div className="stat-value text-success">
             {Number(stats?.duration.avg).toFixed(0)}
