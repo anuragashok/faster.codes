@@ -29,7 +29,8 @@ with open('/data/out', 'w') as out:
             time.sleep(0.001)
 
             mem = process.memory_info().rss/(float)(2**10)
-            cpu = process.cpu_percent()
+            cpuTimes = process.cpu_times()
+            cpu = cpuTimes.user + cpuTimes.system
 
             if mem > peak_mem:
                 peak_mem = mem
@@ -41,7 +42,7 @@ with open('/data/out', 'w') as out:
         finish = time.monotonic_ns()
 
         mem_values.append(peak_mem)
-        cpu_values.append(peak_cpu)
+        cpu_values.append(peak_cpu*1000)
         dur_values.append((finish - start)/1000000)
 
 stats = {
