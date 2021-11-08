@@ -32,6 +32,7 @@ const CodeEditor: React.FC<Props> = ({ index, codeRunData, onChange }) => {
             fontSize: 16,
             fontFamily: "Inconsolata",
             minimap: { enabled: false },
+            scrollBeyondLastLine: false
           }}
         />
       </div>
