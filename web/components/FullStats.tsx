@@ -58,10 +58,10 @@ const FullStats: React.FC<Props> = ({ codes }) => {
         </div>
         {[EXECUTION_TIME, CPU, MEM].map((v) => {
           return (
-            <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2">
+            <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2" key={v.key}>
               {[0, 1].map((n) => {
                 return (
-                  <StatBlock
+                  <StatBlock key={n}
                     title={v.title}
                     value={getStatValue(n, v.key)}
                     desc={v.desc}
@@ -73,6 +73,9 @@ const FullStats: React.FC<Props> = ({ codes }) => {
             </div>
           );
         })}
+        <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2">
+          {codes[0].stats && codes[1].stats && <Social />}
+        </div>
       </>
     );
   }

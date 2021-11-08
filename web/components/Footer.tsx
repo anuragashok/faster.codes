@@ -4,13 +4,13 @@ import Link from "next/link";
 const Footer: React.FC = () => {
   return (
     <>
-      <footer className="p-10 footer bg-base-200 text-base-content footer-center mt-4">
+      <footer className="p-10 footer bg-neutral text-neutral-content footer-center mt-4">
         <div className="grid grid-flow-col gap-4">
           <a className="">Examples: </a>
-          <Link href="/?runId=31n1">
+          <Link href="/?runId=31nq">
             <a className="link">for-loop vs streams</a>
           </Link>
-          <Link href="/?runId=31np">
+          <Link href="/?runId=31nr">
             <a className="link">parallel vs serial streams</a>
           </Link>
         </div>
