@@ -58,5 +58,5 @@ jobs:
     uses: anuragashok/faster.codes/.github/workflows/terraform.yml@main
     needs: build
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN_COPY: ${{ secrets.GITHUB_TOKEN }}
       TERRAFORM_API_TOKEN: ${{ secrets.TERRAFORM_API_TOKEN }}
