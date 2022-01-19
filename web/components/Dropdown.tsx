@@ -5,7 +5,7 @@ type Props = { lang: string; onChange: (lang: string) => void };
 const DropDown: React.FC<Props> = ({ lang, onChange }) => {
   const [open, setOpen] = useState(false);
 
-  const languages = ["java"];
+  const languages = ["java", "golang"];
 
   return (
     <>

@@ -24,7 +24,16 @@ export class AppService {
       try {
         const dir = `/data/${runInfo.runId}/${c.codeId}`;
         fs.mkdirSync(dir, { recursive: true });
-        fs.writeFileSync(`${dir}/Main.java`, Buffer.from(c.code, 'base64'));
+        let fileName = ""
+        switch(c.lang) {
+          case "java":
+            fileName = "Main.java"
+            break;
+          case "golang":
+            fileName = "main.go"
+            break;
+        }
+        fs.writeFileSync(`${dir}/${fileName}`, Buffer.from(c.code, 'base64'));
         await this.k8sService.startJob(runInfo.runId, c);
 
         let codeRunData: CodeRunData = {
