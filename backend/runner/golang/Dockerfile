@@ -1,4 +1,4 @@
-FROM golang:1.17.6-alpine3.15
+FROM golang:stretch
 WORKDIR /app
 COPY run.py .
 RUN chmod +x run.py
