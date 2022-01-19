@@ -8,11 +8,17 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "2.5.0"
     }
-    google = {
-      source  = "hashicorp/google"
-      version = "3.86.0",
+    digitalocean = {
+      source = "digitalocean/digitalocean"
+      version = "2.17.0"
     }
   }
+}
+
+variable "do_token" {}
+
+provider "digitalocean" {
+  token = var.do_token
 }
 
 variable "PROVIDER_CLOUDFLARE_EMAIL" {}
@@ -24,15 +30,12 @@ provider "cloudflare" {
   account_id = var.PROVIDER_CLOUDFLARE_ACCOUNT_ID
 }
 
-provider "google-beta" {
-  project = "faster-codes-backend"
-  region  = "us-central1"
-  zone    = "us-central1-c"
+provider "kubernetes" {
+  host             = data.digitalocean_kubernetes_cluster.faster_codes.endpoint
+  token            = data.digitalocean_kubernetes_cluster.faster_codes.kube_config[0].token
+  cluster_ca_certificate = base64decode(
+    data.digitalocean_kubernetes_cluster.faster_codes.kube_config[0].cluster_ca_certificate
+  )
 }
 
-provider "kubernetes" {
-  host                   = "https://${module.gke.endpoint}"
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
-}
 

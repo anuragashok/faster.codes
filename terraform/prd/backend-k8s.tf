@@ -69,11 +69,6 @@ resource "kubernetes_deployment" "backend_api" {
             name       = "backend-nfs"
           }
 
-          volume_mount {
-            mount_path = "/kubeconfig"
-            name       = "backend-kc"
-          }
-
         }
 
         volume {
@@ -82,12 +77,7 @@ resource "kubernetes_deployment" "backend_api" {
             claim_name = kubernetes_persistent_volume_claim.backend_nfs.metadata.0.name
           }
         }
-        volume {
-          name = "backend-kc"
-          secret {
-            secret_name = kubernetes_secret.backend_kc.metadata.0.name
-          }
-        }
+        
       }
     }
   }
@@ -96,9 +86,6 @@ resource "kubernetes_deployment" "backend_api" {
 resource "kubernetes_service" "backend_api" {
   metadata {
     name = "backend-api"
-    annotations = {
-      "cloud.google.com/neg" = "{\"ingress\": true}"
-    }
     labels = {
       name = "backend-api"
     }
@@ -108,16 +95,11 @@ resource "kubernetes_service" "backend_api" {
       name = "backend-api"
     }
     port {
-      port        = 3000
+      port        = 80
       target_port = 3000
       protocol    = "TCP"
     }
-    type = "NodePort"
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].annotations["cloud.google.com/neg-status"],
-    ]
+    type = "LoadBalancer"
   }
 }
 
@@ -209,8 +191,8 @@ resource "kubernetes_deployment" "backend_nfs" {
         }
         volume {
           name = "backend-fs"
-          gce_persistent_disk {
-            pd_name = google_compute_disk.faster_codes_runner_fs.name
+          persistent_volume_claim {
+            claim_name = kubernetes_persistent_volume_claim.backend_fs.metadata.0.name
           }
         }
       }
@@ -243,11 +225,6 @@ resource "kubernetes_service" "backend_nfs" {
       name = "rpcbind"
     }
     type = "ClusterIP"
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].annotations["cloud.google.com/neg"],
-    ]
   }
 }
 
@@ -286,13 +263,18 @@ resource "kubernetes_persistent_volume_claim" "backend_nfs" {
   }
 }
 
-resource "kubernetes_secret" "backend_kc" {
+resource "kubernetes_persistent_volume_claim" "backend_fs" {
   metadata {
-    name = "backend-kc"
+    name = "backend-fs"
   }
-
-  data = {
-    config = module.gke_auth.kubeconfig_raw
+  spec {
+    access_modes       = ["ReadWriteOnce"]
+    storage_class_name = "do-block-storage"
+    resources {
+      requests = {
+        storage = "10Gi"
+      }
+    }
   }
 }
 
