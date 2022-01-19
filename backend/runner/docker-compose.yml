@@ -5,3 +5,8 @@ services:
       context: .
       dockerfile: java/Dockerfile
     image: ${REPO}runner-java:latest
+  golang:
+    build:
+      context: .
+      dockerfile: golang/Dockerfile
+    image: ${REPO}runner-golang:latest
