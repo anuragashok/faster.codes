@@ -1,4 +1,4 @@
-FROM golang:stretch
+FROM golang:bullseye
 WORKDIR /app
 COPY run.py .
 RUN chmod +x run.py
