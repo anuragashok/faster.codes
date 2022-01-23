@@ -53,56 +53,52 @@ const FullStats: React.FC<Props> = ({ codes }) => {
   } else {
     return (
       <>
-        <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2">
-          {codes[0].stats && codes[1].stats && <Social />}
-        </div>
-
-        <div className="flex flex-row w-full">
+        <div className="flex flex-row w-full mt-4">
           {[0, 1].map((n) => {
             return (
               <>
-                {/* <div className="grid flex-grow my-6 bordered border-primary-content  rounded-box place-items-center flex-1 indicator"> */}
-                <div className="grid-flow-row flex-grow shadow stats">
-                  {[EXECUTION_TIME, CPU, MEM].map((v) => {
-                    return (
-                      <StatBlock
-                        key={n}
-                        title={v.title}
-                        value={getStatValue(n, v.key)}
-                        desc={v.desc}
-                        unit={v.unit}
-                        diff={diff(n, v.key)}
-                      />
-                    );
-                  })}
-                </div>
+                {codes[n]?.status == undefined && <Loader />}
+                {codes[n]?.status == "FAILED" && (
+                  <div>
+                    FAILED. <br />
+                    Sorry this run has failed. At this point, we are unable to
+                    provide the exact failure reason (support coming soon).{" "}
+                    <br />
+                    Common causes include compilation failure or code runs
+                    longer than 4 minutes. <br />
+                    or maybe a temporary issue on our side, please click RUN
+                    AGAIN button
+                  </div>
+                )}
+                {codes[n]?.status == "SUCCESS" && !codes[n].stats && (
+                  <div>STATS NOT AVAILABLE</div>
+                )}
+                {codes[n]?.status == "SUCCESS" && codes[n].stats && (
+                  <>
+                    <div className="grid-flow-row flex-grow border-2 stats shadow-md">
+                      {[EXECUTION_TIME, CPU, MEM].map((v) => {
+                        return (
+                          <StatBlock
+                            key={n}
+                            title={v.title}
+                            value={getStatValue(n, v.key)}
+                            desc={v.desc}
+                            unit={v.unit}
+                            diff={diff(n, v.key)}
+                          />
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
                 {n == 0 && (
-                  <div className="divider divider-vertical text-xl text-primary-focus font-bold" />
+                  <div className="divider divider-vertical text-xl text-primary-focus font-bold mx-6">
+                    <Social />
+                  </div>
                 )}
               </>
             );
           })}
-        </div>
-
-        {/* {[EXECUTION_TIME, CPU, MEM].map((v) => {
-          return (
-            <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2" key={v.key}>
-              {[0, 1].map((n) => {
-                return (
-                  <StatBlock key={n}
-                    title={v.title}
-                    value={getStatValue(n, v.key)}
-                    desc={v.desc}
-                    unit={v.unit}
-                    diff={diff(n, v.key)}
-                  />
-                );
-              })}
-            </div>
-          );
-        })} */}
-        <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2">
-          {codes[0].stats && codes[1].stats && <Social />}
         </div>
       </>
     );

@@ -45,7 +45,12 @@ const Header: React.FC = () => {
               </svg>
               Credits
             </a>
-            <a className="btn btn-ghost btn-sm rounded-btn" href="https://github.com/anuragashok/faster.codes" target="_blank">
+            <a
+              className="btn btn-ghost btn-sm rounded-btn"
+              href="https://github.com/anuragashok/faster.codes"
+              target="_blank"
+              rel="noreferrer"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="inline-block w-5 mr-2 stroke-current"

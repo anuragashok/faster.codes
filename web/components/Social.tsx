@@ -19,26 +19,16 @@ const Social: React.FC = () => {
   const title = "Checkout this comparision on faster.codes";
   return (
     <>
-      <div className="m-auto mt-4">
-        <div className="flex flex-row place-items-center place-content-center z-50">
-          <button className="mr-2" title="Copy link to clipboard">
-            <FontAwesomeIcon
-              icon={faCopy}
-              fontSize="24"
-              size="2x"
-              onClick={() => navigator.clipboard.writeText(shareUrl)}
-            />
-          </button>
-          <EmailShareButton url={shareUrl} className="mr-2">
-            <EmailIcon size={48} />
-          </EmailShareButton>
-          <TwitterShareButton url={shareUrl} title={title} className="mr-2">
-            <TwitterIcon size={48} />
-          </TwitterShareButton>
-          <LinkedinShareButton url={shareUrl} title={title} className="">
-            <LinkedinIcon size={48} />
-          </LinkedinShareButton>
-        </div>
+      <div className="flex flex-col z-50 place-items-center place-content-center rounded">
+        <EmailShareButton url={shareUrl} className="mt-1">
+          <EmailIcon size={48} round={true} />
+        </EmailShareButton>
+        <TwitterShareButton url={shareUrl} title={title} className="mt-1">
+          <TwitterIcon size={48} round={true} />
+        </TwitterShareButton>
+        <LinkedinShareButton url={shareUrl} title={title} className="mt-1">
+          <LinkedinIcon size={48} round={true} />
+        </LinkedinShareButton>
       </div>
     </>
   );
