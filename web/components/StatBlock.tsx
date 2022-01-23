@@ -23,7 +23,7 @@ const StatBlock: React.FC<Props> = ({ title, value, desc, unit, diff }) => {
   )} ${unit} (${Math.abs(diff.percent).toFixed(0)}%)`;
   return (
     <>
-      <div className="stat place-items-center place-content-center">
+      <div className="stat shadow place-items-center place-content-center">
         <div className="stat-title font-bold text-info opacity-80">{title}</div>
         <div className={"stat-value " + statClass}>
           {value?.toFixed(0)}

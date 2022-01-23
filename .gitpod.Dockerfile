@@ -18,6 +18,7 @@ RUN sudo chown gitpod: /opt \
 RUN gcloud --quiet components install kubectl  
     
 #custom setup 
+RUN brew install doctl
 RUN sudo mkdir /data \
     && sudo mkdir /kubeconfig \
     && sudo chmod -R 777 /data \

@@ -102,7 +102,7 @@ const Home: React.FC = () => {
         messages={messages}
       />
       <div className="container mx-auto h-full">
-        <div className="card lg:card-side bordered">
+        {/* <div className="card lg:card-side bordered">
           <div className="card-body text-center subpixel-antialiased">
             <ul className="w-full steps mb-3 font-semibold ">
               <li className="step">SELECT LANGUAGES</li>
@@ -111,7 +111,7 @@ const Home: React.FC = () => {
               <li className="step">SHARE</li>
             </ul>
           </div>
-        </div>
+        </div> */}
         <div className="flex flex-row w-full">
           <div className="grid flex-grow my-6 bordered border-primary-content  rounded-box place-items-center flex-1 indicator">
             <CodeEditor
@@ -120,8 +120,8 @@ const Home: React.FC = () => {
               onChange={handCodeRunDataChange}
             />
           </div>
-          <div className="divider divider-vertical text-2xl text-secondary-focus font-bold">
-            VS
+          <div className="divider divider-vertical text-xl text-primary-focus font-bold">
+            vs
           </div>
           <div className="grid flex-grow my-6 bordered border-primary-content rounded-box place-items-center flex-1 indicator">
             <CodeEditor
@@ -131,11 +131,11 @@ const Home: React.FC = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row w-full" ref={runBtn}>
+        <div className="flex flex-row w-full mt-3" ref={runBtn}>
           <div className="flex-1 ..."></div>
           <div className="flex-none ...">
             <div className="btn btn-lg btn-primary" onClick={handleRun}>
-              {runData.runId ? "RUN AGAIN" : "RUN & COMPARE"}
+              {getRunButtonText(runData)}
             </div>
           </div>
           <div className="flex-1 ..."></div>
@@ -148,5 +148,18 @@ const Home: React.FC = () => {
     </>
   );
 };
+
+function getRunButtonText(runData: RunData): string {
+  if (!runData.runId) {
+    return "COMPARE";
+  }
+  if (
+    runData.codeRuns[0].status == undefined &&
+    runData.codeRuns[1].status == undefined
+  ) {
+    return "PLEASE WAIT...";
+  }
+  return "RUN AGAIN";
+}
 
 export default Home;

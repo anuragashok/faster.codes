@@ -4,8 +4,8 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
-      sans: ["Inconsolata", "ui-sans-serif", "system-ui"],
-      serif: ["Inconsolata", "ui-serif", "Georgia"],
+      sans: ["Open Sans", "sans-serif"],
+      serif: ["Open Sans", "sans-serif"],
       mono: ["ui-monospace", "SFMono-Regular"],
     },
     extend: {},
@@ -15,6 +15,6 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["bumblebee"],
+    themes: ["emerald"],
   },
 };

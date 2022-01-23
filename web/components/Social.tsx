@@ -20,14 +20,9 @@ const Social: React.FC = () => {
   return (
     <>
       <div className="m-auto mt-4">
-        <div className="text-lg place-items-center place-content-center m-auto mb-2">
-          <div className="text-info m-auto uppercase text-center">
-            Share results
-          </div>
-        </div>
         <div className="flex flex-row place-items-center place-content-center z-50">
           <button className="mr-2" title="Copy link to clipboard">
-            <FontAwesomeIcon 
+            <FontAwesomeIcon
               icon={faCopy}
               fontSize="24"
               size="2x"

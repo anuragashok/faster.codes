@@ -19,9 +19,8 @@ const CodeEditor: React.FC<Props> = ({ index, codeRunData, onChange }) => {
   };
   return (
     <>
-      <div className="bg-base-300 w-full rounded-t-2xl">
-        <DropDown lang={codeRunData.lang} onChange={handleLanguageChange} />{" "}
-        <span>support for more languages coming soon</span>
+      <div className="bg-base-300 w-full rounded-t-2xl ">
+        <DropDown lang={codeRunData.lang} onChange={handleLanguageChange} />
         <Editor
           height="50vh"
           language={codeRunData.lang}
@@ -30,9 +29,9 @@ const CodeEditor: React.FC<Props> = ({ index, codeRunData, onChange }) => {
           theme="vs-dark"
           options={{
             fontSize: 16,
-            fontFamily: "Inconsolata",
+            fontFamily: "Open Sans",
             minimap: { enabled: false },
-            scrollBeyondLastLine: false
+            scrollBeyondLastLine: false,
           }}
         />
       </div>

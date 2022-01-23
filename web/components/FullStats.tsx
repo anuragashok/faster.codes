@@ -56,7 +56,35 @@ const FullStats: React.FC<Props> = ({ codes }) => {
         <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2">
           {codes[0].stats && codes[1].stats && <Social />}
         </div>
-        {[EXECUTION_TIME, CPU, MEM].map((v) => {
+
+        <div className="flex flex-row w-full">
+          {[0, 1].map((n) => {
+            return (
+              <>
+                {/* <div className="grid flex-grow my-6 bordered border-primary-content  rounded-box place-items-center flex-1 indicator"> */}
+                <div className="grid-flow-row flex-grow shadow stats">
+                  {[EXECUTION_TIME, CPU, MEM].map((v) => {
+                    return (
+                      <StatBlock
+                        key={n}
+                        title={v.title}
+                        value={getStatValue(n, v.key)}
+                        desc={v.desc}
+                        unit={v.unit}
+                        diff={diff(n, v.key)}
+                      />
+                    );
+                  })}
+                </div>
+                {n == 0 && (
+                  <div className="divider divider-vertical text-xl text-primary-focus font-bold" />
+                )}
+              </>
+            );
+          })}
+        </div>
+
+        {/* {[EXECUTION_TIME, CPU, MEM].map((v) => {
           return (
             <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2" key={v.key}>
               {[0, 1].map((n) => {
@@ -72,7 +100,7 @@ const FullStats: React.FC<Props> = ({ codes }) => {
               })}
             </div>
           );
-        })}
+        })} */}
         <div className="w-full flex flex-row  drop-shadow-lg  stats mb-2">
           {codes[0].stats && codes[1].stats && <Social />}
         </div>

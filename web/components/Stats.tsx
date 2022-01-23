@@ -28,7 +28,7 @@ const Stats: React.FC<Props> = ({ code }) => {
           
           <div className="stat-title text-info font-bold">Execution Time</div>
           <div className="stat-value text-success">
-            {Number(stats?.duration.avg).toFixed(0)}
+            {Number(stats?.duration?.avg).toFixed(0)}
             <span className="text-base">MS</span>
           </div>
 
@@ -37,14 +37,14 @@ const Stats: React.FC<Props> = ({ code }) => {
         <div className="stat">
           <div className="stat-title text-info font-bold">CPU</div>
           <div className="stat-value text-error">
-            {Number(stats?.cpu.avg).toFixed(0)}
+            {Number(stats?.cpu?.avg).toFixed(0)}
           </div>
           <div className="stat-desc">Average CPU time over 10 runs</div>
         </div>
         <div className="stat">
           <div className="stat-title text-info font-bold">Memory</div>
           <div className="stat-value">
-            {stats?.mem.avg}
+            {stats?.mem?.avg}
             <span className="text-base">KB</span>
           </div>
           <div className="stat-desc">

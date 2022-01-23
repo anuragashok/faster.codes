@@ -9,13 +9,13 @@ const DropDown: React.FC<Props> = ({ lang, onChange }) => {
 
   return (
     <>
-      <div className="dropdown">
+      <div className="dropdown lang-dropdown">
         <div
           tabIndex={0}
           className="btn btn-sm btn-primary "
           onClick={() => setOpen(!open)}
         >
-          <div className="w-24 font-medium uppercase">{lang}</div>
+          <div className="w-24 font-large capitalize">{lang}</div>
           {open && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
