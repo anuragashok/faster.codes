@@ -74,7 +74,7 @@ const FullStats: React.FC<Props> = ({ codes }) => {
                         </p>
                           <ul className="list-disc">
                             <li>Compilation failure</li>
-                            <li>Code runs > 4 minutes</li>
+                            <li>Code runs &gt; 4 minutes</li>
                             <li>Temporary issue with the faster.codes platform</li>
                           </ul>
                         
