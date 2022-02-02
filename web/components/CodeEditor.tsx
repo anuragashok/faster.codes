@@ -10,17 +10,42 @@ type Props = {
 };
 
 const CodeEditor: React.FC<Props> = ({ index, codeRunData, onChange }) => {
-  let handleLanguageChange = (lang: string) => {
-    onChange(index, { ...codeRunData, lang });
+  const [cache, setCache] = useState(new Map<string, string>());
+
+  let handleLanguageChange = async (lang: string) => {
+    let code = "";
+    console.log(cache);
+    if (cache.has(lang)) {
+      let codeFromCache = cache.get(lang);
+      if (codeFromCache) {
+        code = codeFromCache;
+      }
+    } else {
+      const response = await fetch(`/lang_config/code_templates/${lang}.txt`);
+      code = await response.text();
+    }
+    const base64Code = code ? Buffer.from(code).toString("base64") : "";
+    onChange(index, { ...codeRunData, code: base64Code, lang });
   };
+
   let handleCodeChange = (code: string | undefined) => {
     const base64Code = code ? Buffer.from(code).toString("base64") : "";
+    if (code) {
+      setCache(cache.set(codeRunData.lang, code));
+    }
+    console.log(cache);
     onChange(index, { ...codeRunData, code: base64Code });
   };
+
   return (
     <>
       <div className="bg-base-300 w-full rounded-t-2xl ">
-        <DropDown lang={codeRunData.lang} onChange={handleLanguageChange} />
+        <div className="grid grid-cols-3 justify-items-stretch">
+          <DropDown lang={codeRunData.lang} onChange={handleLanguageChange} />
+          <div className="self-center text-center text-black text-bold">
+            Block {String.fromCharCode(65 + index)}
+          </div>
+        </div>
         <Editor
           height="50vh"
           language={codeRunData.lang}

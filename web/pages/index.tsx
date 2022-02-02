@@ -93,7 +93,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Head>
-        <title>faster.codes</title>
+        <title>&#123; faster.codes &#125;</title>
       </Head>
       <Header />
       <ErrorModal
@@ -102,16 +102,26 @@ const Home: React.FC = () => {
         messages={messages}
       />
       <div className="container mx-auto h-full">
-        {/* <div className="card lg:card-side bordered">
-          <div className="card-body text-center subpixel-antialiased">
-            <ul className="w-full steps mb-3 font-semibold ">
-              <li className="step">SELECT LANGUAGES</li>
-              <li className="step">WRITE CODES</li>
-              <li className="step">RUN & COMPARE</li>
-              <li className="step">SHARE</li>
-            </ul>
+        <div className="card text-center">
+          <div className="card-body  p-2">
+            <h1 className="card-title text-primary text-3xl">
+              What runs faster?
+            </h1>
+            <p className="text-md antialiased text-lg">
+              <ul className="w-full steps">
+                <li className="step step-info">
+                  Select Runtime & Write Code (Block A)
+                </li>
+                <li className="step step-info">
+                  Select Runtime & Write Code (Block B)
+                </li>
+                <li className="step step-info">Compare</li>
+                <li className="step step-info">View Results</li>
+              </ul>
+            </p>
           </div>
-        </div> */}
+        </div>
+
         <div className="flex flex-row w-full">
           <div className="grid flex-grow my-6 bordered border-primary-content  rounded-box place-items-center flex-1 indicator">
             <CodeEditor

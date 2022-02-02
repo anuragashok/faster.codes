@@ -31,7 +31,7 @@ type Diff = { percent: number; value: number };
 const FullStats: React.FC<Props> = ({ codes }) => {
   const getStatValue = (n: number, key: string) => {
     const stats = codes[n].stats;
-    return stats && stats[key as StatKey].avg;
+    return stats && stats[key as StatKey] && stats[key as StatKey].avg;
   };
 
   const diff = (n: number, key: string): Diff => {
@@ -59,15 +59,27 @@ const FullStats: React.FC<Props> = ({ codes }) => {
               <>
                 {codes[n]?.status == undefined && <Loader />}
                 {codes[n]?.status == "FAILED" && (
-                  <div>
-                    FAILED. <br />
-                    Sorry this run has failed. At this point, we are unable to
-                    provide the exact failure reason (support coming soon).{" "}
-                    <br />
-                    Common causes include compilation failure or code runs
-                    longer than 4 minutes. <br />
-                    or maybe a temporary issue on our side, please click RUN
-                    AGAIN button
+                  <div className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md">
+                    <div className="stat shadow place-items-center place-content-center self-start">
+                      <div className="stat-title font-bold text-info opacity-80">FAILED</div>
+                      <div className="stat-desc whitespace-normal opacity-100 mt-4 text-normal">
+                        <p className="text-center">
+                          Sorry this run has failed. 
+                        </p>
+                        <p className="text-center">
+                          At this point, we are unable to provide the exact failure reason (support coming soon).
+                        </p>
+                        <p className="mt-2">
+                          Common causes for this are
+                        </p>
+                          <ul className="list-disc">
+                            <li>Compilation failure</li>
+                            <li>Code runs > 4 minutes</li>
+                            <li>Temporary issue with the faster.codes platform</li>
+                          </ul>
+                        
+                      </div>
+                    </div>
                   </div>
                 )}
                 {codes[n]?.status == "SUCCESS" && !codes[n].stats && (
@@ -75,7 +87,7 @@ const FullStats: React.FC<Props> = ({ codes }) => {
                 )}
                 {codes[n]?.status == "SUCCESS" && codes[n].stats && (
                   <>
-                    <div className="grid-flow-row flex-grow border-2 stats shadow-md">
+                    <div className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md">
                       {[EXECUTION_TIME, CPU, MEM].map((v) => {
                         return (
                           <StatBlock

@@ -15,7 +15,9 @@ const DropDown: React.FC<Props> = ({ lang, onChange }) => {
           className="btn btn-sm btn-primary "
           onClick={() => setOpen(!open)}
         >
-          <div className="w-24 font-large capitalize">{lang}</div>
+          <div className="w-32 font-large capitalize">
+            {lang ? lang : "select platform"}
+          </div>
           {open && (
             <svg
               xmlns="http://www.w3.org/2000/svg"

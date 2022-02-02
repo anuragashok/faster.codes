@@ -20,13 +20,13 @@ const Social: React.FC = () => {
   return (
     <>
       <div className="flex flex-col z-50 place-items-center place-content-center rounded">
-        <EmailShareButton url={shareUrl} className="mt-1">
+        <EmailShareButton url={shareUrl} className="my-1">
           <EmailIcon size={48} round={true} />
         </EmailShareButton>
-        <TwitterShareButton url={shareUrl} title={title} className="mt-1">
+        <TwitterShareButton url={shareUrl} title={title} className="my-1">
           <TwitterIcon size={48} round={true} />
         </TwitterShareButton>
-        <LinkedinShareButton url={shareUrl} title={title} className="mt-1">
+        <LinkedinShareButton url={shareUrl} title={title} className="my-1">
           <LinkedinIcon size={48} round={true} />
         </LinkedinShareButton>
       </div>

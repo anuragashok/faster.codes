@@ -7,8 +7,8 @@ tasks:
       yarn --cwd web install
     before: |
       printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc
-      echo ${KUBECONFIG_BASE64} | base64 -d > /kubeconfig/config
-      echo ${KUBECONFIG_BASE64} | base64 -d > ~/.kube/config
+    command: |
+      yarn --cwd web dev
 
 vscode:
   extensions:
