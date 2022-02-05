@@ -69,6 +69,16 @@ resource "kubernetes_deployment" "backend_api" {
             name       = "backend-nfs"
           }
 
+          env {
+            name = "WORKER_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.worker_token.metadata.0.name
+                key = "worker_token"
+              }
+            }
+          }
+
         }
 
         volume {
@@ -310,5 +320,14 @@ resource "kubernetes_cluster_role_binding" "api_role_binding" {
     kind      = "ServiceAccount"
     name      = kubernetes_service_account.api_sa.metadata[0].name
     namespace = "default"
+  }
+}
+
+resource "kubernetes_secret" "worker_token" {
+  metadata {
+    name = "worker-token"
+  }
+  data = {
+    worker_token = var.WORKER_TOKEN
   }
 }

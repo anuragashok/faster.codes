@@ -24,13 +24,13 @@ export class AppService {
       try {
         const dir = `/data/${runInfo.runId}/${c.codeId}`;
         fs.mkdirSync(dir, { recursive: true });
-        let fileName = ""
-        switch(c.lang) {
-          case "java":
-            fileName = "Main.java"
+        let fileName = '';
+        switch (c.lang) {
+          case 'java':
+            fileName = 'Main.java';
             break;
-          case "golang":
-            fileName = "main.go"
+          case 'golang':
+            fileName = 'main.go';
             break;
         }
         fs.writeFileSync(`${dir}/${fileName}`, Buffer.from(c.code, 'base64'));
@@ -46,10 +46,14 @@ export class AppService {
         let stats = JSON.parse(buf.toString());
         Object.assign(codeRunData.stats, stats);
 
+        const headersRequest = {
+          'X-WORKER-TOKEN': process.env.WORKER_TOKEN,
+        };
         await lastValueFrom(
           this.httpService.put(
             `https://api.faster.codes/${runInfo.runId}`,
             codeRunData,
+            { headers: headersRequest },
           ),
         );
       } catch (e) {

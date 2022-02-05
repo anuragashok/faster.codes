@@ -36,7 +36,7 @@ export class Run {
             {
               id: runId + '-b',
               code: req.codeRuns[1].code,
-              lang: req.codeRuns[0].lang,
+              lang: req.codeRuns[1].lang,
             },
           ],
         })

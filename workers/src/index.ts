@@ -6,6 +6,8 @@ import { handleOptions, addCorsHeaders } from './cors'
 export { Run } from './run'
 export { Counter } from './counter'
 
+const WORKER_TOKEN_HEADER_KEY = 'X-WORKER-TOKEN'
+
 export default {
   async fetch(request: Request, env: Env) {
     return await handleErrors(request, async () => {
@@ -17,7 +19,17 @@ export default {
         case 'GET':
           return read(request, env)
         case 'PUT':
-          return addCorsHeaders(await update(request, env))
+          if (
+            (await env.RUNKV.get('WORKER_TOKEN')) ==
+            request.headers.get(WORKER_TOKEN_HEADER_KEY)
+          ) {
+            return addCorsHeaders(await update(request, env))
+          } else {
+            return new Response('Auth error', {
+              status: 403,
+            })
+          }
+
         case 'OPTIONS':
           return handleOptions(request)
         default:

@@ -46,7 +46,7 @@ async function startRunBackend(runId: string, runReq: RunData) {
         code: runReq.codeRuns[0].code,
       },
       {
-        lang: runReq.codeRuns[0].lang,
+        lang: runReq.codeRuns[1].lang,
         codeId: runId + '-b',
         code: runReq.codeRuns[1].code,
       },

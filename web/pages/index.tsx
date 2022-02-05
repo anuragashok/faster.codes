@@ -22,8 +22,6 @@ const Home: React.FC = () => {
   let runBtn = React.createRef<HTMLDivElement>();
 
   const router = useRouter();
-
-  const [socketUrl, setSocketUrl] = useState("");
   const [messages, setMessages] = useState([] as string[]);
   const [runData, setRunData] = useState({
     codeRuns: [{ code: "" }, { code: "" }],
@@ -43,12 +41,6 @@ const Home: React.FC = () => {
     }
   }, [lastMessage]);
 
-  useEffect(() => {
-    if (runData.runId) {
-      setSocketUrl(`${process.env.NEXT_PUBLIC_API_WS}/${runData.runId}`);
-    }
-  }, [runData]);
-
   let handCodeRunDataChange = (index: number, codeRunData: CodeRunData) => {
     setRunData({
       ...runData,
@@ -61,7 +53,24 @@ const Home: React.FC = () => {
   };
 
   let handleRun = async () => {
-    let validationErrors = validate(runData);
+    // clear old data and use only code and lang fields
+    let newRunData = {
+      codeRuns: [
+        {
+          code: runData.codeRuns[0].code,
+          lang: runData.codeRuns[0].lang,
+        },
+        {
+          code: runData.codeRuns[1].code,
+          lang: runData.codeRuns[1].lang,
+        },
+      ],
+    } as RunData;
+
+    console.log("start handle, cleared old data");
+    console.log(newRunData);
+    alert(newRunData);
+    let validationErrors = validate(newRunData);
 
     if (validationErrors.length > 0) {
       setMessages(validationErrors);
@@ -76,17 +85,12 @@ const Home: React.FC = () => {
       });
     }
 
-    setRunData({
-      ...runData,
-      runId: undefined,
-    });
-
-    let runId = await run(runData);
+    console.log(newRunData);
+    let runId = await run(newRunData);
     setRunData({
       ...runData,
       runId,
     });
-
     router.push("/?runId=" + runId, undefined, { shallow: true });
   };
 
@@ -169,7 +173,7 @@ function getRunButtonText(runData: RunData): string {
   ) {
     return "PLEASE WAIT...";
   }
-  return "RUN AGAIN";
+  return "Start New Test";
 }
 
 export default Home;

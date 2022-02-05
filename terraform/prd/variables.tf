@@ -1,5 +1,8 @@
 variable "backend-api-tag" {}
 
+variable "WORKER_TOKEN" {
+}
+
 variable "project_id" {
   description = "The project ID to host the cluster in"
   default     = "faster-codes-backend"
