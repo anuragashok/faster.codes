@@ -8,8 +8,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  export:
     runs-on: ubuntu-18.04
+    defaults:
+      run:
+        working-directory: ./web
     steps:
       - uses: actions/checkout@v2
 
