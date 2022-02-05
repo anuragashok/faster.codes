@@ -67,9 +67,6 @@ const Home: React.FC = () => {
       ],
     } as RunData;
 
-    console.log("start handle, cleared old data");
-    console.log(newRunData);
-    alert(newRunData);
     let validationErrors = validate(newRunData);
 
     if (validationErrors.length > 0) {
@@ -165,15 +162,15 @@ const Home: React.FC = () => {
 
 function getRunButtonText(runData: RunData): string {
   if (!runData.runId) {
-    return "COMPARE";
+    return "Compare";
   }
   if (
     runData.codeRuns[0].status == undefined &&
     runData.codeRuns[1].status == undefined
   ) {
-    return "PLEASE WAIT...";
+    return "COMPARING...";
   }
-  return "Start New Test";
+  return "Compare Again";
 }
 
 export default Home;

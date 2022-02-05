@@ -57,27 +57,33 @@ const FullStats: React.FC<Props> = ({ codes }) => {
           {[0, 1].map((n) => {
             return (
               <>
-                {codes[n]?.status == undefined && <Loader />}
+                {codes[n]?.status == undefined && (
+                  <div className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md">
+                    <Loader />
+                  </div>
+                )}
                 {codes[n]?.status == "FAILED" && (
                   <div className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md">
                     <div className="stat shadow place-items-center place-content-center self-start">
-                      <div className="stat-title font-bold text-info opacity-80">FAILED</div>
+                      <div className="stat-title font-bold text-info opacity-80">
+                        FAILED
+                      </div>
                       <div className="stat-desc whitespace-normal opacity-100 mt-4 text-normal">
                         <p className="text-center">
-                          Sorry this run has failed. 
+                          Sorry this run has failed.
                         </p>
                         <p className="text-center">
-                          At this point, we are unable to provide the exact failure reason (support coming soon).
+                          At this point, we are unable to provide the exact
+                          failure reason (support coming soon).
                         </p>
-                        <p className="mt-2">
-                          Common causes for this are
-                        </p>
-                          <ul className="list-disc">
-                            <li>Compilation failure</li>
-                            <li>Code runs &gt; 4 minutes</li>
-                            <li>Temporary issue with the faster.codes platform</li>
-                          </ul>
-                        
+                        <p className="mt-2">Common causes for this are</p>
+                        <ul className="list-disc">
+                          <li>Compilation failure</li>
+                          <li>Code runs &gt; 4 minutes</li>
+                          <li>
+                            Temporary issue with the faster.codes platform
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -91,7 +97,7 @@ const FullStats: React.FC<Props> = ({ codes }) => {
                       {[EXECUTION_TIME, CPU, MEM].map((v) => {
                         return (
                           <StatBlock
-                            key={n}
+                            key={v.key}
                             title={v.title}
                             value={getStatValue(n, v.key)}
                             desc={v.desc}
