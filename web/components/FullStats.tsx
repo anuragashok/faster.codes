@@ -58,12 +58,18 @@ const FullStats: React.FC<Props> = ({ codes }) => {
             return (
               <>
                 {codes[n]?.status == undefined && (
-                  <div className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md">
+                  <div
+                    key={n}
+                    className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md"
+                  >
                     <Loader />
                   </div>
                 )}
                 {codes[n]?.status == "FAILED" && (
-                  <div className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md">
+                  <div
+                    key={n}
+                    className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md"
+                  >
                     <div className="stat shadow place-items-center place-content-center self-start">
                       <div className="stat-title font-bold text-info opacity-80">
                         FAILED
@@ -89,11 +95,14 @@ const FullStats: React.FC<Props> = ({ codes }) => {
                   </div>
                 )}
                 {codes[n]?.status == "SUCCESS" && !codes[n].stats && (
-                  <div>STATS NOT AVAILABLE</div>
+                  <div key={n}>STATS NOT AVAILABLE</div>
                 )}
                 {codes[n]?.status == "SUCCESS" && codes[n].stats && (
                   <>
-                    <div className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md">
+                    <div
+                      key={n}
+                      className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md"
+                    >
                       {[EXECUTION_TIME, CPU, MEM].map((v) => {
                         return (
                           <StatBlock
