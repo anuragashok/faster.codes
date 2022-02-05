@@ -29,9 +29,11 @@ const StatBlock: React.FC<Props> = ({ title, value, desc, unit, diff }) => {
           {value?.toFixed(0)}
           <span className="text-base">{unit}</span>
         </div>
-        <div className={"stat-desc text-base opacity-80 " + statClass}>
-          {diffText}
-        </div>
+        {diff.value && (
+          <div className={"stat-desc text-base opacity-80 " + statClass}>
+            {diffText}
+          </div>
+        )}
         <div className="stat-desc ">{desc}</div>
       </div>
     </>

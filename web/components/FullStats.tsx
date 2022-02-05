@@ -26,7 +26,7 @@ type Props = { codes: CodeRunData[] };
 
 type StatKey = keyof RunStats;
 
-type Diff = { percent: number; value: number };
+type Diff = { percent?: number; value?: number };
 
 const FullStats: React.FC<Props> = ({ codes }) => {
   const getStatValue = (n: number, key: string) => {
@@ -44,7 +44,7 @@ const FullStats: React.FC<Props> = ({ codes }) => {
         value: currStat - otherStat,
       };
     } else {
-      return { percent: 0, value: 0 };
+      return {};
     }
   };
 
