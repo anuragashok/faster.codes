@@ -8,5 +8,5 @@ services:
   golang:
     build:
       context: .
-      dockerfile: golang/Dockerfile
+      dockerfile: go/Dockerfile
     image: ${REPO}runner-go:latest
