@@ -15,7 +15,7 @@ const Examples: React.FC = () => {
       <ul className="menu mt-2 px-3 border bg-base-100 menu-horizontal">
         {examples.map((v) => {
           return (
-            <li className="bordered mt-2 mb-2">
+            <li key={v.title} className="bordered mt-2 mb-2">
               <Link href={v.link}>
                 <a className="text-lg font-medium">{v.title}</a>
               </Link>
