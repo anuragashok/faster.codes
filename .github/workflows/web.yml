@@ -41,5 +41,5 @@ jobs:
         env:
           REPO: self
           BRANCH: static-html
-          FOLDER: out
+          FOLDER: web/out
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
