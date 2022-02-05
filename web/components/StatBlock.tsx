@@ -8,19 +8,24 @@ type Props = {
   diff: Diff;
 };
 
-type Diff = { percent: number; value: number };
+type Diff = { percent?: number; value?: number };
 
 const StatBlock: React.FC<Props> = ({ title, value, desc, unit, diff }) => {
   const statClass =
-    diff.percent == 0
+    !diff.percent || diff.percent == 0
       ? "text-base-content"
       : diff.percent < 0
       ? "text-success"
       : "text-error";
-  const symbol = diff.value > 0 ? "↗︎" : "↘︎";
-  const diffText = `${symbol} ${Math.abs(diff.value).toFixed(
-    0
-  )} ${unit} (${Math.abs(diff.percent).toFixed(0)}%)`;
+
+  let diffText = "";
+  if (diff.value && diff.percent) {
+    const symbol = diff.value > 0 ? "↗︎" : "↘︎";
+    diffText = `${symbol} ${Math.abs(diff.value).toFixed(
+      0
+    )} ${unit} (${Math.abs(diff.percent).toFixed(0)}%)`;
+  }
+
   return (
     <>
       <div className="stat shadow place-items-center place-content-center">
