@@ -29,7 +29,7 @@ export class AppService {
           case 'java':
             fileName = 'Main.java';
             break;
-          case 'golang':
+          case 'go':
             fileName = 'main.go';
             break;
         }

@@ -54,7 +54,7 @@ const CodeEditor: React.FC<Props> = ({ index, codeRunData, onChange }) => {
           theme="vs-dark"
           options={{
             fontSize: 16,
-            fontFamily: "Open Sans",
+            fontFamily: "Fira Code",
             minimap: { enabled: false },
             scrollBeyondLastLine: false,
           }}

@@ -4,8 +4,8 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
-      sans: ["Open Sans", "sans-serif"],
-      serif: ["Open Sans", "sans-serif"],
+      sans: ["PT Sans", "sans"],
+      serif: ["PT Serif", "sans-serif"],
       mono: ["ui-monospace", "SFMono-Regular"],
     },
     extend: {},

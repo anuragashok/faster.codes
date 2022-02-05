@@ -9,4 +9,4 @@ services:
     build:
       context: .
       dockerfile: golang/Dockerfile
-    image: ${REPO}runner-golang:latest
+    image: ${REPO}runner-go:latest
