@@ -1,3 +1,4 @@
+## this pipeline is only for testing, actual builds are triggered on cloudflare pages
 name: web
 
 on:
