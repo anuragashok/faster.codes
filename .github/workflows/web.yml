@@ -40,6 +40,6 @@ jobs:
         uses: s0/git-publish-subdir-action@master
         env:
           REPO: self
-          BRANCH: static-html
+          BRANCH: web-static-html
           FOLDER: web/out
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
