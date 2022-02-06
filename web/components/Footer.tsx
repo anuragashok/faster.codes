@@ -38,13 +38,15 @@ const Footer: React.FC = () => {
 
           <div>
             <span className="footer-title">Menu</span>
-            <a href="/about">
-              <FontAwesomeIcon
-                className="inline-block w-5 mr-2 stroke-current align-middle"
-                icon={faInfoCircle}
-              />
-              About
-            </a>
+            <Link href="/about">
+              <a>
+                <FontAwesomeIcon
+                  className="inline-block w-5 mr-2 stroke-current align-middle"
+                  icon={faInfoCircle}
+                />
+                About
+              </a>
+            </Link>
             <a
               href="https://forms.gle/U4ZrUXwT9GCfFKcv6"
               target="_blank"

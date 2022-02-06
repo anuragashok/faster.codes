@@ -38,13 +38,15 @@ const Header: React.FC = () => {
           </div>
           <div className="navbar-end text-right">
             <div className="text-right items-stretch inline-block">
-              <a className="btn btn-ghost btn-sm rounded-btn" href="/about">
-                <FontAwesomeIcon
-                  className="inline-block w-5 mr-2 stroke-current align-middle"
-                  icon={faInfoCircle}
-                />
-                About
-              </a>
+              <Link href="/about">
+                <a className="btn btn-ghost btn-sm rounded-btn">
+                  <FontAwesomeIcon
+                    className="inline-block w-5 mr-2 stroke-current align-middle"
+                    icon={faInfoCircle}
+                  />
+                  About
+                </a>
+              </Link>
             </div>
             <div className="text-right items-stretch inline-block">
               <a
