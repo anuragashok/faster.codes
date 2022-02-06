@@ -11,7 +11,7 @@ import Link from "next/link";
 const Header: React.FC = () => {
   return (
     <>
-      <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
+      <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content">
         <div className="container mx-auto h-full">
           <div className="px-2 mx-2 navbar-start">
             <Link href="/">
