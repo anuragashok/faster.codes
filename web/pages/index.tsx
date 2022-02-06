@@ -122,7 +122,6 @@ const Home: React.FC = () => {
             </p>
           </div>
         </div>
-
         <div className="flex flex-row w-full">
           <div className="grid flex-grow my-6 bordered border-primary-content  rounded-box place-items-center flex-1 indicator">
             <CodeEditor

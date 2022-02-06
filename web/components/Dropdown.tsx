@@ -64,6 +64,11 @@ const DropDown: React.FC<Props> = ({ lang, onChange }) => {
                 </li>
               );
             })}
+            <li>
+              <a className="p-0.5 opacity-60">
+                Support for more runtimes coming soon
+              </a>
+            </li>
           </ul>
         )}
       </div>

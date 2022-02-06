@@ -4,6 +4,7 @@ import {
   faCode,
   faList,
   faBug,
+  faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
@@ -46,13 +47,29 @@ const Header: React.FC = () => {
               </a>
             </div>
             <div className="text-right items-stretch inline-block">
-              <a className="btn btn-ghost btn-sm rounded-btn" href="/examples">
+              <a
+                className="btn btn-ghost btn-sm rounded-btn"
+                href="https://forms.gle/U4ZrUXwT9GCfFKcv6"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FontAwesomeIcon
                   className="inline-block w-5 mr-2 stroke-current align-middle"
-                  icon={faList}
+                  icon={faEnvelope}
                 />
-                Examples
+                Contact
               </a>
+            </div>
+            <div className="text-right items-stretch inline-block">
+              <Link href="/examples">
+                <a className="btn btn-ghost btn-sm rounded-btn">
+                  <FontAwesomeIcon
+                    className="inline-block w-5 mr-2 stroke-current align-middle"
+                    icon={faList}
+                  />
+                  Examples
+                </a>
+              </Link>
             </div>
             <div className="text-right items-stretch inline-block">
               <a
@@ -71,7 +88,7 @@ const Header: React.FC = () => {
             <div className="text-right items-stretch inline-block">
               <a
                 className="btn btn-ghost btn-sm rounded-btn"
-                href="/examples"
+                href="https://github.com/anuragashok/faster.codes"
                 target="_blank"
                 rel="noreferrer"
               >
