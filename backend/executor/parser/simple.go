@@ -23,4 +23,6 @@ func (p SimpleFileParser) Parse(codeRunData *models.CodeRunData) error {
 	if err = ioutil.WriteFile(p.fileName, code, 0777); err != nil {
 		return err
 	}
+
+	return nil
 }
