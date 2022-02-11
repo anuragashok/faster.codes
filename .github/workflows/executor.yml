@@ -28,4 +28,4 @@ jobs:
       - name: Build
         run: docker build -t ghcr.io/${{ github.repository }}/executor:latest .
       - name: Push
-        run: docker-compose push ghcr.io/${{ github.repository }}/executor:latest
+        run: docker push ghcr.io/${{ github.repository }}/executor:latest
