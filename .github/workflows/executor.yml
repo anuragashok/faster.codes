@@ -7,7 +7,7 @@ on:
       - "backend/executor/**"
   workflow_dispatch:
 jobs:
-  build-runners:
+  build-executor:
     runs-on: ubuntu-latest
     defaults:
       run:
