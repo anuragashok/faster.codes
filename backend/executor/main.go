@@ -18,12 +18,12 @@ import (
 )
 
 var (
-	WORKER_TOKEN := os.Getenv("WORKER_TOKEN")
+	WORKER_TOKEN string = os.Getenv("WORKER_TOKEN")
 )
 
 func main() {
 	// clear sensiive token
-	os.UnsetEnv("WORKER_TOKEN")
+	os.Unsetenv("WORKER_TOKEN")
 
 	output.Init()
 	parser.Init()
