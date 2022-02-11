@@ -1,19 +1,17 @@
 package compiler
 
 import (
-	"fmt"
-	"io"
 	"time"
 
-	"github.com/anuragashok/faster.codes/backend/executor/util"
+	"github.com/anuragashok/faster.codes/backend/executor/output"
 )
 
 type SimpleCompiler struct {
 	command string
 }
-
-func (c SimpleCompiler) Compile(userOutput io.Writer) error {
-	fmt.Println("SimpleCompiler")
-	err := util.Execute(c.command, userOutput, 1*time.Second)
+ 
+func (c SimpleCompiler) Compile() error {
+	output.System("Simple Compiler")
+	err := execute(c.command, 5*time.Second)
 	return err
 }

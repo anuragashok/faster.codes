@@ -1,24 +1,34 @@
 package main
 
 import (
-	"bufio"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
+	"strings"
 
 	"github.com/anuragashok/faster.codes/backend/executor/compiler"
+	"github.com/anuragashok/faster.codes/backend/executor/constants"
 	"github.com/anuragashok/faster.codes/backend/executor/models"
+	"github.com/anuragashok/faster.codes/backend/executor/output"
 	"github.com/anuragashok/faster.codes/backend/executor/parser"
+	"github.com/anuragashok/faster.codes/backend/executor/runner"
+)
+
+var (
+	WORKER_TOKEN := os.Getenv("WORKER_TOKEN")
 )
 
 func main() {
-	file, err := os.Create("./user.log")
-	exitHandle(err)
-	userOutput := bufio.NewWriter(file)
+	// clear sensiive token
+	os.UnsetEnv("WORKER_TOKEN")
 
+	output.Init()
 	parser.Init()
 	compiler.Init()
+	runner.Init()
 
 	//read
 	codeRunData := readCodeRunData()
@@ -26,63 +36,43 @@ func main() {
 
 	//parse
 	parserInstance := parser.Get(lang)
-	err = parserInstance.Parse(codeRunData)
+	err := parserInstance.Parse(codeRunData)
 	exitHandle(err)
 
 	//compile
+	codeRunData.Stage = models.Compiling
 	compiler := compiler.Get(lang)
-	err = compiler.Compile(userOutput)
-	exitHandle(err)
+	err = compiler.Compile()
+	if err != nil {
+		output.User(fmt.Sprintf("compilation failed %v", err))
+		codeRunData.Stage = models.Compile_Failed
+		update(codeRunData)
+		panic(err)
+	}
+	codeRunData.Stage = models.Compile_Success
+	update(codeRunData)
 
-	//logging
+	//run
+	codeRunData.Stage = models.Running
+	runner := runner.Get(lang)
+	stats, err := runner.Run()
+	if err != nil {
+		output.User(fmt.Sprintf("run failed %v", err))
+		codeRunData.Stage = models.Run_Failed
+		update(codeRunData)
+		panic(err)
+	}
+	codeRunData.Stage = models.Run_Success
+	update(codeRunData)
 
-	// 	var outb, errb bytes.Buffer
-
-	// 	codeRunCtx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
-	// 	defer cancel()
-
-	// 	cmd := exec.CommandContext(codeRunCtx, "go", "run", "test.go")
-	// 	cmd.Stdout = &outb
-	// 	cmd.Stderr = &errb
-
-	// 	err = cmd.Start()
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 		return
-	// 	}
-	// 	// Use a channel to signal completion
-	// 	done := make(chan error)
-	// 	go func() {
-	// 		err := cmd.Wait()
-	// 		done <- err
-	// 	}()
-	// 	p, _ := process.NewProcess(int32(cmd.Process.Pid))
-
-	// out:
-	// 	for {
-	// 		select {
-	// 		case <-done:
-	// 			break out
-	// 		default:
-	// 			times, err := p.Times()
-	// 			if err != nil && err.Error() == "no such process" {
-	// 				return
-	// 			}
-	// 			if err != nil {
-	// 				fmt.Printf("ERROR %v", err)
-	// 			}
-
-	// 			fmt.Println("out:", outb.String(), "err:", errb.String())
-	// 			<-time.After(1000 * time.Millisecond)
-	// 			fmt.Println(times)
-
-	// 		}
-	// 	}
+	codeRunData.Stats = stats
+	codeRunData.Status = "SUCCESS"
+	update(codeRunData)
 
 }
 
 func readCodeRunData() *models.CodeRunData {
-	file, _ := ioutil.ReadFile("/data/CodeRunData.json")
+	file, _ := ioutil.ReadFile(constants.WORKING_DIR + "/CodeRunData.json")
 	data := models.CodeRunData{}
 	_ = json.Unmarshal([]byte(file), &data)
 	return &data
@@ -93,4 +83,30 @@ func exitHandle(err error) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func update(data *models.CodeRunData) error {
+	runId := strings.Split(data.Id, "-")[0]
+	fmt.Println(runId)
+
+	// initialize http client
+	client := &http.Client{}
+
+	json, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, "https://api.faster.codes/"+runId, bytes.NewBuffer(json))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	req.Header.Set("X-WORKER-TOKEN", WORKER_TOKEN)
+	_, err = client.Do(req)
+	if err != nil {
+		return err
+	}
+	return nil
 }

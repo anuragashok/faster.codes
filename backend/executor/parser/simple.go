@@ -2,25 +2,26 @@ package parser
 
 import (
 	b64 "encoding/base64"
-	"fmt"
 	"io/ioutil"
 
+	"github.com/anuragashok/faster.codes/backend/executor/constants"
 	"github.com/anuragashok/faster.codes/backend/executor/models"
+	"github.com/anuragashok/faster.codes/backend/executor/output"
 )
 
 type SimpleFileParser struct {
-	fileName string
+	fileName string 
 }
 
 func (p SimpleFileParser) Parse(codeRunData *models.CodeRunData) error {
-	fmt.Println("SimpleFileParser")
+	output.System("Simple File Parser")
 
 	code, err := b64.StdEncoding.DecodeString(codeRunData.Code)
 	if err != nil {
 		return err
 	}
 
-	if err = ioutil.WriteFile(p.fileName, code, 0777); err != nil {
+	if err = ioutil.WriteFile(constants.WORKING_DIR+"/"+p.fileName, code, 0777); err != nil {
 		return err
 	}
 

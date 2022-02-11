@@ -11,7 +11,4 @@
   "[python]": {
     "editor.defaultFormatter": "ms-python.python"
   },
-  "[go]": {
-    "editor.defaultFormatter": "golang.go"
-  }
 }

@@ -66,6 +66,11 @@ export class AppService {
           this.httpService.put(
             `https://api.faster.codes/${runInfo.runId}`,
             codeRunData,
+            {
+              headers: {
+                'X-WORKER-TOKEN': process.env.WORKER_TOKEN,
+              },
+            },
           ),
         );
       }

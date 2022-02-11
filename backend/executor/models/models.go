@@ -6,6 +6,7 @@ type CodeRunData struct {
 	Code   string   `json:"code"`
 	Stats  RunStats `json:"stats"`
 	Status string   `json:"status"`
+	Stage  Stage    `json:"stage"`
 }
 type RunStats struct {
 	Duration RunValues `json:"duration"`

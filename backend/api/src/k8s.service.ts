@@ -159,7 +159,7 @@ export class K8sService {
     });
     return result;
   }
-  private waitForJob(name, namespace = 'default', timeout = 300000) {
+  private waitForJob(name, namespace = 'default', timeout = 400000) {
     return this.waitForK8sObject(
       `/apis/batch/v1/namespaces/${namespace}/jobs`,
       {},
