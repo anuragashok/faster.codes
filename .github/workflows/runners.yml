@@ -26,6 +26,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
-        run: docker build -t ghcr.io/${{ github.repository }}/executor:latest .
+        run: docker-compose build
+        env:
+          REPO: ghcr.io/${{ github.repository }}/
       - name: Push
-        run: docker-compose push ghcr.io/${{ github.repository }}/executor:latest
+        run: docker-compose push
+        env:
+          REPO: ghcr.io/${{ github.repository }}/

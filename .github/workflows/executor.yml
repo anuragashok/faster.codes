@@ -1,4 +1,4 @@
-name: runners
+name: executor
 
 on:
   push:
@@ -26,10 +26,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
-        run: docker-compose build
-        env:
-          REPO: ghcr.io/${{ github.repository }}/
+        run: docker build -t ghcr.io/${{ github.repository }}/executor:latest .
       - name: Push
-        run: docker-compose push
-        env:
-          REPO: ghcr.io/${{ github.repository }}/
+        run: docker-compose push ghcr.io/${{ github.repository }}/executor:latest
