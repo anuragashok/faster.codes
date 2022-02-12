@@ -35,6 +35,7 @@ func main() {
 	lang := codeRunData.Lang
 
 	//parse
+	fmt.Println(lang)
 	parserInstance := parser.Get(lang)
 	err := parserInstance.Parse(codeRunData)
 	exitHandle(err)
