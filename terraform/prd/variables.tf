@@ -1,5 +1,7 @@
 variable "backend-api-tag" {}
 
+variable "executor-api-tag" {}
+
 variable "WORKER_TOKEN" {
 }
 
