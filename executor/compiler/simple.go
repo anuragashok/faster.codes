@@ -9,9 +9,9 @@ import (
 type SimpleCompiler struct {
 	command string
 }
- 
+
 func (c SimpleCompiler) Compile() error {
 	output.System("Simple Compiler")
-	err := execute(c.command, 5*time.Second)
+	err := execute(c.command, 30*time.Second)
 	return err
 }
