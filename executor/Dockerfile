@@ -4,7 +4,12 @@ COPY . .
 RUN go build ./cmd/executor
 RUN go build ./cmd/api
 
-FROM ubuntu:impish
+FROM ubuntu:impish as executor-api
+COPY --from=builder /app/executor-api /usr/bin/
+RUN chmod +x /usr/bin/executor-api
+CMD ["executor-api"]
+
+FROM ubuntu:impish as executor
 RUN apt-get update
 # openjdk11 / golang
 RUN apt-get install -y openjdk-11-jdk golang
@@ -12,3 +17,4 @@ WORKDIR /app
 COPY --from=builder /app/executor /usr/bin/
 RUN chmod +x /usr/bin/executor
 CMD ["executor"]
+

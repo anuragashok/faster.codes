@@ -25,7 +25,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build
-        run: docker build -t ghcr.io/${{ github.repository }}/executor:latest .
-      - name: Push
-        run: docker push ghcr.io/${{ github.repository }}/executor:latest
+      - name: Build and push executor-api
+        uses: docker/build-push-action@v2
+        with:
+          context: ./executor
+          target: executor-api
+          push: true
+          tags: ghcr.io/${{ github.repository }}/executor-api:${{ github.sha }}
+      - name: Build and push executor
+        uses: docker/build-push-action@v2
+        with:
+          context: ./executor
+          target: executor
+          push: true
+          tags: ghcr.io/${{ github.repository }}/executor:latest
