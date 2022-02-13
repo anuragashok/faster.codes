@@ -3,29 +3,27 @@ package k8s
 import (
 	"context"
 	"fmt"
-	"path/filepath"
 
 	"github.com/anuragashok/faster.codes/executor/models"
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
+	"k8s.io/client-go/rest"
 )
 
 func StartJob(runId string, codeRunData models.CodeRunData) {
 
-	// config, err := rest.InClusterConfig()
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// use the current context in kubeconfig
-	config, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	config, err := rest.InClusterConfig()
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
+
+	// // use the current context in kubeconfig
+	// config, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
 
 	// creates the clientset
 	clientset, err := kubernetes.NewForConfig(config)
