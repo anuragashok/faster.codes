@@ -121,7 +121,7 @@ resource "kubernetes_ingress" "executor_api" {
     }
   }
   spec {
-    executor {
+    backend {
       service_name = "executor-api"
       service_port = 3000
     }
