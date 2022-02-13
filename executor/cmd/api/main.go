@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/anuragashok/faster.codes/backend/executor/k8s"
-	"github.com/anuragashok/faster.codes/backend/executor/models"
+	"github.com/anuragashok/faster.codes/executor/k8s"
+	"github.com/anuragashok/faster.codes/executor/models"
 	"github.com/gorilla/mux"
 )
 
@@ -20,7 +20,13 @@ func main() {
 	fmt.Println("starting executor api")
 	r := mux.NewRouter()
 	r.HandleFunc("/", launch).Methods("POST")
+	r.HandleFunc("/health", ok).Methods("POST")
+	r.HandleFunc("/live", ok).Methods("POST")
 	http.ListenAndServe(":3000", r)
+}
+
+func ok(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
 }
 
 func launch(w http.ResponseWriter, r *http.Request) {

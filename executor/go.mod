@@ -1,4 +1,4 @@
-module github.com/anuragashok/faster.codes/backend/executor
+module github.com/anuragashok/faster.codes/executor
 
 go 1.17
 

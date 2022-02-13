@@ -9,12 +9,12 @@ import (
 	"os"
 	"strings"
 
-	"github.com/anuragashok/faster.codes/backend/executor/compiler"
-	"github.com/anuragashok/faster.codes/backend/executor/constants"
-	"github.com/anuragashok/faster.codes/backend/executor/models"
-	"github.com/anuragashok/faster.codes/backend/executor/output"
-	"github.com/anuragashok/faster.codes/backend/executor/parser"
-	"github.com/anuragashok/faster.codes/backend/executor/runner"
+	"github.com/anuragashok/faster.codes/executor/compiler"
+	"github.com/anuragashok/faster.codes/executor/constants"
+	"github.com/anuragashok/faster.codes/executor/models"
+	"github.com/anuragashok/faster.codes/executor/output"
+	"github.com/anuragashok/faster.codes/executor/parser"
+	"github.com/anuragashok/faster.codes/executor/runner"
 )
 
 var (

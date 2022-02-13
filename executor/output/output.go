@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/anuragashok/faster.codes/backend/executor/constants"
+	"github.com/anuragashok/faster.codes/executor/constants"
 )
 
 var userOutput *bufio.Writer

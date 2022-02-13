@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"github.com/anuragashok/faster.codes/backend/executor/models"
+	"github.com/anuragashok/faster.codes/executor/models"
 )
 
 var (

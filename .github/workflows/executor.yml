@@ -4,14 +4,14 @@ on:
   push:
     branches: [main]
     paths:
-      - "backend/executor/**"
+      - "executor/**"
   workflow_dispatch:
 jobs:
   build-executor:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend/executor
+        working-directory: ./executor
     steps:
       - name: Checkout
         uses: actions/checkout@v2

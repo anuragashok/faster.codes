@@ -1,6 +1,6 @@
 package runner
 
-import "github.com/anuragashok/faster.codes/backend/executor/models"
+import "github.com/anuragashok/faster.codes/executor/models"
 
 var runners = make(map[string]Runner)
 

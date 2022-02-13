@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anuragashok/faster.codes/backend/executor/constants"
-	"github.com/anuragashok/faster.codes/backend/executor/models"
-	"github.com/anuragashok/faster.codes/backend/executor/output"
+	"github.com/anuragashok/faster.codes/executor/constants"
+	"github.com/anuragashok/faster.codes/executor/models"
+	"github.com/anuragashok/faster.codes/executor/output"
 	"github.com/shirou/gopsutil/v3/process"
 )
 

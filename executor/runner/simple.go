@@ -3,8 +3,8 @@ package runner
 import (
 	"time"
 
-	"github.com/anuragashok/faster.codes/backend/executor/models"
-	"github.com/anuragashok/faster.codes/backend/executor/output"
+	"github.com/anuragashok/faster.codes/executor/models"
+	"github.com/anuragashok/faster.codes/executor/output"
 )
 
 type SimpleRunner struct {  

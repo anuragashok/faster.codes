@@ -4,9 +4,9 @@ import (
 	b64 "encoding/base64"
 	"io/ioutil"
 
-	"github.com/anuragashok/faster.codes/backend/executor/constants"
-	"github.com/anuragashok/faster.codes/backend/executor/models"
-	"github.com/anuragashok/faster.codes/backend/executor/output"
+	"github.com/anuragashok/faster.codes/executor/constants"
+	"github.com/anuragashok/faster.codes/executor/models"
+	"github.com/anuragashok/faster.codes/executor/output"
 )
 
 type SimpleFileParser struct {

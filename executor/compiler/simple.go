@@ -3,7 +3,7 @@ package compiler
 import (
 	"time"
 
-	"github.com/anuragashok/faster.codes/backend/executor/output"
+	"github.com/anuragashok/faster.codes/executor/output"
 )
 
 type SimpleCompiler struct {

@@ -1,7 +1,7 @@
 package k8s
 
 import (
-	"github.com/anuragashok/faster.codes/backend/executor/models"
+	"github.com/anuragashok/faster.codes/executor/models"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
