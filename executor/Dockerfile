@@ -2,7 +2,7 @@ FROM golang:bullseye as builder
 WORKDIR /app 
 COPY . .
 RUN go build ./cmd/executor
-RUN go build ./cmd/api
+RUN go build ./cmd/executor-api
 
 FROM ubuntu:impish as executor-api
 COPY --from=builder /app/executor-api /usr/bin/
