@@ -96,7 +96,7 @@ out:
 		}
 	}
 
-	stats.Cpu.Values = append(stats.Cpu.Values, cpu_Max)
+	stats.Cpu.Values = append(stats.Cpu.Values, cpu_Max*1000)
 	stats.Mem.Values = append(stats.Mem.Values, mem_Max)
 	return nil
 }

@@ -55,14 +55,17 @@ const Home: React.FC = () => {
   let handleRun = async () => {
     // clear old data and use only code and lang fields
     let newRunData = {
+      status: "DRAFT",
       codeRuns: [
         {
           code: runData.codeRuns[0].code,
           lang: runData.codeRuns[0].lang,
+          status: "DRAFT",
         },
         {
           code: runData.codeRuns[1].code,
           lang: runData.codeRuns[1].lang,
+          status: "DRAFT",
         },
       ],
     } as RunData;
@@ -150,7 +153,7 @@ const Home: React.FC = () => {
           </div>
           <div className="flex-1 ..."></div>
         </div>
-        {runData.runId && (
+        {runData.status && (
           <FullStats codes={[runData.codeRuns[0], runData.codeRuns[1]]} />
         )}
       </div>
