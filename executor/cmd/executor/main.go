@@ -70,6 +70,9 @@ func main() {
 	codeRunData.Stage = models.Run_Success
 	update(codeRunData)
 
+	stats.Cpu.Avg = average(stats.Cpu.Values)
+	stats.Mem.Avg = average(stats.Mem.Values)
+	stats.Duration.Avg = average(stats.Duration.Values)
 	codeRunData.Stats = stats
 	codeRunData.Status = "SUCCESS"
 	update(codeRunData)
@@ -114,4 +117,12 @@ func update(data *models.CodeRunData) error {
 		return err
 	}
 	return nil
+}
+
+func average(xs []float64) float64 {
+	total := 0.0
+	for _, v := range xs {
+		total += v
+	}
+	return total / float64(len(xs))
 }
