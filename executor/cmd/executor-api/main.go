@@ -32,7 +32,14 @@ func ok(w http.ResponseWriter, r *http.Request) {
 func launch(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 	runData := models.RunData{}
-	json.Unmarshal(body, &runData)
+	err := json.Unmarshal(body, &runData)
+
+	if (err != nil){
+		panic(err)
+	}
+
+	fmt.Println(runData)
+	fmt.Println(runData.CodeRuns)
 
 	for _, d := range runData.CodeRuns {
 		fmt.Printf("starting job for %s \n", d.Id)

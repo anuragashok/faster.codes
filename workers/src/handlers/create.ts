@@ -56,11 +56,12 @@ async function startRunBackend(runId: string, runReq: RunData) {
   var requestOptions = {
     method: 'POST',
     headers: headers,
-    body: raw,
+    body: JSON.stringify(runReq),
     redirect: 'follow',
   }
 
   console.log(raw)
 
-  return fetch('https://backend-api.faster.codes/', requestOptions)
+  //return fetch('https://backend-api.faster.codes/', requestOptions)
+  return fetch('https://executor-api.faster.codes/', requestOptions)
 }
