@@ -42,6 +42,8 @@ func main() {
 
 	//compile
 	codeRunData.Stage = models.Compiling
+	update(codeRunData)
+
 	compiler := compiler.Get(lang)
 	err = compiler.Compile()
 	if err != nil {
@@ -55,6 +57,8 @@ func main() {
 
 	//run
 	codeRunData.Stage = models.Running
+	update(codeRunData)
+
 	runner := runner.Get(lang)
 	stats, err := runner.Run()
 	if err != nil {

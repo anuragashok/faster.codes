@@ -57,7 +57,7 @@ const FullStats: React.FC<Props> = ({ codes }) => {
           {[0, 1].map((n) => {
             return (
               <>
-                {codes[n]?.status == undefined && (
+                {(codes[n]?.status == undefined || codes[n]?.status == "") && (
                   <div
                     key={n}
                     className="grid-flow-row flex-grow flex-1 border-2 stats shadow-md"
