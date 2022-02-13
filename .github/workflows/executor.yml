@@ -42,7 +42,7 @@ jobs:
       - name: Update latest tag in terraform
         uses: fjogeleit/http-request-action@master
         with:
-          url: "https://app.terraform.io/api/v2/workspaces/ws-yXoXRjPNNYVvpWYm/vars/var-6MXNkbBNMoD8TYBd"
+          url: "https://app.terraform.io/api/v2/workspaces/ws-yXoXRjPNNYVvpWYm/vars/var-534ENX4g3tcCnzjs"
           method: "PATCH"
           data: |
             {
