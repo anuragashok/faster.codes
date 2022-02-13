@@ -21,6 +21,15 @@ resource "cloudflare_record" "faster_codes_web_www" {
   proxied = true
 }
 
+resource "cloudflare_record" "faster_codes_executor_api" {
+  zone_id = cloudflare_zone.faster_codes.id
+  name    = "executor-api"
+  value   = kubernetes_service.executor_api.status[0].load_balancer[0].ingress[0].ip
+  type    = "A"
+  ttl     = 1
+  proxied = true
+}
+
 resource "cloudflare_record" "faster_codes_backend_api" {
   zone_id = cloudflare_zone.faster_codes.id
   name    = "backend-api"
