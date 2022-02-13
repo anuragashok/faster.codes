@@ -20,8 +20,8 @@ func main() {
 	fmt.Println("starting executor api")
 	r := mux.NewRouter()
 	r.HandleFunc("/", launch).Methods("POST")
-	r.HandleFunc("/health", ok).Methods("POST")
-	r.HandleFunc("/live", ok).Methods("POST")
+	r.HandleFunc("/health", ok).Methods("GET")
+	r.HandleFunc("/live", ok).Methods("GET")
 	http.ListenAndServe(":3000", r)
 }
 
