@@ -3,6 +3,8 @@ package k8s
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/anuragashok/faster.codes/executor/models"
 	batchv1 "k8s.io/api/batch/v1"
@@ -10,14 +12,24 @@ import (
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
 )
 
 func StartJob(runId string, codeRunData models.CodeRunData) {
 
-	config, err := rest.InClusterConfig()
-	if err != nil {
-		panic(err)
+	var config *rest.Config
+	var err error
+	if _, isDev := os.LookupEnv("GITPOD_WORKSPACE_URL"); isDev {
+		config, err = clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+		
+	} else {
+		config, err = rest.InClusterConfig()
 	}
+	if err != nil {
+		panic(err.Error())
+	}
+	
 
 	// // use the current context in kubeconfig
 	// config, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
