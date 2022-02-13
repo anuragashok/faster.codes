@@ -6,7 +6,7 @@ var runners = make(map[string]Runner)
 
 func Init() {
 	runners["java"] = SimpleRunner{command: "java Main"}
-	runners["go"] = SimpleRunner{command: "main"}
+	runners["go"] = SimpleRunner{command: "./main"}
 }
 
 type Runner interface {

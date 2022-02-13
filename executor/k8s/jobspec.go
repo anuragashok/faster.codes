@@ -58,6 +58,19 @@ func getJob(runId string, d models.CodeRunData) *batchv1.Job {
 									SubPath:   runId + "/" + d.Id + "/",
 								},
 							},
+							Env: []corev1.EnvVar{
+								{
+									Name: "WORKER_TOKEN",
+									ValueFrom: &corev1.EnvVarSource{
+										SecretKeyRef: &corev1.SecretKeySelector{
+											LocalObjectReference: corev1.LocalObjectReference{
+												Name: "worker-token",
+											},
+											Key: "worker_token",
+										},
+									},
+								},
+							},
 						},
 					},
 				},

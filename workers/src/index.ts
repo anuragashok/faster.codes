@@ -19,17 +19,18 @@ export default {
         case 'GET':
           return read(request, env)
         case 'PUT':
-          if (
-            (await env.RUNKV.get('WORKER_TOKEN')) ==
-            request.headers.get(WORKER_TOKEN_HEADER_KEY)
-          ) {
-            return addCorsHeaders(await update(request, env))
-          } else {
-            return new Response('Auth error', {
-              status: 403,
-            })
-          }
-
+          // if (
+          //   (await env.RUNKV.get('WORKER_TOKEN')) ==
+          //   request.headers.get(WORKER_TOKEN_HEADER_KEY)
+          // ) {
+          //   return addCorsHeaders(await update(request, env))
+          // } else {
+          //   return new Response('Auth error', {
+          //     status: 403,
+          //   })
+          // }
+          console.log(request)
+          return addCorsHeaders(await update(request, env))
         case 'OPTIONS':
           return handleOptions(request)
         default:

@@ -52,6 +52,7 @@ export class Run {
         const req: CodeRunData = await request.json()
         const runData = await this.state.storage?.get<RunData>('data')
 
+        console.log(req)
         if (runData) {
           Object.assign(
             runData?.codeRuns?.filter((c) => c.id == req.id)[0],
