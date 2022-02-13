@@ -47,12 +47,19 @@ func launch(w http.ResponseWriter, r *http.Request) {
 		if (err != nil){
 			panic(err)
 		}
-		err = ioutil.WriteFile(fmt.Sprintf("/data/%s/%s/CodeRunData.json",runData.RunId,d.Id), jsonData, 0777)
-		if (err != nil){
-			panic(err)
-		}
+		writeCodeRunDataToNFS(runData, d, jsonData)
 		k8s.StartJob(runData.RunId, d)
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func writeCodeRunDataToNFS(runData models.RunData, d models.CodeRunData, jsonData []byte) {
+	dir := fmt.Sprintf("/data/%s/%s", runData.RunId, d.Id)
+	file := "CodeRunData.json"
+	os.MkdirAll(dir, os.ModePerm)
+	err := ioutil.WriteFile(fmt.Sprintf("%s/%s", dir, file), jsonData, 0777)
+	if err != nil {
+		panic(err)
+	}
 }
