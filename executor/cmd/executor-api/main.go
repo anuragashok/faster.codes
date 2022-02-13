@@ -44,7 +44,7 @@ func launch(w http.ResponseWriter, r *http.Request) {
 	for _, d := range runData.CodeRuns {
 		fmt.Printf("starting job for %s \n", d.Id)
 		jsonData, _ := json.Marshal(d)
-		ioutil.WriteFile("/data/CodeRunData.json", jsonData, 0777)
+		ioutil.WriteFile(fmt.Sprintf("/data/%s/%s/CodeRunData.json",runData.RunId,d.Id), jsonData, 0777)
 		k8s.StartJob(runData.RunId, d)
 	}
 

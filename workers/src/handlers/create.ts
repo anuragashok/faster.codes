@@ -6,7 +6,9 @@ export async function create(request: Request, env: Env) {
   const runReq: RunData = await request.json()
 
   let runId = await generateNewRunId(env, request)
-  await startRunBackend(runId, runReq)
+  runReq.runId = runId
+  runReq.codeRuns[0].id = runId + '-a'
+  runReq.codeRuns[1].id = runId + '-b'
 
   const runInternalId = env.RUNDUR.idFromName(runId)
   let newUrl = new URL(request.url)
@@ -15,6 +17,8 @@ export async function create(request: Request, env: Env) {
     method: 'POST',
     body: JSON.stringify(runReq),
   })
+
+  await startRunBackend(runId, runReq)
 
   return new Response(
     JSON.stringify({
