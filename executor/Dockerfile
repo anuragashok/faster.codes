@@ -10,6 +10,7 @@ RUN chmod +x /usr/bin/executor-api
 CMD ["executor-api"]
 
 FROM ubuntu:impish as executor
+RUN apt-get update
 # openjdk11 / golang
 RUN apt-get install -y openjdk-11-jdk golang
 WORKDIR /app
