@@ -53,7 +53,7 @@ func StartJob(runId string, codeRunData models.CodeRunData) {
 
 	w, _ := clientset.BatchV1().Jobs("default").Watch(context.Background(), metav1.ListOptions{LabelSelector: "Id=" + codeRunData.Id})
 
-	go func(w watch.Interface) {
+	go func(w watch.Interface, id string) {
 		for elem := range w.ResultChan() {
 			job, ok := elem.Object.(*batchv1.Job)
 			if !ok {
@@ -62,6 +62,7 @@ func StartJob(runId string, codeRunData models.CodeRunData) {
 			fmt.Println(job)
 			fmt.Println(job.ObjectMeta.Name + "-" + fmt.Sprint(job.Status.Succeeded))
 		}
-	}(w)
+		clientset.BatchV1().Jobs("default").Delete(context.Background(),id,metav1.DeleteOptions{})
+	}(w,codeRunData.Id)
 
 }
