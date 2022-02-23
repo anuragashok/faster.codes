@@ -3,10 +3,13 @@ image:
 tasks:
   - name: init
     init: |
-      yarn --cwd backend/api install
       yarn --cwd web install
     before: |
       printf "credentials \"app.terraform.io\" { \ntoken = \"${TFE_TOKEN}\" \n}\n" > ~/.terraformrc
+      git config pull.rebase true
+      alias rebase="git pull origin main:main && git rebase main"
+      unalias gp
+      export PATH=$PATH:$GITPOD_REPO_ROOT/scripts
     command: |
       yarn --cwd web dev
 

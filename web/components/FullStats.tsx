@@ -30,8 +30,10 @@ type Diff = { percent?: number; value?: number };
 
 const FullStats: React.FC<Props> = ({ codes }) => {
   const getStatValue = (n: number, key: string) => {
-    const stats = codes[n].stats;
-    return stats && stats[key as StatKey] && stats[key as StatKey].avg;
+    if (codes[n].status == "SUCCESS") {
+      const stats = codes[n].stats;
+      return stats && stats[key as StatKey] && stats[key as StatKey].avg;
+    }
   };
 
   const diff = (n: number, key: string): Diff => {
