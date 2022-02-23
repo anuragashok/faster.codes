@@ -18,8 +18,12 @@ import (
 )
 
 var (
-	WORKER_TOKEN string = os.Getenv("WORKER_TOKEN")
+	WORKER_TOKEN string
 )
+
+func init() {
+	WORKER_TOKEN = os.Getenv("WORKER_TOKEN")
+}
 
 func main() {
 	// clear sensiive token

@@ -1,24 +1,23 @@
-import { CodeRunData, RunData } from '../types'
-import { Env, ExecuteRequest } from '../types/reqres'
-import { ExecuteResponse } from '../types/reqres'
+import { Env, RunData } from '../types'
 
 export async function create(request: Request, env: Env) {
-  const runReq: RunData = await request.json()
+  const runData: RunData = await request.json()
 
   let runId = await generateNewRunId(env, request)
-  runReq.runId = runId
-  runReq.codeRuns[0].id = runId + '-a'
-  runReq.codeRuns[1].id = runId + '-b'
+  runData.runId = runId
+  runData.codeRuns[0].id = runId + '-a'
+  runData.codeRuns[1].id = runId + '-b'
+  runData.status = 'RUNNING'
 
   const runInternalId = env.RUNDUR.idFromName(runId)
   let newUrl = new URL(request.url)
   newUrl.pathname = `${runId}`
   await env.RUNDUR.get(runInternalId).fetch(newUrl.toString(), {
     method: 'POST',
-    body: JSON.stringify(runReq),
+    body: JSON.stringify(runData),
   })
 
-  await startRunBackend(runId, runReq)
+  await startRunBackend(runId, runData)
 
   return new Response(
     JSON.stringify({
@@ -37,14 +36,14 @@ async function generateNewRunId(env: Env, request: Request) {
   return runId
 }
 
-async function startRunBackend(runId: string, runReq: RunData) {
+async function startRunBackend(runId: string, runData: RunData) {
   var headers = new Headers()
   headers.append('Content-Type', 'application/json')
 
   var requestOptions = {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify(runReq),
+    body: JSON.stringify(runData),
     redirect: 'follow',
   }
 

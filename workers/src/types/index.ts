@@ -34,4 +34,8 @@ enum Stage {
   Unknown_Failed,
 }
 
-export * from './reqres'
+export interface Env {
+  RUNDUR: DurableObjectNamespace
+  RUNKV: KVNamespace
+  COUNTER: DurableObjectNamespace
+}

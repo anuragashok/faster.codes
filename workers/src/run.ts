@@ -1,5 +1,5 @@
 import { addCorsHeaders } from './cors'
-import { Env, ExecuteRequest, RunData, CodeRunData } from './types'
+import { Env, RunData, CodeRunData } from './types'
 
 export class Run {
   data?: RunData
@@ -23,23 +23,7 @@ export class Run {
       case 'POST': {
         const runId = path[0]
         const req: RunData = await request.json()
-        await this.state.storage?.put<RunData>('data', {
-          runId: runId,
-          status: 'RUNNING',
-          startTime: +new Date(),
-          codeRuns: [
-            {
-              id: runId + '-a',
-              code: req.codeRuns[0].code,
-              lang: req.codeRuns[0].lang,
-            },
-            {
-              id: runId + '-b',
-              code: req.codeRuns[1].code,
-              lang: req.codeRuns[1].lang,
-            },
-          ],
-        })
+        await this.state.storage?.put<RunData>('data', req)
         return new Response(url.toString())
       }
       case 'GET':
@@ -70,7 +54,7 @@ export class Run {
           }
 
           if (
-            runData?.codeRuns?.filter((c) => c.status != undefined).length == 2
+            runData?.codeRuns?.filter((c) => (c.status == 'SUCCESS' || c.status == 'FAILED')).length == 2
           ) {
             console.log('move to KV and delete durable object after 70 seconds')
             this.env.RUNKV.put(runData.runId, JSON.stringify(runData))

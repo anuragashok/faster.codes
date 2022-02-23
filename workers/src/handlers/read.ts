@@ -1,7 +1,5 @@
 import { addCorsHeaders } from '../cors'
-import { RunData } from '../types'
-import { Env } from '../types/reqres'
-import { ExecuteResponse } from '../types/reqres'
+import { RunData, Env } from '../types'
 
 export async function read(request: Request, env: Env) {
   let url = new URL(request.url)
@@ -70,8 +68,8 @@ async function pollRunData(
   let runDataRes = await getRunData(env, runId, request)
   let runData: RunData = await runDataRes.json()
   ws.send(JSON.stringify(runData))
-  if (runData.status == 'RUNNING' && !isExpired(runData.startTime)) {
-    setTimeout(pollRunData, 4000, env, request, runId, ws)
+  if (runData.status == 'RUNNING') {
+    setTimeout(pollRunData, 5000, env, request, runId, ws)
   } else {
     ws.send('<DONE>')
     ws.close()

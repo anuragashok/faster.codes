@@ -1,4 +1,4 @@
-import { Env } from '../types/reqres'
+import { Env } from '../types'
 
 export async function update(request: Request, env: Env) {
   let url = new URL(request.url)
