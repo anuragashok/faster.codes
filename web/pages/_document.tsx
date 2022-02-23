@@ -18,19 +18,6 @@ class MyDocument extends Document {
           />
         </Head>
         <body>
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-N5QGMDMSW1"
-            strategy="afterInteractive"
-          />
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-N5QGMDMSW1');
-        `}
-          </Script>
           <Main />
           <NextScript />
         </body>
