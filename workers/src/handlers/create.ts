@@ -41,22 +41,6 @@ async function startRunBackend(runId: string, runReq: RunData) {
   var headers = new Headers()
   headers.append('Content-Type', 'application/json')
 
-  var raw = JSON.stringify({
-    runId: runId,
-    codes: [
-      {
-        lang: runReq.codeRuns[0].lang,
-        codeId: runId + '-a',
-        code: runReq.codeRuns[0].code,
-      },
-      {
-        lang: runReq.codeRuns[1].lang,
-        codeId: runId + '-b',
-        code: runReq.codeRuns[1].code,
-      },
-    ],
-  })
-
   var requestOptions = {
     method: 'POST',
     headers: headers,
@@ -64,8 +48,5 @@ async function startRunBackend(runId: string, runReq: RunData) {
     redirect: 'follow',
   }
 
-  console.log(raw)
-
-  //return fetch('https://backend-api.faster.codes/', requestOptions)
   return fetch('https://executor-api.faster.codes/', requestOptions)
 }
