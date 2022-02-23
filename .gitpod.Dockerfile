@@ -14,11 +14,14 @@ RUN sudo mkdir /data
 
 #----- local user
 USER gitpod
-RUN npm i @cloudflare/wrangler -g  
+RUN npm i @cloudflare/wrangler -g
 
 ENV SHELL=zsh
 ENV ZSH_THEME cloud
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 COPY .zshrc /tmp/
 RUN cat /tmp/.zshrc >> ~/.zshrc
+
+RUN go install honnef.co/go/tools/cmd/staticcheck@latest  
+
 CMD [ "zsh" ]

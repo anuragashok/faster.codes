@@ -12,6 +12,6 @@
     "editor.defaultFormatter": "ms-python.python"
   },
   "[go]": {
-    "editor.defaultFormatter": "ms-vscode.Go"
+    "editor.defaultFormatter": "golang.go"
   }
 }

@@ -34,7 +34,7 @@ func launch(w http.ResponseWriter, r *http.Request) {
 	runData := models.RunData{}
 	err := json.Unmarshal(body, &runData)
 
-	if (err != nil){
+	if err != nil {
 		panic(err)
 	}
 
@@ -44,7 +44,7 @@ func launch(w http.ResponseWriter, r *http.Request) {
 	for _, d := range runData.CodeRuns {
 		fmt.Printf("starting job for %s \n", d.Id)
 		jsonData, err := json.Marshal(d)
-		if (err != nil){
+		if err != nil {
 			panic(err)
 		}
 		writeCodeRunDataToNFS(runData, d, jsonData)
