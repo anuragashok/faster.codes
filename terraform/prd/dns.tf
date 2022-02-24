@@ -38,3 +38,11 @@ resource "cloudflare_record" "faster_codes_api" {
   ttl     = 1
   proxied = true
 }
+
+resource "cloudflare_record" "faster_codes_google_txt" {
+  zone_id = cloudflare_zone.faster_codes.id
+  name    = "@"
+  value   = "google-site-verification=7fguXiiHark6_8Qf46dK45JQBBcDxXLhP6kWUDAoXkQ"
+  type    = "TXT"
+  ttl     = 1
+}
