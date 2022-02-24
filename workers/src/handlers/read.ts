@@ -32,22 +32,6 @@ async function getRunData(env: Env, runId: string, request: Request) {
   return await runObj.fetch(newUrl.toString())
 }
 
-async function handleErrors(request: Request, func: any) {
-  try {
-    return await func()
-  } catch (err: any) {
-    if (request.headers.get('Upgrade') == 'websocket') {
-      let pair = new WebSocketPair()
-      pair[1].accept()
-      pair[1].send(JSON.stringify({ error: err.stack }))
-      pair[1].close(1011, 'Uncaught exception during session setup')
-      return new Response(null, { status: 101, webSocket: pair[0] })
-    } else {
-      return new Response(err.stack, { status: 500 })
-    }
-  }
-}
-
 async function handleSocket(
   env: Env,
   request: Request,
@@ -73,15 +57,5 @@ async function pollRunData(
   } else {
     ws.send('<DONE>')
     ws.close()
-  }
-}
-
-function isExpired(startTime: number | undefined) {
-  if (startTime) {
-    var difference = +new Date() - startTime
-    var minutes = Math.floor(difference / 1000 / 60)
-    return minutes > 5
-  } else {
-    return true
   }
 }
