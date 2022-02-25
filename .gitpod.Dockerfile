@@ -11,13 +11,12 @@ RUN sudo apt-get update && \
 RUN brew install kubectl
 RUN brew install doctl
 RUN sudo npm i @cloudflare/wrangler -g
-RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
-
 RUN sudo mkdir /data
 
 # local user
 USER gitpod
 
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 ENV SHELL=zsh
 ENV ZSH_THEME cloud
 COPY .zshrc /tmp/
