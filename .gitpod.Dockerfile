@@ -10,7 +10,6 @@ RUN sudo apt-get update && \
 # tools
 RUN brew install kubectl
 RUN brew install doctl
-RUN sudo go install honnef.co/go/tools/cmd/staticcheck@latest  
 RUN sudo npm i @cloudflare/wrangler -g
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 
