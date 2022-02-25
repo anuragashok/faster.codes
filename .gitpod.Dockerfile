@@ -12,6 +12,8 @@ RUN brew install kubectl
 RUN brew install doctl
 RUN sudo mkdir /data
 
+RUN go install honnef.co/go/tools/cmd/staticcheck@latest  
+
 #----- local user
 USER gitpod
 RUN npm i @cloudflare/wrangler -g
@@ -22,6 +24,6 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 COPY .zshrc /tmp/
 RUN cat /tmp/.zshrc >> ~/.zshrc
 
-RUN go install honnef.co/go/tools/cmd/staticcheck@latest  
+
 
 CMD [ "zsh" ]
