@@ -12,6 +12,7 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import Stats from "@components/Stats";
 import FullStats from "@components/FullStats";
 import Head from "next/head";
+import { NextParsedUrlQuery } from "next/dist/server/request-meta";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -27,7 +28,7 @@ const Home: React.FC = () => {
     codeRuns: [{ code: "" }, { code: "" }],
   } as RunData);
   const [showError, setShowError] = useState(false);
-  const runId = router.query?.runId ? router.query.runId : "dummy";
+  const runId = getRunId(router.query);
   console.log(runId);
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(
@@ -91,7 +92,7 @@ const Home: React.FC = () => {
       ...runData,
       runId,
     });
-    router.push("/?runId=" + runId, undefined, { shallow: true });
+    router.push("/?r=" + runId, undefined, { shallow: true });
   };
 
   return (
@@ -161,6 +162,10 @@ const Home: React.FC = () => {
     </>
   );
 };
+
+function getRunId(query: NextParsedUrlQuery) {
+  return query?.runId || query?.r || "dummy";
+}
 
 function getRunButtonText(runData: RunData): string {
   if (!runData.runId) {

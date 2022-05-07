@@ -27,6 +27,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "is-even": "^1.0.0"
+    "is-even": "^1.0.0",
+    "nanoid": "ai/nanoid"
   }
 }

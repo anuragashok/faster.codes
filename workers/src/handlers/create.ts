@@ -1,9 +1,12 @@
 import { Env, RunData } from '../types'
+import { customAlphabet } from 'nanoid/async'
+
+const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 15)
 
 export async function create(request: Request, env: Env) {
   const runData: RunData = await request.json()
 
-  let runId = await generateNewRunId(env, request)
+  let runId = await generateNewRunId()
   runData.runId = runId
   runData.codeRuns[0].id = runId + '-a'
   runData.codeRuns[1].id = runId + '-b'
@@ -27,13 +30,8 @@ export async function create(request: Request, env: Env) {
   )
 }
 
-async function generateNewRunId(env: Env, request: Request) {
-  let id = env.COUNTER.idFromName('A')
-  let obj = env.COUNTER.get(id)
-  let resp = await obj.fetch(request.url)
-  let runId = await resp.text()
-
-  return runId
+async function generateNewRunId() {
+  return nanoid()
 }
 
 async function startRunBackend(runId: string, runData: RunData) {

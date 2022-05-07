@@ -607,6 +607,10 @@ minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
+nanoid@ai/nanoid:
+  version "3.3.4"
+  resolved "https://codeload.github.com/ai/nanoid/tar.gz/21728dc49e89cd99bf789f30a4d2306c5fc7b309"
+
 node-fetch@^2.6.1:
   version "2.6.5"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.5.tgz#42735537d7f080a7e5f78b6c549b7146be1742fd"
