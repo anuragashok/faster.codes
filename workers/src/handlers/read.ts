@@ -7,7 +7,6 @@ export async function read(request: Request, env: Env) {
   const runId = path[0]
 
   if (request.headers.get('Upgrade') == 'websocket') {
-    console.log('got ws headers')
     let pair = new WebSocketPair()
     handleSocket(env, request, runId, pair[1])
     return addCorsHeaders(
