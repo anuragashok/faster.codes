@@ -3,6 +3,10 @@ variable "executor-api-tag" {}
 variable "WORKER_TOKEN" {
 }
 
+variable "spaces_bucket_name" {
+  default = "faster-codes-run-data-store"
+}
+
 variable "project_id" {
   description = "The project ID to host the cluster in"
   default     = "faster-codes-backend"

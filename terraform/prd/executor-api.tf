@@ -73,8 +73,58 @@ resource "kubernetes_deployment" "executor_api" {
             name = "WORKER_TOKEN"
             value_from {
               secret_key_ref {
-                name = kubernetes_secret.worker_token.metadata.0.name
-                key = "worker_token"
+                name = kubernetes_secret.executor_secrets.metadata.0.name
+                key  = "worker_token"
+              }
+            }
+          }
+
+          env {
+            name = "WORKER_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.executor_secrets.metadata.0.name
+                key  = "worker_token"
+              }
+            }
+          }
+
+          env {
+            name = "WORKER_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.executor_secrets.metadata.0.name
+                key  = "worker_token"
+              }
+            }
+          }
+
+          env {
+            name = "spaces_bucket_name"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.executor_secrets.metadata.0.name
+                key  = "spaces_bucket_name"
+              }
+            }
+          }
+
+          env {
+            name = "spaces_access_id"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.executor_secrets.metadata.0.name
+                key  = "spaces_access_id"
+              }
+            }
+          }
+
+          env {
+            name = "spaces_secret_key"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.executor_secrets.metadata.0.name
+                key  = "spaces_secret_key"
               }
             }
           }
@@ -87,7 +137,7 @@ resource "kubernetes_deployment" "executor_api" {
             claim_name = kubernetes_persistent_volume_claim.backend_nfs.metadata.0.name
           }
         }
-        
+
       }
     }
   }

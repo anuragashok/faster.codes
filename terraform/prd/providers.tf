@@ -9,16 +9,19 @@ terraform {
       version = "2.5.0"
     }
     digitalocean = {
-      source = "digitalocean/digitalocean"
+      source  = "digitalocean/digitalocean"
       version = "2.17.0"
     }
   }
 }
 
 variable "do_token" {}
-
+variable "spaces_access_id" {}
+variable "spaces_secret_key" {}
 provider "digitalocean" {
-  token = var.do_token
+  token             = var.do_token
+  spaces_access_id  = var.spaces_access_id
+  spaces_secret_key = var.spaces_secret_key
 }
 
 variable "PROVIDER_CLOUDFLARE_EMAIL" {}
@@ -31,8 +34,8 @@ provider "cloudflare" {
 }
 
 provider "kubernetes" {
-  host             = data.digitalocean_kubernetes_cluster.faster_codes.endpoint
-  token            = data.digitalocean_kubernetes_cluster.faster_codes.kube_config[0].token
+  host  = data.digitalocean_kubernetes_cluster.faster_codes.endpoint
+  token = data.digitalocean_kubernetes_cluster.faster_codes.kube_config[0].token
   cluster_ca_certificate = base64decode(
     data.digitalocean_kubernetes_cluster.faster_codes.kube_config[0].cluster_ca_certificate
   )

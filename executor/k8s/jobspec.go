@@ -64,7 +64,7 @@ func getJob(runId string, d models.CodeRunData) *batchv1.Job {
 									ValueFrom: &corev1.EnvVarSource{
 										SecretKeyRef: &corev1.SecretKeySelector{
 											LocalObjectReference: corev1.LocalObjectReference{
-												Name: "worker-token",
+												Name: "executor-secrets",
 											},
 											Key: "worker_token",
 										},

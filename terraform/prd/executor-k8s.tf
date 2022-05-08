@@ -192,11 +192,14 @@ resource "kubernetes_cluster_role_binding" "api_role_binding" {
   }
 }
 
-resource "kubernetes_secret" "worker_token" {
+resource "kubernetes_secret" "executor_secrets" {
   metadata {
-    name = "worker-token"
+    name = "executor-secrets"
   }
   data = {
     worker_token = var.WORKER_TOKEN
+    spaces_access_id = var.spaces_access_id
+    spaces_secret_key = var.spaces_secret_key
+    spaces_bucket_name = var.spaces_bucket_name
   }
 }

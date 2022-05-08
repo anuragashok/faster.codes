@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -9,6 +10,10 @@ import (
 
 	"github.com/anuragashok/faster.codes/executor/k8s"
 	"github.com/anuragashok/faster.codes/executor/models"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gorilla/mux"
 )
 
@@ -48,6 +53,7 @@ func launch(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 		writeCodeRunDataToNFS(runData, d, jsonData)
+		saveCodeRunDataToDataStore(runData,d,jsonData)
 		k8s.StartJob(runData.RunId, d)
 	}
 
@@ -62,4 +68,25 @@ func writeCodeRunDataToNFS(runData models.RunData, d models.CodeRunData, jsonDat
 	if err != nil {
 		panic(err)
 	}
+}
+
+func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, jsonData []byte) {
+	key := fmt.Sprintf("data/%s/%s/CodeRunData.json", runData.RunId, d.Id)
+	bucketName := os.Getenv("spaces_bucket_name")
+
+	endpoint := "ams3.digitaloceanspaces.com"
+	region := "ams3"
+	sess := session.Must(session.NewSession(&aws.Config{
+		Endpoint: &endpoint,
+		Region:   &region,
+		Credentials: credentials.NewSharedCredentials(os.Getenv("spaces_access_id"),os.Getenv("spaces_secret_key")),
+	}))
+	uploader := s3manager.NewUploader(sess)
+	
+	upParams := &s3manager.UploadInput{
+		Bucket: &bucketName,
+		Key:    &key,
+		Body:   bytes.NewReader(jsonData),
+	}
+	uploader.Upload(upParams)
 }
