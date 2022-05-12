@@ -74,7 +74,7 @@ func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, js
 	key := fmt.Sprintf("runs/%s/%s/data.json", runData.RunId, d.Id)
 	bucketName := os.Getenv("spaces_bucket_name")
 
-	endpoint := "ams3.digitaloceanspaces.com"
+	endpoint := "https://ams3.digitaloceanspaces.com"
 	region := "ams3"
 	sess := session.Must(session.NewSession(&aws.Config{
 		Endpoint: &endpoint,
