@@ -79,7 +79,7 @@ func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, js
 	sess := session.Must(session.NewSession(&aws.Config{
 		Endpoint: &endpoint,
 		Region:   &region,
-		Credentials: credentials.NewSharedCredentials(os.Getenv("spaces_access_id"),os.Getenv("spaces_secret_key")),
+		Credentials: credentials.NewStaticCredentials(os.Getenv("spaces_access_id"),os.Getenv("spaces_secret_key"),""),
 	}))
 	uploader := s3manager.NewUploader(sess)
 	
