@@ -18,7 +18,8 @@ import (
 )
 
 var (
-	WORKER_TOKEN string = os.Getenv("WORKER_TOKEN")
+	WORKER_TOKEN      string = os.Getenv("WORKER_TOKEN")
+	CONTENT_TYPE_JSON string = "application/json"
 )
 
 func main() {
@@ -53,7 +54,7 @@ func launch(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 		writeCodeRunDataToNFS(runData, d, jsonData)
-		saveCodeRunDataToDataStore(runData,d,jsonData)
+		saveCodeRunDataToDataStore(runData, d, jsonData)
 		k8s.StartJob(runData.RunId, d)
 	}
 
@@ -77,19 +78,20 @@ func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, js
 	endpoint := "ams3.digitaloceanspaces.com"
 	region := "ams3"
 	sess := session.Must(session.NewSession(&aws.Config{
-		Endpoint: &endpoint,
-		Region:   &region,
-		Credentials: credentials.NewStaticCredentials(os.Getenv("spaces_access_id"),os.Getenv("spaces_secret_key"),""),
+		Endpoint:    &endpoint,
+		Region:      &region,
+		Credentials: credentials.NewStaticCredentials(os.Getenv("spaces_access_id"), os.Getenv("spaces_secret_key"), ""),
 	}))
 	uploader := s3manager.NewUploader(sess)
-	
+
 	upParams := &s3manager.UploadInput{
-		Bucket: &bucketName,
-		Key:    &key,
-		Body:   bytes.NewReader(jsonData),
+		Bucket:      &bucketName,
+		Key:         &key,
+		Body:        bytes.NewReader(jsonData),
+		ContentType: &CONTENT_TYPE_JSON,
 	}
 	_, err := uploader.Upload(upParams)
-	if err!=nil {
-		fmt.Printf("error while uploading to spaces %s",err.Error())
+	if err != nil {
+		fmt.Printf("error while uploading to spaces %s", err.Error())
 	}
 }

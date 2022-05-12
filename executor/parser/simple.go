@@ -10,7 +10,7 @@ import (
 )
 
 type SimpleFileParser struct {
-	fileName string 
+	fileName string
 }
 
 func (p SimpleFileParser) Parse(codeRunData *models.CodeRunData) error {
