@@ -80,26 +80,6 @@ resource "kubernetes_deployment" "executor_api" {
           }
 
           env {
-            name = "WORKER_TOKEN"
-            value_from {
-              secret_key_ref {
-                name = kubernetes_secret.executor_secrets.metadata.0.name
-                key  = "worker_token"
-              }
-            }
-          }
-
-          env {
-            name = "WORKER_TOKEN"
-            value_from {
-              secret_key_ref {
-                name = kubernetes_secret.executor_secrets.metadata.0.name
-                key  = "worker_token"
-              }
-            }
-          }
-
-          env {
             name = "spaces_bucket_name"
             value_from {
               secret_key_ref {
