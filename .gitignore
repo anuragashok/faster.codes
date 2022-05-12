@@ -105,3 +105,4 @@ dist
 
 .terraform
 terraform/prd/.terraform.lock.hcl
+terraform/prd/terraform.tfstate

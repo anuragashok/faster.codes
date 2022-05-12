@@ -4,7 +4,7 @@ variable "WORKER_TOKEN" {
 }
 
 variable "spaces_bucket_name" {
-  default = "faster-codes-run-data-store"
+  default = "faster-codes-data-store"
 }
 
 variable "project_id" {
