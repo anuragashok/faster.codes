@@ -71,7 +71,7 @@ func writeCodeRunDataToNFS(runData models.RunData, d models.CodeRunData, jsonDat
 }
 
 func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, jsonData []byte) {
-	key := fmt.Sprintf("data/%s/%s/CodeRunData.json", runData.RunId, d.Id)
+	key := fmt.Sprintf("runs/%s/%s/data.json", runData.RunId, d.Id)
 	bucketName := os.Getenv("spaces_bucket_name")
 
 	endpoint := "ams3.digitaloceanspaces.com"
