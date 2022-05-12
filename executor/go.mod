@@ -3,6 +3,7 @@ module github.com/anuragashok/faster.codes/executor
 go 1.17
 
 require (
+	github.com/aws/aws-sdk-go v1.44.9
 	github.com/gorilla/mux v1.8.0
 	github.com/shirou/gopsutil/v3 v3.22.1
 	k8s.io/api v0.23.3
@@ -11,7 +12,6 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go v1.44.9 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-logr/logr v1.2.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -26,7 +26,6 @@ require (
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tklauser/go-sysconf v0.3.9 // indirect
