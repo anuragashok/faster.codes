@@ -16,7 +16,7 @@ data "digitalocean_kubernetes_cluster" "faster_codes" {
   name = digitalocean_kubernetes_cluster.faster_codes.name
 }
 
-resource "digitalocean_spaces_bucket" "faster_codes_run_data_store" {
+resource "digitalocean_spaces_bucket" "faster_codes_data_store" {
   name   = var.spaces_bucket_name
   region = "ams3"
   acl    = "private"
