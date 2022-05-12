@@ -88,5 +88,8 @@ func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, js
 		Key:    &key,
 		Body:   bytes.NewReader(jsonData),
 	}
-	uploader.Upload(upParams)
+	_, err := uploader.Upload(upParams)
+	if err!=nil {
+		fmt.Printf("error while uploading to spaces %s",err.Error())
+	}
 }
