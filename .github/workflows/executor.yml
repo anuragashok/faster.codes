@@ -30,7 +30,7 @@ jobs:
             base:
               - 'executor/base.Dockerfile'
       - name: Build and push base docker image
-        if: steps.filter.outputs.base == 'true'
+        if: steps.filter.changes.base == 'true'
         uses: docker/build-push-action@v3
         with:
           context: ./executor
