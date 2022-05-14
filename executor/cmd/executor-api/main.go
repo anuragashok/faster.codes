@@ -24,6 +24,7 @@ var (
 
 func main() {
 	fmt.Println("starting executor api")
+	
 	r := mux.NewRouter()
 	r.HandleFunc("/", launch).Methods("POST")
 	r.HandleFunc("/health", ok).Methods("GET")

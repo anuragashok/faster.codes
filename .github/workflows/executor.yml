@@ -41,7 +41,7 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/executor-base:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Build and push base docker image
+      - name: Build and push runner base docker image
         if: steps.changes.outputs.runnerBase == 'true'
         uses: docker/build-push-action@v3
         with:
