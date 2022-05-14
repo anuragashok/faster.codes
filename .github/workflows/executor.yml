@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./executor
-          file: base.Dockerfile
+          file: executor/base.Dockerfile
           target: executor-api
           push: true
           tags: ghcr.io/${{ github.repository }}/executor-base:latest
