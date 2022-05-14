@@ -42,7 +42,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Build and push base docker image
-        if: steps.changes.outputs.base == 'true'
+        if: steps.changes.outputs.runnerBase == 'true'
         uses: docker/build-push-action@v3
         with:
           context: ./executor
