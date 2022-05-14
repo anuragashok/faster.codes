@@ -23,6 +23,22 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            base:
+              - 'executor/base.Dockerfile'
+      - name: Build and push base docker image
+        if: steps.filter.outputs.base == 'true'
+        uses: docker/build-push-action@v3
+        with:
+          context: ./executor
+          target: executor-api
+          push: true
+          tags: ghcr.io/${{ github.repository }}/executor-base:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Build and push executor-api
         uses: docker/build-push-action@v3
         with:
