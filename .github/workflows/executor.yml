@@ -29,6 +29,8 @@ jobs:
           filters: |
             base:
               - 'executor/base.Dockerfile'
+            runnerBase:
+              - 'executor/runner-base.Dockerfile'
       - name: Build and push base docker image
         if: steps.changes.outputs.base == 'true'
         uses: docker/build-push-action@v3
@@ -37,6 +39,16 @@ jobs:
           file: executor/base.Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository }}/executor-base:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build and push base docker image
+        if: steps.changes.outputs.base == 'true'
+        uses: docker/build-push-action@v3
+        with:
+          context: ./executor
+          file: executor/runner-base.Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/executor-runner-base:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Build and push executor-api
