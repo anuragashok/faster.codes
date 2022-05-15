@@ -1,25 +1,21 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 
+	"github.com/anuragashok/faster.codes/executor/env"
 	"github.com/anuragashok/faster.codes/executor/k8s"
 	"github.com/anuragashok/faster.codes/executor/models"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	"github.com/anuragashok/faster.codes/executor/store"
 	"github.com/gorilla/mux"
 )
 
 var (
-	WORKER_TOKEN      string = os.Getenv("WORKER_TOKEN")
-	CONTENT_TYPE_JSON string = "application/json"
+	CONTENT_TYPE_JSON = "application/json"
 )
 
 func main() {
@@ -54,45 +50,41 @@ func launch(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
-		writeCodeRunDataToNFS(runData, d, jsonData)
-		saveCodeRunDataToDataStore(runData, d, jsonData)
+		err = writeCodeRunDataToNFS(runData, d, jsonData)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Printf("error saving data to nfs %v \n", err)
+			return
+		}
+		err = saveCodeRunDataToDataStore(runData, d, jsonData)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Printf("error saving data to store %v \n", err)
+			return
+		}
 		k8s.StartJob(runData.RunId, d)
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
 
-func writeCodeRunDataToNFS(runData models.RunData, d models.CodeRunData, jsonData []byte) {
+func writeCodeRunDataToNFS(runData models.RunData, d models.CodeRunData, jsonData []byte) error {
 	dir := fmt.Sprintf("/data/%s/%s", runData.RunId, d.Id)
 	file := "CodeRunData.json"
 	os.MkdirAll(dir, os.ModePerm)
 	err := ioutil.WriteFile(fmt.Sprintf("%s/%s", dir, file), jsonData, 0777)
-	if err != nil {
-		panic(err)
-	}
+	return err
 }
 
-func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, jsonData []byte) {
-	key := fmt.Sprintf("runs/%s/%s/data.json", runData.RunId, d.Id)
-	bucketName := os.Getenv("spaces_bucket_name")
-
-	endpoint := "ams3.digitaloceanspaces.com"
-	region := "ams3"
-	sess := session.Must(session.NewSession(&aws.Config{
-		Endpoint:    &endpoint,
-		Region:      &region,
-		Credentials: credentials.NewStaticCredentials(os.Getenv("spaces_access_id"), os.Getenv("spaces_secret_key"), ""),
-	}))
-	uploader := s3manager.NewUploader(sess)
-
-	upParams := &s3manager.UploadInput{
-		Bucket:      &bucketName,
-		Key:         &key,
-		Body:        bytes.NewReader(jsonData),
-		ContentType: &CONTENT_TYPE_JSON,
+func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, jsonData []byte) error {
+	store := store.Store{
+		Bucket:     env.BUCKET,
+		Access_id:  env.ACCESS_ID,
+		Secret_key: env.SECRET_KEY,
 	}
-	_, err := uploader.Upload(upParams)
-	if err != nil {
-		fmt.Printf("error while uploading to spaces %s", err.Error())
-	}
+	store.StartSession()
+
+	path := fmt.Sprintf("runs/%s/%s/data.json", runData.RunId, d.Id)
+	err := store.Upload(path, jsonData, CONTENT_TYPE_JSON)
+	return err
 }

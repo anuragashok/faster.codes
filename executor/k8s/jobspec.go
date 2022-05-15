@@ -70,6 +70,43 @@ func getJob(runId string, d models.CodeRunData) *batchv1.Job {
 										},
 									},
 								},
+								{
+									Name: "spaces_bucket_name",
+									ValueFrom: &corev1.EnvVarSource{
+										SecretKeyRef: &corev1.SecretKeySelector{
+											LocalObjectReference: corev1.LocalObjectReference{
+												Name: "executor-secrets",
+											},
+											Key: "spaces_bucket_name",
+										},
+									},
+								},
+								{
+									Name: "spaces_access_id",
+									ValueFrom: &corev1.EnvVarSource{
+										SecretKeyRef: &corev1.SecretKeySelector{
+											LocalObjectReference: corev1.LocalObjectReference{
+												Name: "executor-secrets",
+											},
+											Key: "spaces_access_id",
+										},
+									},
+								},
+								{
+									Name: "spaces_secret_key",
+									ValueFrom: &corev1.EnvVarSource{
+										SecretKeyRef: &corev1.SecretKeySelector{
+											LocalObjectReference: corev1.LocalObjectReference{
+												Name: "executor-secrets",
+											},
+											Key: "spaces_secret_key",
+										},
+									},
+								},
+								{
+									Name: "CODE_RUN_ID",
+									Value: d.Id,
+								},
 							},
 						},
 					},

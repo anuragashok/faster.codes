@@ -11,10 +11,12 @@ import (
 
 	"github.com/anuragashok/faster.codes/executor/compiler"
 	"github.com/anuragashok/faster.codes/executor/constants"
+	"github.com/anuragashok/faster.codes/executor/env"
 	"github.com/anuragashok/faster.codes/executor/models"
 	"github.com/anuragashok/faster.codes/executor/output"
 	"github.com/anuragashok/faster.codes/executor/parser"
 	"github.com/anuragashok/faster.codes/executor/runner"
+	"github.com/anuragashok/faster.codes/executor/store"
 )
 
 var (
@@ -26,8 +28,7 @@ func init() {
 }
 
 func main() {
-	// clear sensiive token
-	os.Unsetenv("WORKER_TOKEN")
+	env.ClearSensitiveEnvironmentVars()
 
 	output.Init()
 	parser.Init()
@@ -35,7 +36,7 @@ func main() {
 	runner.Init()
 
 	//read
-	codeRunData := readCodeRunData()
+	codeRunData := readCodeRunData(env.CODE_RUN_ID)
 	lang := codeRunData.Lang
 
 	//parse
@@ -83,9 +84,19 @@ func main() {
 
 }
 
-func readCodeRunData() *models.CodeRunData {
-	file, _ := ioutil.ReadFile(constants.WORKING_DIR + "/CodeRunData.json")
+func readCodeRunData(codeRunId string) *models.CodeRunData {
+	store := &store.Store{
+		Bucket:     env.BUCKET,
+		Access_id:  env.ACCESS_ID,
+		Secret_key: env.SECRET_KEY,
+	}
+
+	runId := strings.Split(codeRunId, "-")[0]
+	key := fmt.Sprintf("runs/%s/%s/data.json", runId, codeRunId)
+	store.Download(key, constants.WORKING_DIR+"/data.json")
+
 	data := models.CodeRunData{}
+	file, _ := ioutil.ReadFile(constants.WORKING_DIR + "/data.json")
 	_ = json.Unmarshal([]byte(file), &data)
 	return &data
 }

@@ -1,5 +1,5 @@
 package constants
 
 const (
-	WORKING_DIR = "/data"
+	WORKING_DIR = "/tmp"
 )
