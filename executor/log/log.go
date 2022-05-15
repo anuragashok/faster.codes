@@ -19,8 +19,8 @@ var (
 )
 
 func Init() func() {
-	logger, _ := zap.NewProduction()
-	sugar := logger.Sugar()
+	logger, _ = zap.NewProduction()
+	sugar = logger.Sugar()
 	return func() {
 		sugar.Sync()
 	}
