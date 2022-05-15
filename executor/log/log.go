@@ -40,13 +40,13 @@ func Init() func() {
 func Info(ctx context.Context, message string, additionalTags ...interface{}) {
 	tags := []interface{}{}
 	tags = append(getTags(ctx), additionalTags...)
-	sugar.Infow(message, tags)
+	sugar.Infow(message, tags...)
 }
 
 func Error(ctx context.Context, err error, additionalTags ...interface{}) {
 	tags := []interface{}{}
 	tags = append(getTags(ctx), additionalTags...)
-	sugar.Errorw(err.Error(), tags)
+	sugar.Errorw(err.Error(), tags...)
 }
 
 func getTags(ctx context.Context) []interface{} {
