@@ -39,8 +39,6 @@ jobs:
           file: executor/base.Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository }}/executor-base:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - name: Build and push runner base docker image
         if: steps.changes.outputs.runnerBase == 'true'
         uses: docker/build-push-action@v3
@@ -49,8 +47,6 @@ jobs:
           file: executor/runner-base.Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository }}/executor-runner-base:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - name: Build and push executor-api
         uses: docker/build-push-action@v3
         with:
@@ -59,8 +55,6 @@ jobs:
           pull: true
           push: true
           tags: ghcr.io/${{ github.repository }}/executor-api:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - name: Build and push executor
         uses: docker/build-push-action@v2
         with:
@@ -69,8 +63,6 @@ jobs:
           pull: true
           push: true
           tags: ghcr.io/${{ github.repository }}/executor:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - name: Update latest tag in terraform
         uses: fjogeleit/http-request-action@master
         with:
