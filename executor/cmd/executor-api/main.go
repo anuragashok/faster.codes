@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 
 	"github.com/anuragashok/faster.codes/executor/env"
 	"github.com/anuragashok/faster.codes/executor/k8s"
@@ -50,13 +49,8 @@ func launch(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err)
 		}
-		err = writeCodeRunDataToNFS(runData, d, jsonData)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Printf("error saving data to nfs %v \n", err)
-			return
-		}
-		err = saveCodeRunDataToDataStore(runData, d, jsonData)
+
+		err = storeCodeRunData(runData, d, jsonData)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Printf("error saving data to store %v \n", err)
@@ -68,15 +62,7 @@ func launch(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func writeCodeRunDataToNFS(runData models.RunData, d models.CodeRunData, jsonData []byte) error {
-	dir := fmt.Sprintf("/data/%s/%s", runData.RunId, d.Id)
-	file := "CodeRunData.json"
-	os.MkdirAll(dir, os.ModePerm)
-	err := ioutil.WriteFile(fmt.Sprintf("%s/%s", dir, file), jsonData, 0777)
-	return err
-}
-
-func saveCodeRunDataToDataStore(runData models.RunData, d models.CodeRunData, jsonData []byte) error {
+func storeCodeRunData(runData models.RunData, d models.CodeRunData, jsonData []byte) error {
 	store := store.Store{
 		Bucket:     env.BUCKET,
 		Access_id:  env.ACCESS_ID,
