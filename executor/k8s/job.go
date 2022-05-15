@@ -16,13 +16,12 @@ import (
 	"k8s.io/client-go/util/homedir"
 )
 
-func StartJob(runId string, codeRunData models.CodeRunData) {
+func StartJob(ctx context.Context, runId string, codeRunData models.CodeRunData) {
 
 	var config *rest.Config
 	var err error
 	if _, isDev := os.LookupEnv("GITPOD_WORKSPACE_URL"); isDev {
 		config, err = clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
-
 	} else {
 		config, err = rest.InClusterConfig()
 	}

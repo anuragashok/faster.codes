@@ -2,6 +2,7 @@ package log
 
 import (
 	"context"
+	"encoding/json"
 
 	"go.uber.org/zap"
 )
@@ -10,7 +11,11 @@ var (
 	logger *zap.Logger
 	sugar  *zap.SugaredLogger
 
-	TAG_KEYS = []string{"RUN_ID", "CODE_RUN_ID"}
+	//tags
+	RUN_ID = "run_id"
+	CODE_RUN_ID = "code_run_id"
+
+	TAG_KEYS = []string{RUN_ID,CODE_RUN_ID}
 )
 
 func Init() func() {
@@ -22,11 +27,11 @@ func Init() func() {
 }
 
 func Info(ctx context.Context, message string, additionalTags ...string) {
-	sugar.Info(message, getTags(ctx), additionalTags)
+	sugar.Infow(message, getTags(ctx), additionalTags)
 }
 
-func Error(ctx context.Context, message string, additionalTags ...string) {
-	sugar.Error(message, getTags(ctx), additionalTags)
+func Error(ctx context.Context, err error, additionalTags ...string) {
+	sugar.Errorw(err.Error(), getTags(ctx), additionalTags)
 }
 
 func getTags(ctx context.Context) []string {
@@ -39,4 +44,9 @@ func getTags(ctx context.Context) []string {
 		}
 	}
 	return tags
+}
+
+func Dump(i interface{}) string {
+    s, _ := json.MarshalIndent(i, "", "\t")
+    return string(s)
 }

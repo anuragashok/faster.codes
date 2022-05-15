@@ -1,11 +1,9 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"strings"
 
@@ -17,15 +15,12 @@ import (
 	"github.com/anuragashok/faster.codes/executor/parser"
 	"github.com/anuragashok/faster.codes/executor/runner"
 	"github.com/anuragashok/faster.codes/executor/store"
+	"github.com/anuragashok/faster.codes/executor/workers"
 )
 
 var (
 	WORKER_TOKEN string
 )
-
-func init() {
-	WORKER_TOKEN = os.Getenv("WORKER_TOKEN")
-}
 
 func main() {
 	env.ClearSensitiveEnvironmentVars()
@@ -47,40 +42,40 @@ func main() {
 
 	//compile
 	codeRunData.Stage = models.Compiling
-	update(codeRunData)
+	workers.Save(codeRunData)
 
 	compiler := compiler.Get(lang)
 	err = compiler.Compile()
 	if err != nil {
 		output.User(fmt.Sprintf("compilation failed %v", err))
 		codeRunData.Stage = models.Compile_Failed
-		update(codeRunData)
+		workers.Save(codeRunData)
 		panic(err)
 	}
 	codeRunData.Stage = models.Compile_Success
-	update(codeRunData)
+	workers.Save(codeRunData)
 
 	//run
 	codeRunData.Stage = models.Running
-	update(codeRunData)
+	workers.Save(codeRunData)
 
 	runner := runner.Get(lang)
 	stats, err := runner.Run()
 	if err != nil {
 		output.User(fmt.Sprintf("run failed %v", err))
 		codeRunData.Stage = models.Run_Failed
-		update(codeRunData)
+		workers.Save(codeRunData)
 		panic(err)
 	}
 	codeRunData.Stage = models.Run_Success
-	update(codeRunData)
+	workers.Save(codeRunData)
 
 	stats.Cpu.Avg = average(stats.Cpu.Values)
 	stats.Mem.Avg = average(stats.Mem.Values)
 	stats.Duration.Avg = average(stats.Duration.Values)
 	codeRunData.Stats = stats
 	codeRunData.Status = "SUCCESS"
-	update(codeRunData)
+	workers.Save(codeRunData)
 
 }
 
@@ -107,32 +102,6 @@ func exitHandle(err error) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-func update(data *models.CodeRunData) error {
-	runId := strings.Split(data.Id, "-")[0]
-	fmt.Println(runId)
-
-	// initialize http client
-	client := &http.Client{}
-
-	json, err := json.Marshal(data)
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest(http.MethodPut, "https://api.faster.codes/"+runId, bytes.NewBuffer(json))
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-Type", "application/json; charset=utf-8")
-	req.Header.Set("X-WORKER-TOKEN", WORKER_TOKEN)
-	_, err = client.Do(req)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func average(xs []float64) float64 {
