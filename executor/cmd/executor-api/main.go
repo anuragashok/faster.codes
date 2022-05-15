@@ -8,6 +8,7 @@ import (
 
 	"github.com/anuragashok/faster.codes/executor/env"
 	"github.com/anuragashok/faster.codes/executor/k8s"
+	"github.com/anuragashok/faster.codes/executor/log"
 	"github.com/anuragashok/faster.codes/executor/models"
 	"github.com/anuragashok/faster.codes/executor/store"
 	"github.com/gorilla/mux"
@@ -19,6 +20,9 @@ var (
 
 func main() {
 	fmt.Println("starting executor api ")
+
+	syncFn := log.Init()
+	defer syncFn()
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", launch).Methods("POST")

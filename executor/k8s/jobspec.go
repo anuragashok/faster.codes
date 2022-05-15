@@ -104,7 +104,7 @@ func getJob(runId string, d models.CodeRunData) *batchv1.Job {
 									},
 								},
 								{
-									Name: "CODE_RUN_ID",
+									Name:  "CODE_RUN_ID",
 									Value: d.Id,
 								},
 							},

@@ -91,7 +91,7 @@ func readCodeRunData(codeRunId string) *models.CodeRunData {
 		Secret_key: env.SECRET_KEY,
 	}
 	store.StartSession()
-	
+
 	runId := strings.Split(codeRunId, "-")[0]
 	key := fmt.Sprintf("runs/%s/%s/data.json", runId, codeRunId)
 	store.Download(key, constants.WORKING_DIR+"/data.json")
